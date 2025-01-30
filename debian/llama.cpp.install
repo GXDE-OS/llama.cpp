@@ -1,0 +1,3 @@
+# The baseline build always exists for an architecture, we take its binaries
+debian/tmp/build-cpu-baseline/usr/bin/llama-*   usr/bin/
+debian/tmp/usr/bin/convert_hf_to_gguf           usr/bin/

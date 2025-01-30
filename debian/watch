@@ -1,0 +1,7 @@
+# Note that because upstream releases so frequently, tags drop off the top-20
+# quickly. We could use the API but even its top-100 are insufficient to
+# re-download recent versions.
+version=4
+opts="filenamemangle=s%(?:.*?)?b?(\d[\d.]*)\.tar\.gz%llama.cpp-$1.tar.gz%,dversionmangle=auto,repacksuffix=+dfsg" \
+   https://github.com/ggerganov/llama.cpp/tags \
+   (?:.*?/)?b?(\d[\d.]*)\.tar\.gz debian

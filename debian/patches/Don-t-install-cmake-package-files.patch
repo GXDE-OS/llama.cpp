@@ -1,0 +1,47 @@
+From: Christian Kastner <ckk@kvr.at>
+Date: Sat, 1 Feb 2025 10:35:14 +0100
+Subject: Don't install cmake package files
+
+We consider the libraries unstable and are keeping them private for now.
+
+Forwarded: not-needed
+---
+ CMakeLists.txt      | 8 +++++---
+ ggml/CMakeLists.txt | 8 +++++---
+ 2 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 74b48d2..d5c9ec8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -212,9 +212,11 @@ write_basic_package_version_file(
+     VERSION ${LLAMA_INSTALL_VERSION}
+     COMPATIBILITY SameMajorVersion)
+ 
+-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/llama-config.cmake
+-              ${CMAKE_CURRENT_BINARY_DIR}/llama-version.cmake
+-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/llama)
++# Debian
++# Lacking stability, we don't share these yet
++#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/llama-config.cmake
++#              ${CMAKE_CURRENT_BINARY_DIR}/llama-version.cmake
++#        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/llama)
+ 
+ install(
+     FILES convert_hf_to_gguf.py
+diff --git a/ggml/CMakeLists.txt b/ggml/CMakeLists.txt
+index fe1486f..3fd6387 100644
+--- a/ggml/CMakeLists.txt
++++ b/ggml/CMakeLists.txt
+@@ -339,6 +339,8 @@ write_basic_package_version_file(
+     VERSION ${GGML_INSTALL_VERSION}
+     COMPATIBILITY SameMajorVersion)
+ 
+-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ggml-config.cmake
+-              ${CMAKE_CURRENT_BINARY_DIR}/ggml-version.cmake
+-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ggml)
++# Debian
++# Lacking stability, we don't share these yet
++#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ggml-config.cmake
++#              ${CMAKE_CURRENT_BINARY_DIR}/ggml-version.cmake
++#        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ggml)

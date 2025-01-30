@@ -1,0 +1,8 @@
+# Lacking stability, the shared libraries are kept private for now
+build-*/usr/include
+build-*/usr/lib/pkgconfig
+build-*/usr/lib/${DEB_HOST_MULTIARCH}/cmake
+# No tests yet
+build-*/usr/bin/test-*
+# Installed independently in the main package
+build-*/usr/bin/convert_hf_to_gguf.py

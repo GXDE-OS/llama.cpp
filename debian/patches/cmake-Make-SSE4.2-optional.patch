@@ -1,0 +1,62 @@
+From: Christian Kastner <ckk@kvr.at>
+Date: Sat, 1 Feb 2025 10:26:06 +0100
+Subject: cmake: Make SSE4.2 optional
+
+This makes it possible to build microarchitectural level x86-64-v1:
+
+    https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels
+
+Even though this probably has little practical use, -v1 is still the
+baseline for amd64 on Debian, so this simplifies package building.
+
+Forwarded: https://github.com/ggerganov/ggml/pull/1097
+---
+ ggml/CMakeLists.txt              |  3 ++-
+ ggml/src/ggml-cpu/CMakeLists.txt | 10 ++++++----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/ggml/CMakeLists.txt b/ggml/CMakeLists.txt
+index 75b5ea3..fe1486f 100644
+--- a/ggml/CMakeLists.txt
++++ b/ggml/CMakeLists.txt
+@@ -110,7 +110,8 @@ option(GGML_AVX512_VBMI      "ggml: enable AVX512-VBMI"      OFF)
+ option(GGML_AVX512_VNNI      "ggml: enable AVX512-VNNI"      OFF)
+ option(GGML_AVX512_BF16      "ggml: enable AVX512-BF16"      OFF)
+ if (NOT MSVC)
+-    # in MSVC F16C and FMA is implied with AVX2/AVX512
++    # in MSVC SSE42, F16C and FMA are implied with AVX2/AVX512
++    option(GGML_SSE42        "ggml: enable SSE4.2"           ${INS_ENB})
+     option(GGML_FMA          "ggml: enable FMA"              ${INS_ENB})
+     option(GGML_F16C         "ggml: enable F16C"             ${INS_ENB})
+     # MSVC does not seem to support AMX
+diff --git a/ggml/src/ggml-cpu/CMakeLists.txt b/ggml/src/ggml-cpu/CMakeLists.txt
+index 6b3641c..7a2124c 100644
+--- a/ggml/src/ggml-cpu/CMakeLists.txt
++++ b/ggml/src/ggml-cpu/CMakeLists.txt
+@@ -206,11 +206,11 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
+                 endif()
+             elseif (GGML_AVX2)
+                 list(APPEND ARCH_FLAGS /arch:AVX2)
+-                list(APPEND ARCH_DEFINITIONS GGML_AVX2 GGML_FMA GGML_F16C)
++                list(APPEND ARCH_DEFINITIONS GGML_AVX2 GGML_SSE42 GGML_FMA GGML_F16C)
+             elseif (GGML_AVX)
+                 list(APPEND ARCH_FLAGS /arch:AVX)
+                 list(APPEND ARCH_DEFINITIONS GGML_AVX)
+-            else ()
++            elseif (GGML_SSE42)
+                 list(APPEND ARCH_FLAGS /arch:SSE4.2)
+                 list(APPEND ARCH_DEFINITIONS GGML_SSE42)
+             endif()
+@@ -221,8 +221,10 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
+             if (GGML_NATIVE)
+                 list(APPEND ARCH_FLAGS -march=native)
+             else ()
+-                list(APPEND ARCH_FLAGS -msse4.2)
+-                list(APPEND ARCH_DEFINITIONS GGML_SSE42)
++                if (GGML_SSE42)
++                    list(APPEND ARCH_FLAGS -msse4.2)
++                    list(APPEND ARCH_DEFINITIONS GGML_SSE42)
++                endif()
+                 if (GGML_F16C)
+                     list(APPEND ARCH_FLAGS -mf16c)
+                     list(APPEND ARCH_DEFINITIONS GGML_F16C)
