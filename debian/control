@@ -12,7 +12,9 @@ Homepage: https://github.com/ggerganov/llama.cpp/
 # version will be used in such a case.
 Build-Depends: cmake,
                debhelper-compat (= 13),
+               libblas-dev,
                libcurl4-openssl-dev,
+               pkg-config,
 Rules-Requires-Root: no
 
 Package: llama.cpp
@@ -73,3 +75,34 @@ Description: LLM inference in C/C++ - CPU backend
  or GPU backends.
  .
  This package provides the llama.cpp-native CPU backend.
+
+Package: llama.cpp-blas
+Architecture: any
+Multi-Arch: same
+Depends: llama.cpp,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: libopenblas0 | libblis4 | libmkl-rt | libblas3
+Provides: llama.cpp-backend
+Conflicts: llama.cpp-backend
+Description: LLM inference in C/C++ - BLAS backend
+ The main goal of llama.cpp is to enable LLM inference with minimal setup and
+ state-of-the-art performance on a wide range of hardware - locally and in the
+ cloud.
+ .
+  * Plain C/C++ implementation without any dependencies
+  * Apple silicon is a first-class citizen - optimized via ARM NEON, Accelerate
+    and Metal frameworks
+  * AVX, AVX2, AVX512 and AMX support for x86 architectures
+  * 1.5-bit, 2-bit, 3-bit, 4-bit, 5-bit, 6-bit, and 8-bit integer quantization
+    for faster inference and reduced memory use
+  * Custom CUDA kernels for running LLMs on NVIDIA GPUs (support for AMD GPUs
+    via HIP and Moore Threads MTT GPUs via MUSA)
+  * Vulkan and SYCL backend support
+  * CPU+GPU hybrid inference to partially accelerate models larger than the
+    total VRAM capacity
+ .
+ On Debian, llama.cpp is shipped as a package that depends on one of the CPU
+ or GPU backends.
+ .
+ This package provides the BLAS backend.

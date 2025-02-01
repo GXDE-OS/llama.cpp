@@ -41,12 +41,19 @@ OPTS_X86_64_V4     = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR
 BUILDDIR_X86_64_V4 = build-cpu-hwcaps-x86-64-v4
 
 
+OPTS_BLAS          = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
+		     -DGGML_BLAS=ON \
+		     -DGGML_SSE42=OFF -DGGML_AVX=OFF -DGGML_AVX2=OFF -DGGML_F16C=OFF -DGGML_FMA=OFF -DGGML_AVX512=OFF
+BUILDDIR_BLAS      = build-blas
+
+
 %:
 	dh $@ --buildsystem=cmake
 
 override_dh_auto_clean:
 	rm -f common/build-info.cpp
 	dh_auto_clean --builddir=$(BUILDDIR_BASELINE)
+	dh_auto_clean --builddir=$(BUILDDIR_BLAS)
 ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V2)
 	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V3)
@@ -55,6 +62,7 @@ endif
 
 override_dh_auto_configure:
 	dh_auto_configure --builddir=$(BUILDDIR_BASELINE) -- $(OPTS_COMMON) $(OPTS_BASELINE)
+	dh_auto_configure --builddir=$(BUILDDIR_BLAS) -- $(OPTS_COMMON) $(OPTS_BLAS)
 ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V2) -- $(OPTS_COMMON) $(OPTS_X86_64_V2)
 	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V3) -- $(OPTS_COMMON) $(OPTS_X86_64_V3)
@@ -63,6 +71,7 @@ endif
 
 override_dh_auto_build:
 	dh_auto_build --builddir=$(BUILDDIR_BASELINE)
+	dh_auto_build --builddir=$(BUILDDIR_BLAS)
 ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_build --builddir=$(BUILDDIR_X86_64_V2)
 	dh_auto_build --builddir=$(BUILDDIR_X86_64_V3)
@@ -75,6 +84,7 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	dh_auto_install --builddir=$(BUILDDIR_BASELINE) --destdir=debian/tmp/$(BUILDDIR_BASELINE)
+	dh_auto_install --builddir=$(BUILDDIR_BLAS) --destdir=debian/tmp/$(BUILDDIR_BLAS)
 ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_install --builddir=$(BUILDDIR_X86_64_V2) --destdir=debian/tmp/$(BUILDDIR_X86_64_V2)
 	dh_auto_install --builddir=$(BUILDDIR_X86_64_V3) --destdir=debian/tmp/$(BUILDDIR_X86_64_V3)
