@@ -17,6 +17,7 @@ OPTS_COMMON        = -DCMAKE_INSTALL_RPATH=/usr/$(PRIVATE_LIBDIR) \
                      -DGGML_BUILD_NUMBER=$(subst +dfsg,,$(DEB_VERSION_UPSTREAM)) \
 		     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 		     -DGGML_NATIVE=OFF
+OPTS_NONBASELINE   = -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=OFF
 
 # Baseline turns all optimizations off
 ifeq (amd64,$(DEB_HOST_ARCH))
@@ -28,6 +29,17 @@ OPTS_BASELINE      = -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)
 endif
 BUILDDIR_BASELINE  = build-cpu-baseline
 
+# Additional hardware capability levels for amd64
+OPTS_X86_64_V2     = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/x86-64-v2 \
+		     -DGGML_SSE42=ON -DGGML_AVX=OFF -DGGML_AVX2=OFF -DGGML_F16C=OFF -DGGML_FMA=OFF -DGGML_AVX512=OFF
+BUILDDIR_X86_64_V2 = build-cpu-hwcaps-x86-64-v2
+OPTS_X86_64_V3     = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/x86-64-v3 \
+		     -DGGML_SSE42=ON -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_F16C=ON -DGGML_FMA=ON -DGGML_AVX512=OFF
+BUILDDIR_X86_64_V3 = build-cpu-hwcaps-x86-64-v3
+OPTS_X86_64_V4     = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/x86-64-v4 \
+		     -DGGML_SSE42=ON -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_F16C=ON -DGGML_FMA=ON -DGGML_AVX512=ON
+BUILDDIR_X86_64_V4 = build-cpu-hwcaps-x86-64-v4
+
 
 %:
 	dh $@ --buildsystem=cmake
@@ -35,12 +47,27 @@ BUILDDIR_BASELINE  = build-cpu-baseline
 override_dh_auto_clean:
 	rm -f common/build-info.cpp
 	dh_auto_clean --builddir=$(BUILDDIR_BASELINE)
+ifeq (amd64,$(DEB_HOST_ARCH))
+	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V2)
+	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V3)
+	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V4)
+endif
 
 override_dh_auto_configure:
 	dh_auto_configure --builddir=$(BUILDDIR_BASELINE) -- $(OPTS_COMMON) $(OPTS_BASELINE)
+ifeq (amd64,$(DEB_HOST_ARCH))
+	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V2) -- $(OPTS_COMMON) $(OPTS_X86_64_V2)
+	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V3) -- $(OPTS_COMMON) $(OPTS_X86_64_V3)
+	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V4) -- $(OPTS_COMMON) $(OPTS_X86_64_V4)
+endif
 
 override_dh_auto_build:
 	dh_auto_build --builddir=$(BUILDDIR_BASELINE)
+ifeq (amd64,$(DEB_HOST_ARCH))
+	dh_auto_build --builddir=$(BUILDDIR_X86_64_V2)
+	dh_auto_build --builddir=$(BUILDDIR_X86_64_V3)
+	dh_auto_build --builddir=$(BUILDDIR_X86_64_V4)
+endif
 
 # No tests for now, as many need some kind of model we don't have
 override_dh_auto_test:
@@ -48,6 +75,11 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	dh_auto_install --builddir=$(BUILDDIR_BASELINE) --destdir=debian/tmp/$(BUILDDIR_BASELINE)
+ifeq (amd64,$(DEB_HOST_ARCH))
+	dh_auto_install --builddir=$(BUILDDIR_X86_64_V2) --destdir=debian/tmp/$(BUILDDIR_X86_64_V2)
+	dh_auto_install --builddir=$(BUILDDIR_X86_64_V3) --destdir=debian/tmp/$(BUILDDIR_X86_64_V3)
+	dh_auto_install --builddir=$(BUILDDIR_X86_64_V4) --destdir=debian/tmp/$(BUILDDIR_X86_64_V4)
+endif
 
 execute_after_dh_auto_install:
 	mkdir -p debian/tmp/usr/bin
