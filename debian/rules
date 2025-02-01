@@ -47,6 +47,13 @@ OPTS_BLAS          = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR
 BUILDDIR_BLAS      = build-blas
 
 
+AMDGPU_TARGETS	   = gfx803;gfx900;gfx906;gfx908;gfx90a;gfx1010;gfx1011;gfx1030;gfx1100;gfx1101;gfx1102
+OPTS_HIP           = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
+		     -DGGML_HIP=ON -DCMAKE_HIP_ARCHITECTURES="$(AMDGPU_TARGETS)" \
+		     -DGGML_SSE42=OFF -DGGML_AVX=OFF -DGGML_AVX2=OFF -DGGML_F16C=OFF -DGGML_FMA=OFF -DGGML_AVX512=OFF
+BUILDDIR_HIP       = build-hip
+
+
 %:
 	dh $@ --buildsystem=cmake
 
@@ -59,6 +66,9 @@ ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V3)
 	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V4)
 endif
+ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
+	dh_auto_clean --builddir=$(BUILDDIR_HIP)
+endif
 
 override_dh_auto_configure:
 	dh_auto_configure --builddir=$(BUILDDIR_BASELINE) -- $(OPTS_COMMON) $(OPTS_BASELINE)
@@ -68,6 +78,9 @@ ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V3) -- $(OPTS_COMMON) $(OPTS_X86_64_V3)
 	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V4) -- $(OPTS_COMMON) $(OPTS_X86_64_V4)
 endif
+ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
+	HIPCXX=clang-17 dh_auto_configure --builddir=$(BUILDDIR_HIP) -- $(OPTS_COMMON) $(OPTS_HIP)
+endif
 
 override_dh_auto_build:
 	dh_auto_build --builddir=$(BUILDDIR_BASELINE)
@@ -76,6 +89,9 @@ ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_build --builddir=$(BUILDDIR_X86_64_V2)
 	dh_auto_build --builddir=$(BUILDDIR_X86_64_V3)
 	dh_auto_build --builddir=$(BUILDDIR_X86_64_V4)
+endif
+ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
+	dh_auto_build --builddir=$(BUILDDIR_HIP)
 endif
 
 # No tests for now, as many need some kind of model we don't have
@@ -90,7 +106,15 @@ ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_install --builddir=$(BUILDDIR_X86_64_V3) --destdir=debian/tmp/$(BUILDDIR_X86_64_V3)
 	dh_auto_install --builddir=$(BUILDDIR_X86_64_V4) --destdir=debian/tmp/$(BUILDDIR_X86_64_V4)
 endif
+ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
+	dh_auto_install --builddir=$(BUILDDIR_HIP) --destdir=debian/tmp/$(BUILDDIR_HIP)
+endif
 
 execute_after_dh_auto_install:
 	mkdir -p debian/tmp/usr/bin
 	cp convert_hf_to_gguf.py debian/tmp/usr/bin/convert_hf_to_gguf
+
+# dwz doesn't fully support DWARF-5 yet, see #1016936
+# The HIP build produces DWARF-5 stuff
+override_dh_dwz:
+	:
