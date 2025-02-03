@@ -23,6 +23,9 @@ OPTS_NONBASELINE   = -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_
 ifeq (amd64,$(DEB_HOST_ARCH))
 OPTS_BASELINE      = -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
 		     -DGGML_SSE42=OFF -DGGML_AVX=OFF -DGGML_AVX2=OFF -DGGML_F16C=OFF -DGGML_FMA=OFF -DGGML_AVX512=OFF
+else ifeq (ppc64el,$(DEB_HOST_ARCH))
+OPTS_BASELINE      = -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
+		     -DGGML_POWERPC_CPUTYPE=power8
 else
 # For all other architectures, we don't have anything to turn off
 OPTS_BASELINE      = -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)
@@ -39,6 +42,14 @@ BUILDDIR_X86_64_V3 = build-cpu-hwcaps-x86-64-v3
 OPTS_X86_64_V4     = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/x86-64-v4 \
 		     -DGGML_SSE42=ON -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_F16C=ON -DGGML_FMA=ON -DGGML_AVX512=ON
 BUILDDIR_X86_64_V4 = build-cpu-hwcaps-x86-64-v4
+
+# Additional hardware capability levels for amd64
+OPTS_POWER9        = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/power9 \
+		     -DGGML_POWERPC_CPUTYPE=power9
+BUILDDIR_POWER9    = build-hwcaps-power9
+OPTS_POWER10       = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/power10 \
+		     -DGGML_POWERPC_CPUTYPE=power10
+BUILDDIR_POWER10   = build-hwcaps-power10
 
 
 OPTS_BLAS          = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
@@ -66,6 +77,10 @@ ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V3)
 	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V4)
 endif
+ifeq (ppc64el,$(DEB_HOST_ARCH))
+	dh_auto_clean --builddir=$(BUILDDIR_POWER9)
+	dh_auto_clean --builddir=$(BUILDDIR_POWER10)
+endif
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
 	dh_auto_clean --builddir=$(BUILDDIR_HIP)
 endif
@@ -78,6 +93,10 @@ ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V3) -- $(OPTS_COMMON) $(OPTS_X86_64_V3)
 	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V4) -- $(OPTS_COMMON) $(OPTS_X86_64_V4)
 endif
+ifeq (ppc64el,$(DEB_HOST_ARCH))
+	dh_auto_configure --builddir=$(BUILDDIR_POWER9) -- $(OPTS_COMMON) $(OPTS_POWER9)
+	dh_auto_configure --builddir=$(BUILDDIR_POWER10) -- $(OPTS_COMMON) $(OPTS_POWER10)
+endif
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
 	HIPCXX=clang-17 dh_auto_configure --builddir=$(BUILDDIR_HIP) -- $(OPTS_COMMON) $(OPTS_HIP)
 endif
@@ -89,6 +108,10 @@ ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_build --builddir=$(BUILDDIR_X86_64_V2)
 	dh_auto_build --builddir=$(BUILDDIR_X86_64_V3)
 	dh_auto_build --builddir=$(BUILDDIR_X86_64_V4)
+endif
+ifeq (ppc64el,$(DEB_HOST_ARCH))
+	dh_auto_build --builddir=$(BUILDDIR_POWER9)
+	dh_auto_build --builddir=$(BUILDDIR_POWER10)
 endif
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
 	dh_auto_build --builddir=$(BUILDDIR_HIP)
@@ -105,6 +128,10 @@ ifeq (amd64,$(DEB_HOST_ARCH))
 	dh_auto_install --builddir=$(BUILDDIR_X86_64_V2) --destdir=debian/tmp/$(BUILDDIR_X86_64_V2)
 	dh_auto_install --builddir=$(BUILDDIR_X86_64_V3) --destdir=debian/tmp/$(BUILDDIR_X86_64_V3)
 	dh_auto_install --builddir=$(BUILDDIR_X86_64_V4) --destdir=debian/tmp/$(BUILDDIR_X86_64_V4)
+endif
+ifeq (ppc64el,$(DEB_HOST_ARCH))
+	dh_auto_install --builddir=$(BUILDDIR_POWER9) --destdir=debian/tmp/$(BUILDDIR_POWER9)
+	dh_auto_install --builddir=$(BUILDDIR_POWER10) --destdir=debian/tmp/$(BUILDDIR_POWER10)
 endif
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
 	dh_auto_install --builddir=$(BUILDDIR_HIP) --destdir=debian/tmp/$(BUILDDIR_HIP)
