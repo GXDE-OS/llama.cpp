@@ -19,6 +19,7 @@ Build-Depends: cmake,
                librocblas-dev,
                pkg-config,
                rocm-cmake,
+               python3-poetry-core,
 Rules-Requires-Root: no
 
 Package: llama.cpp
