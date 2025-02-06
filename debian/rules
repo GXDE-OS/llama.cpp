@@ -43,13 +43,13 @@ OPTS_X86_64_V4     = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR
 		     -DGGML_SSE42=ON -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_F16C=ON -DGGML_FMA=ON -DGGML_AVX512=ON
 BUILDDIR_X86_64_V4 = build-cpu-hwcaps-x86-64-v4
 
-# Additional hardware capability levels for amd64
+# Additional hardware capability levels for ppc64el
 OPTS_POWER9        = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/power9 \
 		     -DGGML_POWERPC_CPUTYPE=power9
-BUILDDIR_POWER9    = build-hwcaps-power9
+BUILDDIR_POWER9    = build-cpu-hwcaps-power9
 OPTS_POWER10       = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/power10 \
 		     -DGGML_POWERPC_CPUTYPE=power10
-BUILDDIR_POWER10   = build-hwcaps-power10
+BUILDDIR_POWER10   = build-cpu-hwcaps-power10
 
 
 OPTS_BLAS          = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
