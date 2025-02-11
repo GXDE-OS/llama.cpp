@@ -1,0 +1,20 @@
+Source: llama.cpp
+Section: utils
+Priority: optional
+Maintainer: gfdgd_xi <3025613752@qq.com>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ cmake,
+ make,
+ gcc,
+ g++,
+Standards-Version: 4.6.2
+Homepage: https://gitee.com/GXDE-OS/llama.cpp
+
+Package: llama.cpp
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Inference of Meta's LLaMA model (and others) in pure C/C++
