@@ -2,7 +2,8 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: llama.cpp
 Upstream-Contact:
 Source: https://github.com/ggerganov/llama.cpp
-Files-Excluded: examples/server
+Files-Excluded: examples/server/public_legacy
+                examples/server/public
                 examples/llama.android/gradle/wrapper/gradle-wrapper.jar
 Comment:
  Embedded libraries
@@ -12,11 +13,9 @@ Comment:
  .
  DFSG compliance
  ---------------
- The server example contains a number of minified and generated files in the
- frontend. These seem to be essential to the example, so the server example
- has been removed entirely, for now.
- .
- We also remove the pre-build JAR for the Android app example.
+ We remove some pre-built files of the Web UI, as well as of the Android
+ sources. Some of these files are minified JavaScript scripts, hence +dfsg
+ instead of +ds.
 
 Files: *
 Copyright: 2023-2024, The ggml authors
