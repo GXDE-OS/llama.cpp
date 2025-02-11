@@ -25,7 +25,8 @@ Rules-Requires-Root: no
 Package: llama.cpp
 Architecture: any
 Multi-Arch: foreign
-Depends: llama.cpp-backend,
+Depends: llama.cpp-common,
+         llama.cpp-cpu | llama.cpp-backend,
          python3,
          ${misc:Depends},
          ${shlibs:Depends},
