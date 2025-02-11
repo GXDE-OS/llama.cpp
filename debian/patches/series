@@ -1,5 +1,4 @@
 cmake-Add-ability-to-pass-in-GGML_BUILD_NUMBER.patch
 cmake-Make-SSE4.2-optional.patch
 Don-t-install-cmake-package-files.patch
-Don-t-build-the-server-example.patch
 cmake-Enable-specifying-exact-PowerPC-CPU-architecture.patch
