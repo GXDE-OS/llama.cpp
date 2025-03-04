@@ -18,7 +18,6 @@ Build-Depends: cmake,
                libhipblas-dev,
                librocblas-dev,
                pkg-config,
-               rocm-cmake,
 Rules-Requires-Root: no
 
 Package: llama.cpp
