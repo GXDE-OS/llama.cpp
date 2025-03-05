@@ -11,7 +11,7 @@ Forwarded: not-needed
  2 files changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 74b48d2..d5c9ec8 100644
+index 7b2a184..7fd727e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -212,9 +212,11 @@ write_basic_package_version_file(
@@ -30,10 +30,10 @@ index 74b48d2..d5c9ec8 100644
  install(
      FILES convert_hf_to_gguf.py
 diff --git a/ggml/CMakeLists.txt b/ggml/CMakeLists.txt
-index fe1486f..3fd6387 100644
+index 1b2bde6..95a778f 100644
 --- a/ggml/CMakeLists.txt
 +++ b/ggml/CMakeLists.txt
-@@ -339,6 +339,8 @@ write_basic_package_version_file(
+@@ -348,6 +348,8 @@ write_basic_package_version_file(
      VERSION ${GGML_INSTALL_VERSION}
      COMPATIBILITY SameMajorVersion)
  

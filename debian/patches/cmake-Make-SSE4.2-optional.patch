@@ -16,10 +16,10 @@ Forwarded: https://github.com/ggerganov/ggml/pull/1097
  2 files changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/ggml/CMakeLists.txt b/ggml/CMakeLists.txt
-index 75b5ea3..fe1486f 100644
+index 92a62ea..1b2bde6 100644
 --- a/ggml/CMakeLists.txt
 +++ b/ggml/CMakeLists.txt
-@@ -110,7 +110,8 @@ option(GGML_AVX512_VBMI      "ggml: enable AVX512-VBMI"      OFF)
+@@ -111,7 +111,8 @@ option(GGML_AVX512_VBMI      "ggml: enable AVX512-VBMI"      OFF)
  option(GGML_AVX512_VNNI      "ggml: enable AVX512-VNNI"      OFF)
  option(GGML_AVX512_BF16      "ggml: enable AVX512-BF16"      OFF)
  if (NOT MSVC)
@@ -30,10 +30,10 @@ index 75b5ea3..fe1486f 100644
      option(GGML_F16C         "ggml: enable F16C"             ${INS_ENB})
      # MSVC does not seem to support AMX
 diff --git a/ggml/src/ggml-cpu/CMakeLists.txt b/ggml/src/ggml-cpu/CMakeLists.txt
-index 6b3641c..7a2124c 100644
+index f8836ed..3fb9b46 100644
 --- a/ggml/src/ggml-cpu/CMakeLists.txt
 +++ b/ggml/src/ggml-cpu/CMakeLists.txt
-@@ -206,11 +206,11 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
+@@ -208,11 +208,11 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
                  endif()
              elseif (GGML_AVX2)
                  list(APPEND ARCH_FLAGS /arch:AVX2)
@@ -47,7 +47,7 @@ index 6b3641c..7a2124c 100644
                  list(APPEND ARCH_FLAGS /arch:SSE4.2)
                  list(APPEND ARCH_DEFINITIONS GGML_SSE42)
              endif()
-@@ -221,8 +221,10 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
+@@ -223,8 +223,10 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
              if (GGML_NATIVE)
                  list(APPEND ARCH_FLAGS -march=native)
              else ()
