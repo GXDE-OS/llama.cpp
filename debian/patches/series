@@ -1,3 +1,4 @@
 cmake-Make-SSE4.2-optional.patch
 Don-t-install-cmake-package-files.patch
 cmake-Enable-specifying-exact-PowerPC-CPU-architecture.patch
+Serve-public_simplechat-frontend.patch
