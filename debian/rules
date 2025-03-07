@@ -1,147 +1,29 @@
 #!/usr/bin/make -f
 #export DH_VERBOSE = 1
-#
-# We build the library in multiple passes, one for each backend and/or hwcaps.
-
-# For DEB_VERSION_UPSTREAM
-include /usr/share/dpkg/pkg-info.mk
-
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 
-PRIVATE_LIBDIR=lib/$(DEB_HOST_MULTIARCH)/llama.cpp
+# Both llama.cpp and the ggml it depends on are private for now
+RPATH=/usr/lib/$(DEB_HOST_MULTIARCH)/ggml:/usr/lib/$(DEB_HOST_MULTIARCH)/llama.cpp
 
-# GGML_NATIVE:ON corresponds to -march=native
-OPTS_COMMON        = -DCMAKE_INSTALL_RPATH=/usr/$(PRIVATE_LIBDIR) \
-		     -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
-                     -DGGML_BUILD_NUMBER=$(subst +dfsg,,$(DEB_VERSION_UPSTREAM)) \
-		     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-		     -DGGML_NATIVE=OFF
-OPTS_NONBASELINE   = -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=OFF
-
-# Baseline turns all optimizations off
-ifeq (amd64,$(DEB_HOST_ARCH))
-OPTS_BASELINE      = -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
-		     -DGGML_SSE42=OFF -DGGML_AVX=OFF -DGGML_AVX2=OFF -DGGML_F16C=OFF -DGGML_FMA=OFF -DGGML_AVX512=OFF
-else ifeq (ppc64el,$(DEB_HOST_ARCH))
-OPTS_BASELINE      = -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
-		     -DGGML_POWERPC_CPUTYPE=power8
-else
-# For all other architectures, we don't have anything to turn off
-OPTS_BASELINE      = -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)
-endif
-BUILDDIR_BASELINE  = build-cpu-baseline
-
-# Additional hardware capability levels for amd64
-OPTS_X86_64_V2     = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/x86-64-v2 \
-		     -DGGML_SSE42=ON -DGGML_AVX=OFF -DGGML_AVX2=OFF -DGGML_F16C=OFF -DGGML_FMA=OFF -DGGML_AVX512=OFF
-BUILDDIR_X86_64_V2 = build-cpu-hwcaps-x86-64-v2
-OPTS_X86_64_V3     = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/x86-64-v3 \
-		     -DGGML_SSE42=ON -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_F16C=ON -DGGML_FMA=ON -DGGML_AVX512=OFF
-BUILDDIR_X86_64_V3 = build-cpu-hwcaps-x86-64-v3
-OPTS_X86_64_V4     = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/x86-64-v4 \
-		     -DGGML_SSE42=ON -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_F16C=ON -DGGML_FMA=ON -DGGML_AVX512=ON
-BUILDDIR_X86_64_V4 = build-cpu-hwcaps-x86-64-v4
-
-# Additional hardware capability levels for ppc64el
-OPTS_POWER9        = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/power9 \
-		     -DGGML_POWERPC_CPUTYPE=power9
-BUILDDIR_POWER9    = build-cpu-hwcaps-power9
-OPTS_POWER10       = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR)/glibc-hwcaps/power10 \
-		     -DGGML_POWERPC_CPUTYPE=power10
-BUILDDIR_POWER10   = build-cpu-hwcaps-power10
-
-
-OPTS_BLAS          = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
-		     -DGGML_BLAS=ON \
-		     -DGGML_SSE42=OFF -DGGML_AVX=OFF -DGGML_AVX2=OFF -DGGML_F16C=OFF -DGGML_FMA=OFF -DGGML_AVX512=OFF
-BUILDDIR_BLAS      = build-blas
-
-
-AMDGPU_TARGETS	   = gfx803;gfx900;gfx906;gfx908;gfx90a;gfx1010;gfx1011;gfx1030;gfx1100;gfx1101;gfx1102
-OPTS_HIP           = $(OPTS_NONBASELINE) -DCMAKE_INSTALL_LIBDIR=$(PRIVATE_LIBDIR) \
-		     -DGGML_HIP=ON -DCMAKE_HIP_ARCHITECTURES="$(AMDGPU_TARGETS)" \
-		     -DGGML_SSE42=OFF -DGGML_AVX=OFF -DGGML_AVX2=OFF -DGGML_F16C=OFF -DGGML_FMA=OFF -DGGML_AVX512=OFF
-BUILDDIR_HIP       = build-hip
+CMAKE_FLAGS = -DCMAKE_INSTALL_RPATH=$(RPATH) \
+              -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
+	      -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
 
 %:
 	dh $@ --buildsystem=cmake
 
-override_dh_auto_clean:
-	rm -f common/build-info.cpp
-	dh_auto_clean --builddir=$(BUILDDIR_BASELINE)
-	dh_auto_clean --builddir=$(BUILDDIR_BLAS)
-ifeq (amd64,$(DEB_HOST_ARCH))
-	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V2)
-	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V3)
-	dh_auto_clean --builddir=$(BUILDDIR_X86_64_V4)
-endif
-ifeq (ppc64el,$(DEB_HOST_ARCH))
-	dh_auto_clean --builddir=$(BUILDDIR_POWER9)
-	dh_auto_clean --builddir=$(BUILDDIR_POWER10)
-endif
-ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
-	dh_auto_clean --builddir=$(BUILDDIR_HIP)
-endif
-
 override_dh_auto_configure:
-	dh_auto_configure --builddir=$(BUILDDIR_BASELINE) -- $(OPTS_COMMON) $(OPTS_BASELINE)
-	dh_auto_configure --builddir=$(BUILDDIR_BLAS) -- $(OPTS_COMMON) $(OPTS_BLAS)
-ifeq (amd64,$(DEB_HOST_ARCH))
-	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V2) -- $(OPTS_COMMON) $(OPTS_X86_64_V2)
-	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V3) -- $(OPTS_COMMON) $(OPTS_X86_64_V3)
-	dh_auto_configure --builddir=$(BUILDDIR_X86_64_V4) -- $(OPTS_COMMON) $(OPTS_X86_64_V4)
-endif
-ifeq (ppc64el,$(DEB_HOST_ARCH))
-	dh_auto_configure --builddir=$(BUILDDIR_POWER9) -- $(OPTS_COMMON) $(OPTS_POWER9)
-	dh_auto_configure --builddir=$(BUILDDIR_POWER10) -- $(OPTS_COMMON) $(OPTS_POWER10)
-endif
-ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
-	HIPCXX=clang-17 dh_auto_configure --builddir=$(BUILDDIR_HIP) -- $(OPTS_COMMON) $(OPTS_HIP)
-endif
-
-override_dh_auto_build:
-	dh_auto_build --builddir=$(BUILDDIR_BASELINE)
-	dh_auto_build --builddir=$(BUILDDIR_BLAS)
-ifeq (amd64,$(DEB_HOST_ARCH))
-	dh_auto_build --builddir=$(BUILDDIR_X86_64_V2)
-	dh_auto_build --builddir=$(BUILDDIR_X86_64_V3)
-	dh_auto_build --builddir=$(BUILDDIR_X86_64_V4)
-endif
-ifeq (ppc64el,$(DEB_HOST_ARCH))
-	dh_auto_build --builddir=$(BUILDDIR_POWER9)
-	dh_auto_build --builddir=$(BUILDDIR_POWER10)
-endif
-ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
-	dh_auto_build --builddir=$(BUILDDIR_HIP)
-endif
+	dh_auto_configure -- $(CMAKE_FLAGS)
 
 # No tests for now, as many need some kind of model we don't have
 override_dh_auto_test:
 	:
 
-override_dh_auto_install:
-	dh_auto_install --builddir=$(BUILDDIR_BASELINE) --destdir=debian/tmp/$(BUILDDIR_BASELINE)
-	dh_auto_install --builddir=$(BUILDDIR_BLAS) --destdir=debian/tmp/$(BUILDDIR_BLAS)
-ifeq (amd64,$(DEB_HOST_ARCH))
-	dh_auto_install --builddir=$(BUILDDIR_X86_64_V2) --destdir=debian/tmp/$(BUILDDIR_X86_64_V2)
-	dh_auto_install --builddir=$(BUILDDIR_X86_64_V3) --destdir=debian/tmp/$(BUILDDIR_X86_64_V3)
-	dh_auto_install --builddir=$(BUILDDIR_X86_64_V4) --destdir=debian/tmp/$(BUILDDIR_X86_64_V4)
-endif
-ifeq (ppc64el,$(DEB_HOST_ARCH))
-	dh_auto_install --builddir=$(BUILDDIR_POWER9) --destdir=debian/tmp/$(BUILDDIR_POWER9)
-	dh_auto_install --builddir=$(BUILDDIR_POWER10) --destdir=debian/tmp/$(BUILDDIR_POWER10)
-endif
-ifneq ($(filter $(DEB_HOST_ARCH),amd64 arm64 ppc64el),)
-	dh_auto_install --builddir=$(BUILDDIR_HIP) --destdir=debian/tmp/$(BUILDDIR_HIP)
-endif
-
 execute_after_dh_auto_install:
 	mkdir -p debian/tmp/usr/bin
-	cp convert_hf_to_gguf.py debian/tmp/usr/bin/convert_hf_to_gguf
+	mv debian/tmp/usr/bin/convert_hf_to_gguf.py debian/tmp/usr/bin/convert_hf_to_gguf
 
-# dwz doesn't fully support DWARF-5 yet, see #1016936
-# The HIP build produces DWARF-5 stuff
-override_dh_dwz:
-	:
+execute_after_dh_auto_clean:
+	rm -f common/build-info.cpp

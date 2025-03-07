@@ -8,8 +8,8 @@ Files-Excluded: examples/server/public_legacy
 Comment:
  Embedded libraries
  ------------------
- This includes an embedded copy of ggml, but ggml itself is not stable
- yet, and llama.cpp is one of the developing grounds for ggml.
+ This includes an embedded copy of ggml, but we don't use it. We use the
+ system library instead.
  .
  DFSG compliance
  ---------------
