@@ -1,5 +1,6 @@
 # As libllama is not stable yet, we do not ship these for now
 usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig
 usr/lib/${DEB_HOST_MULTIARCH}/cmake
+usr/include
 # We don't install the tests for now
 usr/bin/test-*

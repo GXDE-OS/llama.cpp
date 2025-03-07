@@ -21,7 +21,9 @@ override_dh_auto_configure:
 override_dh_auto_test:
 	:
 
-execute_after_dh_auto_install:
+override_dh_auto_install:
+	# We want this in debian/tmp, even though it's a single package
+	dh_auto_install --destdir=debian/tmp
 	mkdir -p debian/tmp/usr/bin
 	mv debian/tmp/usr/bin/convert_hf_to_gguf.py debian/tmp/usr/bin/convert_hf_to_gguf
 
