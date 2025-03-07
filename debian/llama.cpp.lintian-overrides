@@ -1,0 +1,10 @@
+# ggml is a shared library that is developed in concert with llama.cpp and
+# whisper.cpp, and is shipped embedded in both. It capsules all of the
+# computation modes, and it's build process is relatively complex, especially
+# when combined with the llama.cpp/whisper.cpp build.
+#
+# It makes more sense to build that library seperately, and have
+# llama.cpp/whisper.cpp access its private interfaces.
+custom-library-search-path RUNPATH /usr/lib/x86_64-linux-gnu/ggml *
+# These will be added/generated before uploading to unstable
+no-manual-page *
