@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: llama.cpp
 Upstream-Contact:
-Source: https://github.com/ggerganov/llama.cpp
+Source: https://github.com/ggml-org/llama.cpp
 Files-Excluded: examples/server/public_legacy
                 examples/server/public/index.html.gz
                 examples/llama.android/gradle/wrapper/gradle-wrapper.jar

@@ -3,5 +3,5 @@
 # re-download recent versions.
 version=4
 opts="filenamemangle=s%(?:.*?)?b?(\d[\d.]*)\.tar\.gz%llama.cpp-$1.tar.gz%,dversionmangle=auto,repacksuffix=+dfsg" \
-   https://github.com/ggerganov/llama.cpp/tags \
+   https://github.com/ggml-org/llama.cpp/tags \
    (?:.*?/)?b?(\d[\d.]*)\.tar\.gz debian

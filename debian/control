@@ -6,7 +6,7 @@ Uploaders: Christian Kastner <ckk@debian.org>
 Standards-Version: 4.7.2
 Vcs-Browser: https://salsa.debian.org/deeplearning-team/llama.cpp
 Vcs-Git: https://salsa.debian.org/deeplearning-team/llama.cpp.git
-Homepage: https://github.com/ggerganov/llama.cpp/
+Homepage: https://github.com/ggml-org/llama.cpp/
 # We could B-D on libc6 (>= 2.33) to ensure support for Hardware Capabilities,
 # but with our install layout, a lack of support means that the baseline
 # version will be used in such a case.
