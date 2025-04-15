@@ -12,6 +12,7 @@ Homepage: https://github.com/ggml-org/llama.cpp/
 # version will be used in such a case.
 Build-Depends: cmake,
                debhelper-compat (= 13),
+               libcurl4-openssl-dev,
                libggml-cpu,
                pkgconf,
 Rules-Requires-Root: no
