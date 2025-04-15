@@ -1,22 +1,5 @@
-llama.cpp (4831+dfsg-1~exp2) experimental; urgency=medium
-
-  [ Christian Kastner ]
-  * Initial release (Closes: #1063763)
-  * Re-enable the server build, but with the "simple" frontend
-  * Use system ggml
-  * Bump Standards-Version to 4.7.2 (no changes needed)
-
-  [ Mo Zhou ]
-  * d/rules: Minor fix for ppc64el FTBFS.
-
-  [ Petter Reinholdtsen ]
-  * Set upstream metadata fields: Security-Contact
-  * Added d/gbp.conf to enforce use of pristine-tar
-
- -- Christian Kastner <ckk@debian.org>  Fri, 07 Mar 2025 23:16:16 +0100
-
-llama.cpp (4831+dfsg-1~exp1) experimental; urgency=medium
+llama.cpp (5141+dfsg-1~exp1) experimental; urgency=medium
 
   * Initial release (Closes: #1063763)
 
- -- Christian Kastner <ckk@debian.org>  Wed, 05 Feb 2025 21:54:08 +0100
+ -- Christian Kastner <ckk@debian.org>  Tue, 15 Apr 2025 22:05:21 +0200
