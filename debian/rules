@@ -8,7 +8,9 @@ RPATH=/usr/lib/$(DEB_HOST_MULTIARCH)/ggml:/usr/lib/$(DEB_HOST_MULTIARCH)/llama.c
 
 CMAKE_FLAGS = -DCMAKE_INSTALL_RPATH=$(RPATH) \
               -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
-	      -DCMAKE_BUILD_TYPE=RelWithDebInfo
+	      -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+	      -DCMAKE_PREFIX_PATH=/usr/lib/$(DEB_HOST_MULTIARCH)/ggml/cmake-private \
+	      -DLLAMA_USE_SYSTEM_GGML=ON
 
 
 %:
