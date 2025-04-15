@@ -24,7 +24,7 @@ index aee9038..bd6fd9e 100644
  )
  
 diff --git a/examples/server/server.cpp b/examples/server/server.cpp
-index 2a526b0..044509c 100644
+index d87bda1..ccbd131 100644
 --- a/examples/server/server.cpp
 +++ b/examples/server/server.cpp
 @@ -15,7 +15,6 @@
@@ -35,7 +35,7 @@ index 2a526b0..044509c 100644
  #include "loading.html.hpp"
  
  #include <atomic>
-@@ -4362,26 +4361,13 @@ int main(int argc, char ** argv) {
+@@ -4458,26 +4457,13 @@ int main(int argc, char ** argv) {
      } else {
          // register static assets routes
          if (!params.public_path.empty()) {
