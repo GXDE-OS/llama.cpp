@@ -5,6 +5,7 @@ Source: https://github.com/ggml-org/llama.cpp
 Files-Excluded: examples/server/public_legacy
                 examples/server/public/index.html.gz
                 examples/llama.android/gradle/wrapper/gradle-wrapper.jar
+                models
 Comment:
  Embedded libraries
  ------------------
@@ -13,9 +14,11 @@ Comment:
  .
  DFSG compliance
  ---------------
+ We remove all of the model-related files, as some where generated from
+ external sources, such as huggingface data.
+ .
  We remove some pre-built files of the Web UI, as well as of the Android
- sources. Some of these files are minified JavaScript scripts, hence +dfsg
- instead of +ds.
+ sources.
 
 Files: *
 Copyright: 2023-2024, The ggml authors
