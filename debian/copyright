@@ -66,8 +66,12 @@ Copyright: 2023-2024, The ggml authors
            2023, Jeffrey Quesnelle and Bowen Peng
 License: Expat and Apache-2.0 with LLVM exception
 
-Files: src/ggml-cpu/kleidiai/*
+Files: ggml/src/ggml-cpu/kleidiai/*
 Copyright: 2025, Arm Limited and/or its affiliates <open-source-office@arm.com>
+License: Expat
+
+Files: ggml/src/ggml-cpu/llamafile/sgemm.cpp
+Copyright: 2024, Mozilla Foundation
 License: Expat
 
 Files: examples/gguf-hash/deps/xxhash/xxhash.*
