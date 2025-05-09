@@ -2,8 +2,8 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: llama.cpp
 Upstream-Contact:
 Source: https://github.com/ggml-org/llama.cpp
-Files-Excluded: examples/server/public_legacy
-                examples/server/public/index.html.gz
+Files-Excluded: tools/server/public_legacy
+                tools/server/public/index.html.gz
                 examples/llama.android/gradle/wrapper/gradle-wrapper.jar
                 models
 Comment:
@@ -11,6 +11,10 @@ Comment:
  ------------------
  This includes an embedded copy of ggml, but we don't use it. We use the
  system library instead.
+ .
+ This includes an embedded copy of linenoise.cpp. There seem to be multiple
+ versions of this library, so we'll ship upstream's preferred version for now,
+ and package one of the others for inclusion.
  .
  DFSG compliance
  ---------------
@@ -85,16 +89,18 @@ Comment: The "original authors" seem to refer to the Gradle project, where this
  script seems to originate from. See:
  https://github.com/gradle/gradle/blob/master/gradlew
 
-Files: examples/llava/minicpmv-convert-image-encoder-to-gguf.py
+Files: tools/mtmd/minicpmv-convert-image-encoder-to-gguf.py
 Copyright: 2024, Google AI and The HuggingFace Team
 License: Apache-2.0
 
-Files: examples/retrieval/README.md
-Copyright: 2023, Georgi Gerganov
-License: Expat
+Files: tools/run/linenoise.cpp/*
+Copyright: 2010-2023, Salvatore Sanfilippo <antirez at gmail dot com>
+           2010-2013, Pieter Noordhuis <pcnoordhuis at gmail dot com>
+           2025, Eric Curtin <ericcurtin17 at gmail dot com>
+License: BSD-2-clause
 
 Files: debian/*
-Copyright: 2024 Christian Kastner <ckk@debian.org>
+Copyright: 2024-2025 Christian Kastner <ckk@debian.org>
 License: Expat
 
 License: Expat
