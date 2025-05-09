@@ -1,3 +1,13 @@
+llama.cpp (5318+dfsg-1) unstable; urgency=medium
+
+  * Upload to unstable.
+
+  * New upstream version 5318+dfsg
+    - Refresh patches
+  * Update d/copyright
+
+ -- Christian Kastner <ckk@debian.org>  Fri, 09 May 2025 09:54:32 +0200
+
 llama.cpp (5151+dfsg-1~exp3) experimental; urgency=medium
 
   * Initial release (Closes: #1063673)
