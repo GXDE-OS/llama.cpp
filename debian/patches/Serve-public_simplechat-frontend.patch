@@ -7,14 +7,14 @@ rebuilt from source using packages only from the official Archive.
 
 Forwarded: not-needed
 ---
- examples/server/CMakeLists.txt |  1 -
- examples/server/server.cpp     | 28 +++++++---------------------
+ tools/server/CMakeLists.txt |  1 -
+ tools/server/server.cpp     | 28 +++++++---------------------
  2 files changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/examples/server/CMakeLists.txt b/examples/server/CMakeLists.txt
-index aee9038..bd6fd9e 100644
---- a/examples/server/CMakeLists.txt
-+++ b/examples/server/CMakeLists.txt
+Index: llama.cpp/tools/server/CMakeLists.txt
+===================================================================
+--- llama.cpp.orig/tools/server/CMakeLists.txt
++++ llama.cpp/tools/server/CMakeLists.txt
 @@ -15,7 +15,6 @@ set(TARGET_SRCS
      httplib.h
  )
@@ -23,10 +23,10 @@ index aee9038..bd6fd9e 100644
      loading.html
  )
  
-diff --git a/examples/server/server.cpp b/examples/server/server.cpp
-index d87bda1..ccbd131 100644
---- a/examples/server/server.cpp
-+++ b/examples/server/server.cpp
+Index: llama.cpp/tools/server/server.cpp
+===================================================================
+--- llama.cpp.orig/tools/server/server.cpp
++++ llama.cpp/tools/server/server.cpp
 @@ -15,7 +15,6 @@
  #define MIMETYPE_JSON "application/json; charset=utf-8"
  
@@ -35,7 +35,7 @@ index d87bda1..ccbd131 100644
  #include "loading.html.hpp"
  
  #include <atomic>
-@@ -4458,26 +4457,13 @@ int main(int argc, char ** argv) {
+@@ -4486,26 +4485,13 @@ int main(int argc, char ** argv) {
      } else {
          // register static assets routes
          if (!params.public_path.empty()) {
