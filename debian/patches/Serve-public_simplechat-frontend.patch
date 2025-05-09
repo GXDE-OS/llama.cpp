@@ -11,10 +11,10 @@ Forwarded: not-needed
  tools/server/server.cpp     | 28 +++++++---------------------
  2 files changed, 7 insertions(+), 22 deletions(-)
 
-Index: llama.cpp/tools/server/CMakeLists.txt
-===================================================================
---- llama.cpp.orig/tools/server/CMakeLists.txt
-+++ llama.cpp/tools/server/CMakeLists.txt
+diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
+index aee9038..bd6fd9e 100644
+--- a/tools/server/CMakeLists.txt
++++ b/tools/server/CMakeLists.txt
 @@ -15,7 +15,6 @@ set(TARGET_SRCS
      httplib.h
  )
@@ -23,10 +23,10 @@ Index: llama.cpp/tools/server/CMakeLists.txt
      loading.html
  )
  
-Index: llama.cpp/tools/server/server.cpp
-===================================================================
---- llama.cpp.orig/tools/server/server.cpp
-+++ llama.cpp/tools/server/server.cpp
+diff --git a/tools/server/server.cpp b/tools/server/server.cpp
+index 06788bb..f05a0f0 100644
+--- a/tools/server/server.cpp
++++ b/tools/server/server.cpp
 @@ -15,7 +15,6 @@
  #define MIMETYPE_JSON "application/json; charset=utf-8"
  
