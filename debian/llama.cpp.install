@@ -9,3 +9,8 @@ usr/bin/convert_hf_to_gguf          usr/bin/
 usr/include/llama.cpp
 usr/lib/${DEB_HOST_MULTIARCH}/cmake/llama/* usr/lib/${DEB_HOST_MULTIARCH}/llama.cpp/cmake-private
 usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig usr/lib/${DEB_HOST_MULTIARCH}/llama.cpp
+
+# Install the themese but rename the simplechat directory
+tools/server/public_simplechat/*    usr/share/llama.cpp/server/themes/simplechat
+tools/server/themes/buttons-top     usr/share/llama.cpp/server/themes/
+tools/server/themes/wild            usr/share/llama.cpp/server/themes/
