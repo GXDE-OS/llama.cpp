@@ -1,15 +1,16 @@
 From: Christian Kastner <ckk@kvr.at>
-Date: Thu, 6 Mar 2025 09:22:50 +0100
-Subject: Serve public_simplechat frontend
+Date: Mon, 19 May 2025 13:05:49 +0200
+Subject: Drop non-DFSG-free server frontend
 
-On Debian, the React-based frontend had to be removed as it could not be
-rebuilt from source using packages only from the official Archive.
+We cannot embed the default, React-based server frontend because we
+cannot rebuild it from source, as not all relevant dependencies are
+available in Debian.
 
 Forwarded: not-needed
 ---
  tools/server/CMakeLists.txt |  1 -
- tools/server/server.cpp     | 28 +++++++---------------------
- 2 files changed, 7 insertions(+), 22 deletions(-)
+ tools/server/server.cpp     | 15 ---------------
+ 2 files changed, 16 deletions(-)
 
 diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
 index aee9038..bd6fd9e 100644
@@ -24,7 +25,7 @@ index aee9038..bd6fd9e 100644
  )
  
 diff --git a/tools/server/server.cpp b/tools/server/server.cpp
-index 06788bb..f05a0f0 100644
+index 06788bb..120b6ab 100644
 --- a/tools/server/server.cpp
 +++ b/tools/server/server.cpp
 @@ -15,7 +15,6 @@
@@ -35,16 +36,10 @@ index 06788bb..f05a0f0 100644
  #include "loading.html.hpp"
  
  #include <atomic>
-@@ -4486,26 +4485,13 @@ int main(int argc, char ** argv) {
-     } else {
-         // register static assets routes
-         if (!params.public_path.empty()) {
--            // Set the base directory for serving static files
--            bool is_found = svr->set_mount_point("/", params.public_path);
--            if (!is_found) {
--                LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
--                return 1;
--            }
+@@ -4492,20 +4491,6 @@ int main(int argc, char ** argv) {
+                 LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
+                 return 1;
+             }
 -        } else {
 -            // using embedded static index.html
 -            svr->Get("/", [](const httplib::Request & req, httplib::Response & res) {
@@ -59,13 +54,6 @@ index 06788bb..f05a0f0 100644
 -                }
 -                return false;
 -            });
-+            params.public_path = "/usr/share/llama.cpp/public_simplechat";
-+        }
-+        // Set the base directory for serving static files
-+        bool is_found = svr->set_mount_point("/", params.public_path);
-+        if (!is_found) {
-+            LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
-+            return 1;
          }
      }
  

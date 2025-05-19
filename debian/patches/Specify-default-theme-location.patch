@@ -1,0 +1,26 @@
+From: Christian Kastner <ckk@kvr.at>
+Date: Mon, 19 May 2025 12:58:39 +0200
+Subject: Specify default theme location
+
+This location will be a symlink managed by update-alternatives(1) to
+point to one of the many themes available.
+
+Forwarded: not-needed
+---
+ common/common.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/common/common.h b/common/common.h
+index 9070224..42b6f9d 100644
+--- a/common/common.h
++++ b/common/common.h
+@@ -361,7 +361,8 @@ struct common_params {
+     int32_t n_cache_reuse  = 0;            // min chunk size to reuse from the cache via KV shifting
+ 
+     std::string hostname      = "127.0.0.1";
+-    std::string public_path   = "";                                                                         // NOLINT
++    // Debian-specific default theme location
++    std::string public_path   = "/usr/share/llama.cpp/server/theme";                                        // NOLINT
+     std::string chat_template = "";                                                                         // NOLINT
+     bool use_jinja = false;                                                                                 // NOLINT
+     bool enable_chat_template = true;

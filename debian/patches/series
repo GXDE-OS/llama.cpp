@@ -1,2 +1,3 @@
-Serve-public_simplechat-frontend.patch
+Specify-default-theme-location.patch
+Drop-non-DFSG-free-server-frontend.patch
 cmake-Install-to-private-directories.patch
