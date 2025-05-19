@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+# Can't use dh_installalternatives because it doesn't support directories yet,
+# see #1106089
+
+if [ "$1" = "remove" ]; then
+    for theme in simplechat buttons-top wild; do
+        update-alternatives --remove \
+            llama.cpp-server-theme \
+            /usr/share/llama.cpp/server/themes/"$theme"
+    done
+fi
+
+#DEBHELPER#
+
+exit 0

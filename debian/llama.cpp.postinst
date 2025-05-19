@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+# Can't use dh_installalternatives because it doesn't support directories yet,
+# see #1106089
+
+if [ "$1" = "configure" ]; then
+    for theme_prio in simplechat:50 buttons-top:40 wild:40; do
+        theme="${theme_prio%:*}"
+        prio="${theme_prio#*:}"
+        update-alternatives --install \
+            /usr/share/llama.cpp/server/active-theme \
+            llama.cpp-server-theme \
+            /usr/share/llama.cpp/server/themes/"$theme" "$prio"
+    done
+fi
+
+#DEBHELPER#
+
+exit 0
