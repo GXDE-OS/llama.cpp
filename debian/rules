@@ -31,3 +31,6 @@ override_dh_auto_install:
 
 execute_after_dh_auto_clean:
 	rm -f common/build-info.cpp
+
+override_dh_gencontrol:
+	dh_gencontrol -- -Vggml:Version="$(shell dpkg-query -f '$${Version}' -W libggml)"
