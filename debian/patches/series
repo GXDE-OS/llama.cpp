@@ -1,1 +1,3 @@
 Serve-public_simplechat-frontend.patch
+cmake-Install-to-private-directories.patch
+fix-pkg-config.patch
