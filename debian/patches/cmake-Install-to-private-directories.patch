@@ -38,7 +38,7 @@ index ac3e909..76fa0eb 100644
  configure_package_config_file(
          ${CMAKE_CURRENT_SOURCE_DIR}/cmake/llama-config.cmake.in
 diff --git a/cmake/llama.pc.in b/cmake/llama.pc.in
-index 6fb58b5..d63dd17 100644
+index 6fb58b5..56d46c9 100644
 --- a/cmake/llama.pc.in
 +++ b/cmake/llama.pc.in
 @@ -1,7 +1,7 @@
@@ -46,8 +46,8 @@ index 6fb58b5..d63dd17 100644
  exec_prefix=@CMAKE_INSTALL_PREFIX@
 -libdir=@CMAKE_INSTALL_FULL_LIBDIR@
 -includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
-+libdir=@LLAMA_LIB_INSTALL_DIR@
-+includedir=@LLAMA_INCLUDE_INSTALL_DIR@
++libdir=${exec_prefix}/@LLAMA_LIB_INSTALL_DIR@
++includedir=${prefix}/@LLAMA_INCLUDE_INSTALL_DIR@
  
  Name: llama
  Description: Port of Facebook's LLaMA model in C/C++
