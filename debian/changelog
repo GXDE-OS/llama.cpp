@@ -1,3 +1,24 @@
+llama.cpp (5318+dfsg-2) unstable; urgency=medium
+
+  [ Mathieu Baudier ]
+  * Install public headers and build configurations to private directories
+  * Fix private directories for pkg-config
+
+  [ Christian Kastner ]
+  * Depend on exact build-time ggml version
+    Upstream ships llama.cpp with a specific version of ggml. We have no
+    guarantees that any version earlier or later than that, in fact it's
+    common for newer versions to break something.
+    So going forward, we ship llama.cpp and ggml in tandem, with ggml being
+    updated first, and llama.cpp depending on the exact version used at
+    build-time.
+  * Install all free server themes
+  * Enable changing server theme using update-alternatives
+  * Simplify server frontend patches
+  * Begin shipping the tests
+
+ -- Christian Kastner <ckk@debian.org>  Thu, 19 Jun 2025 23:17:31 +0200
+
 llama.cpp (5318+dfsg-1) unstable; urgency=medium
 
   * Upload to unstable.
