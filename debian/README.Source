@@ -1,0 +1,4 @@
+llama.cpp, whisper.cpp and ggml should all be updated at the same time. ggml is
+a tensor library used by llama.cpp and whisper.cpp. All three are under very
+active development and interfaces are not yet stable, so updating them
+simultaneously is the only way to ensure we don't introduce breakage.
