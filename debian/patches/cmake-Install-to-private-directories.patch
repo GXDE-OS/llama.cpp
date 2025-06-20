@@ -10,12 +10,12 @@ not yet stable.
  2 files changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index ac3e909..76fa0eb 100644
+index 50801cd..2e482ce 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -203,8 +203,8 @@ set(LLAMA_BUILD_NUMBER        ${BUILD_NUMBER})
- set(LLAMA_BUILD_COMMIT        ${BUILD_COMMIT})
- set(LLAMA_INSTALL_VERSION 0.0.${BUILD_NUMBER})
+@@ -214,8 +214,8 @@ endif()
+ include(GNUInstallDirs)
+ include(CMakePackageConfigHelpers)
  
 -set(LLAMA_INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "Location of header  files")
 -set(LLAMA_LIB_INSTALL_DIR     ${CMAKE_INSTALL_LIBDIR}     CACHE PATH "Location of library files")
@@ -24,7 +24,7 @@ index ac3e909..76fa0eb 100644
  set(LLAMA_BIN_INSTALL_DIR     ${CMAKE_INSTALL_BINDIR}     CACHE PATH "Location of binary  files")
  
  set(LLAMA_PUBLIC_HEADERS
-@@ -215,7 +215,11 @@ set_target_properties(llama
+@@ -226,7 +226,11 @@ set_target_properties(llama
      PROPERTIES
          PUBLIC_HEADER "${LLAMA_PUBLIC_HEADERS}")
  

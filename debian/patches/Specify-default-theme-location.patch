@@ -11,10 +11,10 @@ Forwarded: not-needed
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/common/common.h b/common/common.h
-index 9070224..42b6f9d 100644
+index 5710c4e..92faa19 100644
 --- a/common/common.h
 +++ b/common/common.h
-@@ -361,7 +361,8 @@ struct common_params {
+@@ -367,7 +367,8 @@ struct common_params {
      int32_t n_cache_reuse  = 0;            // min chunk size to reuse from the cache via KV shifting
  
      std::string hostname      = "127.0.0.1";

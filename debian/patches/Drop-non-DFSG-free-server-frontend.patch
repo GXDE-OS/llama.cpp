@@ -13,11 +13,11 @@ Forwarded: not-needed
  2 files changed, 16 deletions(-)
 
 diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
-index aee9038..bd6fd9e 100644
+index c2a56aa..acdc5d2 100644
 --- a/tools/server/CMakeLists.txt
 +++ b/tools/server/CMakeLists.txt
-@@ -15,7 +15,6 @@ set(TARGET_SRCS
-     httplib.h
+@@ -14,7 +14,6 @@ set(TARGET_SRCS
+     utils.hpp
  )
  set(PUBLIC_ASSETS
 -    index.html.gz
@@ -25,7 +25,7 @@ index aee9038..bd6fd9e 100644
  )
  
 diff --git a/tools/server/server.cpp b/tools/server/server.cpp
-index 06788bb..120b6ab 100644
+index aa18513..018d077 100644
 --- a/tools/server/server.cpp
 +++ b/tools/server/server.cpp
 @@ -15,7 +15,6 @@
@@ -36,7 +36,7 @@ index 06788bb..120b6ab 100644
  #include "loading.html.hpp"
  
  #include <atomic>
-@@ -4492,20 +4491,6 @@ int main(int argc, char ** argv) {
+@@ -4807,20 +4806,6 @@ int main(int argc, char ** argv) {
                  LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
                  return 1;
              }
