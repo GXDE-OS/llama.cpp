@@ -1,3 +1,14 @@
+llama.cpp (5713+dfsg-1) unstable; urgency=medium
+
+  * New upstream release (Closes: #1108113)
+    - Includes a fix for CVE-2025-49847
+  * Refresh patches
+  * Update d/copyright
+  * Document ggml/llama.cpp/whisper.cpp update procedure
+  * Install the new mtmd headers
+
+ -- Christian Kastner <ckk@debian.org>  Fri, 20 Jun 2025 21:00:33 +0200
+
 llama.cpp (5318+dfsg-2) unstable; urgency=medium
 
   [ Mathieu Baudier ]
