@@ -28,33 +28,9 @@ Files: *
 Copyright: 2023-2024, The ggml authors
 License: Expat
 
-Files: vendor/nlohmann/json.hpp
-Copyright: 2009, Florian Loitsch <https://florian.loitsch.com/>
-           2008-2009 Bjoern Hoehrmann <bjoern@hoehrmann.de>
-           2013-2025, Niels Lohmann <https://nlohmann.me>
-           2016-2021, Even Nemerson <evan@nemerson.com>
-           2017, The Abseil authors
-License: Expat and Apache-2.0
-Comment: The copyright year for the code by the Abseil authors is not mentioned
- in the code. I have retrieved it from the upstream repository referenced in
- the code comment.
-
 Files: common/base64.hpp
 Copyright: Placed in the public domain
 License: public-domain-1
-
-Files: vendor/stb/stb_image.h
-Copyright: Placed in the public domain
-           Alternatively: 2017, Sean Barrett
-License: public-domain-2 or Expat
-Comment:
- ------------------------------------------------------------------------------
- This software is available under 2 licenses -- choose whichever you prefer.
- ------------------------------------------------------------------------------
- ALTERNATIVE A - MIT License
- ------------------------------------------------------------------------------
- ALTERNATIVE B - Public Domain (www.unlicense.org)
- ------------------------------------------------------------------------------
 
 Files: ggml/src/ggml-sycl/*
 Copyright: 2024, Intel Corporation
@@ -99,6 +75,50 @@ Copyright: 2010-2023, Salvatore Sanfilippo <antirez at gmail dot com>
            2025, Eric Curtin <ericcurtin17 at gmail dot com>
 License: BSD-2-clause
 
+Files: vendor/nlohmann/*
+Copyright: 2009, Florian Loitsch <https://florian.loitsch.com/>
+           2008-2009 Bjoern Hoehrmann <bjoern@hoehrmann.de>
+           2013-2025, Niels Lohmann <https://nlohmann.me>
+           2016-2021, Even Nemerson <evan@nemerson.com>
+           2017, The Abseil authors
+License: Expat and Apache-2.0
+Comment: The copyright year for the code by the Abseil authors is not mentioned
+ in the code. I have retrieved it from the upstream repository referenced in
+ the code comment.
+
+Files: vendor/stb/*
+Copyright: Placed in the public domain
+           Alternatively: 2017, Sean Barrett
+License: public-domain-2 or Expat
+Comment:
+ ------------------------------------------------------------------------------
+ This software is available under 2 licenses -- choose whichever you prefer.
+ ------------------------------------------------------------------------------
+ ALTERNATIVE A - MIT License
+ ------------------------------------------------------------------------------
+ ALTERNATIVE B - Public Domain (www.unlicense.org)
+ ------------------------------------------------------------------------------
+
+Files: vendor/cpp-httplib/*
+Copyright: 2025 Yuji Hirose
+License: MIT
+
+Files: vendor/miniaudio/*
+Copyright: 2025, David Reid
+License: public-domain-2 or MIT-no-attribution
+Comment:
+ ------------------------------------------------------------------------------
+ This software is available under 2 licenses -- choose whichever you prefer.
+ ------------------------------------------------------------------------------
+ ALTERNATIVE A - Public Domain (www.unlicense.org)
+ ------------------------------------------------------------------------------
+ ALTERNATIVE B - MIT No Attribution
+ ------------------------------------------------------------------------------
+
+Files: vendor/minja/*
+Copyright: 2024 Google LLC
+License: Expat
+
 Files: debian/*
 Copyright: 2024-2025 Christian Kastner <ckk@debian.org>
 License: Expat
@@ -113,6 +133,22 @@ License: Expat
  .
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+License: MIT-no-attribution
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so.
  .
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
