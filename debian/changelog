@@ -1,3 +1,11 @@
+llama.cpp (5760+dfsg-2) unstable; urgency=medium
+
+  * Hard-code (relaxed) ggml dependency
+    We can't deduce the support ggml version, the maintainers must explicitly
+    specify it. In doing so, ignore the Debian revision number
+
+ -- Christian Kastner <ckk@debian.org>  Fri, 27 Jun 2025 22:13:39 +0200
+
 llama.cpp (5760+dfsg-1) unstable; urgency=medium
 
   * New upstream version 5760+dfsg (Closes: #1108368)
