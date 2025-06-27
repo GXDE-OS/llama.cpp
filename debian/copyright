@@ -101,7 +101,7 @@ Comment:
 
 Files: vendor/cpp-httplib/*
 Copyright: 2025 Yuji Hirose
-License: MIT
+License: Expat
 
 Files: vendor/miniaudio/*
 Copyright: 2025, David Reid
