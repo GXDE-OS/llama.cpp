@@ -25,7 +25,7 @@ index c2a56aa..acdc5d2 100644
  )
  
 diff --git a/tools/server/server.cpp b/tools/server/server.cpp
-index aa18513..018d077 100644
+index 8523523..4ad771f 100644
 --- a/tools/server/server.cpp
 +++ b/tools/server/server.cpp
 @@ -15,7 +15,6 @@
@@ -36,7 +36,7 @@ index aa18513..018d077 100644
  #include "loading.html.hpp"
  
  #include <atomic>
-@@ -4807,20 +4806,6 @@ int main(int argc, char ** argv) {
+@@ -4810,20 +4809,6 @@ int main(int argc, char ** argv) {
                  LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
                  return 1;
              }

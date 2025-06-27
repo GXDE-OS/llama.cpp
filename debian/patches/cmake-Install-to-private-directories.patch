@@ -10,7 +10,7 @@ not yet stable.
  2 files changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 50801cd..2e482ce 100644
+index d2becb0..0d2afbe 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -214,8 +214,8 @@ endif()
