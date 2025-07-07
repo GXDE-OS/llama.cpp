@@ -1,3 +1,10 @@
+llama.cpp (5760+dfsg-3) unstable; urgency=medium
+
+  * Fix installability (ggml version was mis-specified)
+  * Improve lintian overrides
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 07 Jul 2025 18:27:22 +0200
+
 llama.cpp (5760+dfsg-2) unstable; urgency=medium
 
   * Hard-code (relaxed) ggml dependency
