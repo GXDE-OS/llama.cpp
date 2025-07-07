@@ -20,10 +20,10 @@ Rules-Requires-Root: no
 Package: llama.cpp
 Architecture: any
 Multi-Arch: foreign
-Depends: libggml-cpu (>= 0.0~git20250621.b2a092a)
-            | libggml-backend (>= 0.0~git20250621.b2a092a),
-         libggml-cpu (<< 0.0~git20250622)
-            | libggml-backend (<< 0.0~git2025062),
+Depends: libggml-cpu (>= 0.0~git20250618)
+            | libggml-backend (>= 0.0~git20250619),
+         libggml-cpu (<< 0.0~git20250619)
+            | libggml-backend (<< 0.0~git20250619),
          python3,
          ${misc:Depends},
          ${shlibs:Depends},
