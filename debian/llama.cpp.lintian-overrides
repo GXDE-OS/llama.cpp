@@ -5,6 +5,6 @@
 #
 # It makes more sense to build that library seperately, and have
 # llama.cpp/whisper.cpp access its private interfaces.
-custom-library-search-path RUNPATH /usr/lib/x86_64-linux-gnu/ggml *
+llama.cpp: custom-library-search-path RUNPATH /usr/lib/x86_64-linux-gnu/ggml *
 # These will be added/generated before uploading to unstable
-no-manual-page *
+llama.cpp: no-manual-page *
