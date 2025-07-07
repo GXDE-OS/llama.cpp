@@ -11,10 +11,21 @@ Homepage: https://github.com/ggml-org/llama.cpp/
 # but with our install layout, a lack of support means that the baseline
 # version will be used in such a case.
 Build-Depends: cmake,
+               dh-python,
                debhelper-compat (= 13),
                libcurl4-openssl-dev,
                libggml-cpu,
                pkgconf,
+Build-Depends-Indep: dh-sequence-python3,
+                     python3-all,
+                     pybuild-plugin-pyproject,
+                     python3-poetry-core,
+                     python3-numpy,
+                     python3-tqdm,
+                     python3-yaml,
+                     python3-sentencepiece,
+                     python3-pyside6.qtcore,
+                     python3-pytest,
 Rules-Requires-Root: no
 
 Package: llama.cpp
@@ -46,3 +57,17 @@ Description: LLM inference in C/C++
  .
  The compute functionality is provided by ggml. By default, ggml's CPU backend
  is installed, but there are many other backends for CPUs and GPUs.
+
+Package: python3-gguf
+Architecture: all
+Depends: ${python3:Depends},
+         ${misc:Depends},
+Description: Python library for working with GGUF files
+ GGUF is a file format for storing models for inference with GGML and executors
+ based on GGML. GGUF is a binary format that is designed for fast loading and
+ saving of models, and for ease of reading. Models are traditionally developed
+ using PyTorch or another framework, and then converted to GGUF for use in
+ GGML.
+ .
+ This package provides a Python library for reading and write files in the GGUF
+ format.
