@@ -1,3 +1,10 @@
+llama.cpp (5760+dfsg-4) unstable; urgency=medium
+
+  * Fix installability yet again (ggml version still mis-specified)
+    (Closes: #1108925)
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 08 Jul 2025 08:44:50 +0200
+
 llama.cpp (5760+dfsg-3) unstable; urgency=medium
 
   * Fix installability (ggml version was mis-specified)
