@@ -39,7 +39,6 @@ License: Expat and Apache-2.0 with LLVM exception
 
 Files: ggml/src/ggml-cpu/ggml-cpu.c
        ggml/src/ggml-cuda/rope.cu
-       ggml/src/ggml-kompute/kompute-shaders/rope_common.comp
        ggml/src/ggml-metal/ggml-metal.metal
        ggml/src/ggml-opencl/kernels/rope.cl
        ggml/src/ggml-sycl/rope.cpp
