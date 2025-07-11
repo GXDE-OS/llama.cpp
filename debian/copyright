@@ -33,7 +33,8 @@ Copyright: Placed in the public domain
 License: public-domain-1
 
 Files: ggml/src/ggml-sycl/*
-Copyright: 2024, Intel Corporation
+Copyright: 2024-2025, Intel Corporation
+           2025, Codeplay Software Ltd.
 License: Expat and Apache-2.0 with LLVM exception
 
 Files: ggml/src/ggml-cpu/ggml-cpu.c
