@@ -11,16 +11,16 @@ Forwarded: not-needed
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/common/common.h b/common/common.h
-index e08a59e..1ba0b41 100644
+index a5abe32..2eb0796 100644
 --- a/common/common.h
 +++ b/common/common.h
-@@ -368,7 +368,8 @@ struct common_params {
+@@ -369,7 +369,8 @@ struct common_params {
      int32_t n_cache_reuse  = 0;            // min chunk size to reuse from the cache via KV shifting
  
      std::string hostname      = "127.0.0.1";
 -    std::string public_path   = "";                                                                         // NOLINT
 +    // Debian-specific default theme location
 +    std::string public_path   = "/usr/share/llama.cpp/server/theme";                                        // NOLINT
+     std::string api_prefix    = "";                                                                         // NOLINT
      std::string chat_template = "";                                                                         // NOLINT
      bool use_jinja = false;                                                                                 // NOLINT
-     bool enable_chat_template = true;

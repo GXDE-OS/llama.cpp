@@ -25,7 +25,7 @@ index c2a56aa..acdc5d2 100644
  )
  
 diff --git a/tools/server/server.cpp b/tools/server/server.cpp
-index 8523523..4ad771f 100644
+index 57b917f..bf5cc3d 100644
 --- a/tools/server/server.cpp
 +++ b/tools/server/server.cpp
 @@ -15,7 +15,6 @@
@@ -36,13 +36,13 @@ index 8523523..4ad771f 100644
  #include "loading.html.hpp"
  
  #include <atomic>
-@@ -4810,20 +4809,6 @@ int main(int argc, char ** argv) {
+@@ -4811,20 +4810,6 @@ int main(int argc, char ** argv) {
                  LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
                  return 1;
              }
 -        } else {
 -            // using embedded static index.html
--            svr->Get("/", [](const httplib::Request & req, httplib::Response & res) {
+-            svr->Get(params.api_prefix + "/", [](const httplib::Request & req, httplib::Response & res) {
 -                if (req.get_header_value("Accept-Encoding").find("gzip") == std::string::npos) {
 -                    res.set_content("Error: gzip is not supported by this browser", "text/plain");
 -                } else {
