@@ -1,13 +1,14 @@
-llama.cpp (5873+dfsg-1) unstable; urgency=medium
+llama.cpp (5882+dfsg-1) unstable; urgency=medium
 
-  * New upstream version 5873+dfsg
+  * New upstream version 5882+dfsg
   * Rebase patches
+  * Fix broken path to llama-server theme
   * Bump ggml dependency
   * d/gbp.conf: Convert to DEP-14 layout
   * d/gbp.conf: Enforce non-numbered patches
   * Update d/copyright
 
- -- Christian Kastner <ckk@debian.org>  Fri, 11 Jul 2025 23:33:30 +0200
+ -- Christian Kastner <ckk@debian.org>  Sat, 12 Jul 2025 17:31:41 +0200
 
 llama.cpp (5760+dfsg-4) unstable; urgency=medium
 
