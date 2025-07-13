@@ -8,6 +8,6 @@ usr/bin/llama-server
 usr/bin/convert_hf_to_gguf.py		usr/share/doc/llama.cpp-tools/scripts/
 
 # Install the themese but rename the simplechat directory
-tools/server/public_simplechat/*    usr/share/llama.cpp-tools/server/themes/simplechat
-tools/server/themes/buttons-top     usr/share/llama.cpp-tools/server/themes/
-tools/server/themes/wild            usr/share/llama.cpp-tools/server/themes/
+tools/server/public_simplechat/*    usr/share/llama.cpp-tools/llama-server/themes/simplechat
+tools/server/themes/buttons-top     usr/share/llama.cpp-tools/llama-server/themes/
+tools/server/themes/wild            usr/share/llama.cpp-tools/llama-server/themes/

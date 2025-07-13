@@ -7,8 +7,8 @@ set -e
 if [ "$1" = "remove" ]; then
     for theme in simplechat buttons-top wild; do
         update-alternatives --remove \
-            llama.cpp-server-theme \
-            /usr/share/llama.cpp-tools/server/themes/"$theme"
+            llama-server-theme \
+            /usr/share/llama.cpp-tools/llama-server/themes/"$theme"
     done
 fi
 

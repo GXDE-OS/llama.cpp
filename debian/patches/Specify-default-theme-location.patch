@@ -20,7 +20,7 @@ index a5abe32..6ee8d48 100644
      std::string hostname      = "127.0.0.1";
 -    std::string public_path   = "";                                                                         // NOLINT
 +    // Debian-specific default theme location
-+    std::string public_path   = "/usr/share/llama.cpp-tools/server/active-theme";                           // NOLINT
++    std::string public_path   = "/usr/share/llama.cpp-tools/llama-server/active-theme";                     // NOLINT
      std::string api_prefix    = "";                                                                         // NOLINT
      std::string chat_template = "";                                                                         // NOLINT
      bool use_jinja = false;                                                                                 // NOLINT
