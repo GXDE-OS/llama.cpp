@@ -1,0 +1,34 @@
+From: Christian Kastner <ckk@kvr.at>
+Date: Sun, 13 Jul 2025 21:57:01 +0200
+Subject: Add soversion to libraries
+
+Forwarded: not-needed
+---
+ src/CMakeLists.txt        | 1 +
+ tools/mtmd/CMakeLists.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 8f9cd65..b8a4d65 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -45,6 +45,7 @@ target_link_libraries(llama PUBLIC ggml)
+ 
+ if (BUILD_SHARED_LIBS)
+     set_target_properties(llama PROPERTIES POSITION_INDEPENDENT_CODE ON)
++    set_target_properties(llama PROPERTIES VERSION ${LLAMA_INSTALL_VERSION} SOVERSION 0)
+     target_compile_definitions(llama PRIVATE LLAMA_BUILD)
+     target_compile_definitions(llama PUBLIC  LLAMA_SHARED)
+ endif()
+diff --git a/tools/mtmd/CMakeLists.txt b/tools/mtmd/CMakeLists.txt
+index 4baa15b..a3f0734 100644
+--- a/tools/mtmd/CMakeLists.txt
++++ b/tools/mtmd/CMakeLists.txt
+@@ -22,6 +22,7 @@ target_compile_features   (mtmd PRIVATE cxx_std_17)
+ 
+ if (BUILD_SHARED_LIBS)
+     set_target_properties     (mtmd PROPERTIES POSITION_INDEPENDENT_CODE ON)
++    set_target_properties     (mtmd PROPERTIES VERSION ${LLAMA_INSTALL_VERSION} SOVERSION 0)
+     target_compile_definitions(mtmd PRIVATE LLAMA_BUILD)
+     target_compile_definitions(mtmd PUBLIC  LLAMA_SHARED)
+ endif()
