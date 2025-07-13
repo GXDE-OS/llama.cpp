@@ -9,9 +9,9 @@ if [ "$1" = "configure" ]; then
         theme="${theme_prio%:*}"
         prio="${theme_prio#*:}"
         update-alternatives --install \
-            /usr/share/llama.cpp/server/active-theme \
+            /usr/share/llama.cpp-tools/server/active-theme \
             llama.cpp-server-theme \
-            /usr/share/llama.cpp/server/themes/"$theme" "$prio"
+            /usr/share/llama.cpp-tools/server/themes/"$theme" "$prio"
     done
 fi
 

@@ -25,21 +25,17 @@ Build-Depends-Indep: dh-sequence-python3,
                      python3-tqdm,
                      python3-yaml,
                      python3-sentencepiece,
-                     python3-pyside6.qtcore,
                      python3-pytest,
 Rules-Requires-Root: no
 
 Package: llama.cpp
-Architecture: any
-Multi-Arch: foreign
-Depends: libggml-cpu (>= 0.0~git20250712)
-            | libggml-backend (>= 0.0~git20250712),
-         libggml-cpu (<< 0.0~git20250713)
-            | libggml-backend (<< 0.0~git20250713),
-         python3,
+Architecture: all
+Depends: llama.cpp-tools,
          ${misc:Depends},
-         ${shlibs:Depends},
-Description: LLM inference in C/C++
+Recommends: llama.cpp-tools-extra,
+            python3-gguf,
+Suggests: llama.cpp-examples
+Description: LLM inference in C/C++ - metapackage
  The main goal of llama.cpp is to enable LLM inference with minimal setup and
  state-of-the-art performance on a wide range of hardware - locally and in the
  cloud.
@@ -58,11 +54,204 @@ Description: LLM inference in C/C++
  .
  The compute functionality is provided by ggml. By default, ggml's CPU backend
  is installed, but there are many other backends for CPUs and GPUs.
+ .
+ This is a meta-package that either depends on all of the relevant binary
+ packages.
+
+Package: libllama0
+Architecture: any
+Multi-Arch: same
+Depends: libggml-cpu (>= 0.0~git20250712)
+            | libggml-backend (>= 0.0~git20250712),
+         libggml-cpu (<< 0.0~git20250713)
+            | libggml-backend (<< 0.0~git20250713),
+         python3,
+         ${misc:Depends},
+         ${shlibs:Depends},
+Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
+Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
+Description: LLM inference in C/C++ - libraries
+ The main goal of llama.cpp is to enable LLM inference with minimal setup and
+ state-of-the-art performance on a wide range of hardware - locally and in the
+ cloud.
+ .
+  * Plain C/C++ implementation without any dependencies
+  * Apple silicon is a first-class citizen - optimized via ARM NEON, Accelerate
+    and Metal frameworks
+  * AVX, AVX2, AVX512 and AMX support for x86 architectures
+  * 1.5-bit, 2-bit, 3-bit, 4-bit, 5-bit, 6-bit, and 8-bit integer quantization
+    for faster inference and reduced memory use
+  * Custom CUDA kernels for running LLMs on NVIDIA GPUs (support for AMD GPUs
+    via HIP and Moore Threads MTT GPUs via MUSA)
+  * Vulkan and SYCL backend support
+  * CPU+GPU hybrid inference to partially accelerate models larger than the
+    total VRAM capacity
+ .
+ The compute functionality is provided by ggml. By default, ggml's CPU backend
+ is installed, but there are many other backends for CPUs and GPUs.
+ .
+ This package contains the libllama and libmtmd libraries. Note that these
+ libraries are not yet stable, so they are installed to private directories
+ for now.
+
+Package: libllama-dev
+Architecture: any
+Multi-Arch: same
+Depends: libllama0 (= ${binary:Version}),
+         ${misc:Depends},
+Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
+Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
+Description: LLM inference in C/C++ - headers and development files
+ The main goal of llama.cpp is to enable LLM inference with minimal setup and
+ state-of-the-art performance on a wide range of hardware - locally and in the
+ cloud.
+ .
+  * Plain C/C++ implementation without any dependencies
+  * Apple silicon is a first-class citizen - optimized via ARM NEON, Accelerate
+    and Metal frameworks
+  * AVX, AVX2, AVX512 and AMX support for x86 architectures
+  * 1.5-bit, 2-bit, 3-bit, 4-bit, 5-bit, 6-bit, and 8-bit integer quantization
+    for faster inference and reduced memory use
+  * Custom CUDA kernels for running LLMs on NVIDIA GPUs (support for AMD GPUs
+    via HIP and Moore Threads MTT GPUs via MUSA)
+  * Vulkan and SYCL backend support
+  * CPU+GPU hybrid inference to partially accelerate models larger than the
+    total VRAM capacity
+ .
+ The compute functionality is provided by ggml. By default, ggml's CPU backend
+ is installed, but there are many other backends for CPUs and GPUs.
+ .
+ This package provides the llama.cpp library headers and development files.
+ Note that these libraries are not yet stable, so they are installed to
+ private directories for now.
+
+Package: llama.cpp-tools
+Architecture: any
+Multi-Arch: foreign
+Depends: libllama0 (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
+Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
+Description: LLM inference in C/C++ - main utilities
+ The main goal of llama.cpp is to enable LLM inference with minimal setup and
+ state-of-the-art performance on a wide range of hardware - locally and in the
+ cloud.
+ .
+  * Plain C/C++ implementation without any dependencies
+  * Apple silicon is a first-class citizen - optimized via ARM NEON, Accelerate
+    and Metal frameworks
+  * AVX, AVX2, AVX512 and AMX support for x86 architectures
+  * 1.5-bit, 2-bit, 3-bit, 4-bit, 5-bit, 6-bit, and 8-bit integer quantization
+    for faster inference and reduced memory use
+  * Custom CUDA kernels for running LLMs on NVIDIA GPUs (support for AMD GPUs
+    via HIP and Moore Threads MTT GPUs via MUSA)
+  * Vulkan and SYCL backend support
+  * CPU+GPU hybrid inference to partially accelerate models larger than the
+    total VRAM capacity
+ .
+ The compute functionality is provided by ggml. By default, ggml's CPU backend
+ is installed, but there are many other backends for CPUs and GPUs.
+ .
+ This package contains the subset of the most commonly used utilities, such
+ for example llama-cli, and llama-server.
+
+Package: llama.cpp-tools-extra
+Architecture: any
+Multi-Arch: foreign
+Depends: llama.cpp-tools (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
+Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
+Description: LLM inference in C/C++ - extra utilities
+ The main goal of llama.cpp is to enable LLM inference with minimal setup and
+ state-of-the-art performance on a wide range of hardware - locally and in the
+ cloud.
+ .
+  * Plain C/C++ implementation without any dependencies
+  * Apple silicon is a first-class citizen - optimized via ARM NEON, Accelerate
+    and Metal frameworks
+  * AVX, AVX2, AVX512 and AMX support for x86 architectures
+  * 1.5-bit, 2-bit, 3-bit, 4-bit, 5-bit, 6-bit, and 8-bit integer quantization
+    for faster inference and reduced memory use
+  * Custom CUDA kernels for running LLMs on NVIDIA GPUs (support for AMD GPUs
+    via HIP and Moore Threads MTT GPUs via MUSA)
+  * Vulkan and SYCL backend support
+  * CPU+GPU hybrid inference to partially accelerate models larger than the
+    total VRAM capacity
+ .
+ The compute functionality is provided by ggml. By default, ggml's CPU backend
+ is installed, but there are many other backends for CPUs and GPUs.
+ .
+ This package contains all utilities that are not included in llaam.cpp-tools.
+
+Package: llama.cpp-examples
+Architecture: any
+Multi-Arch: foreign
+Depends: llama.cpp-tools (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
+Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
+Description: LLM inference in C/C++ - example programs
+ The main goal of llama.cpp is to enable LLM inference with minimal setup and
+ state-of-the-art performance on a wide range of hardware - locally and in the
+ cloud.
+ .
+  * Plain C/C++ implementation without any dependencies
+  * Apple silicon is a first-class citizen - optimized via ARM NEON, Accelerate
+    and Metal frameworks
+  * AVX, AVX2, AVX512 and AMX support for x86 architectures
+  * 1.5-bit, 2-bit, 3-bit, 4-bit, 5-bit, 6-bit, and 8-bit integer quantization
+    for faster inference and reduced memory use
+  * Custom CUDA kernels for running LLMs on NVIDIA GPUs (support for AMD GPUs
+    via HIP and Moore Threads MTT GPUs via MUSA)
+  * Vulkan and SYCL backend support
+  * CPU+GPU hybrid inference to partially accelerate models larger than the
+    total VRAM capacity
+ .
+ The compute functionality is provided by ggml. By default, ggml's CPU backend
+ is installed, but there are many other backends for CPUs and GPUs.
+ .
+ This package contains utilities that usptream ships as examples.
+
+Package: llama.cpp-tests
+Architecture: any
+Multi-Arch: foreign
+Depends: libllama0 (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
+Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
+Description: LLM inference in C/C++ - tests
+ The main goal of llama.cpp is to enable LLM inference with minimal setup and
+ state-of-the-art performance on a wide range of hardware - locally and in the
+ cloud.
+ .
+  * Plain C/C++ implementation without any dependencies
+  * Apple silicon is a first-class citizen - optimized via ARM NEON, Accelerate
+    and Metal frameworks
+  * AVX, AVX2, AVX512 and AMX support for x86 architectures
+  * 1.5-bit, 2-bit, 3-bit, 4-bit, 5-bit, 6-bit, and 8-bit integer quantization
+    for faster inference and reduced memory use
+  * Custom CUDA kernels for running LLMs on NVIDIA GPUs (support for AMD GPUs
+    via HIP and Moore Threads MTT GPUs via MUSA)
+  * Vulkan and SYCL backend support
+  * CPU+GPU hybrid inference to partially accelerate models larger than the
+    total VRAM capacity
+ .
+ The compute functionality is provided by ggml. By default, ggml's CPU backend
+ is installed, but there are many other backends for CPUs and GPUs.
+ .
+ This package contains all of the test binaries, mainly for autopkgtests.
 
 Package: python3-gguf
 Architecture: all
 Depends: ${python3:Depends},
          ${misc:Depends},
+Suggests: python3-pyside6.qtcore,
+          python3-pyside6.qtwidgets,
 Description: Python library for working with GGUF files
  GGUF is a file format for storing models for inference with GGML and executors
  based on GGML. GGUF is a binary format that is designed for fast loading and

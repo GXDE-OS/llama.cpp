@@ -1,0 +1,10 @@
+/usr/bin/llama-batched-bench
+/usr/bin/llama-cvector-generator
+/usr/bin/llama-export-lora
+/usr/bin/llama-gguf-split
+/usr/bin/llama-imatrix
+/usr/bin/llama-mtmd-cli
+/usr/bin/llama-perplexity
+/usr/bin/llama-run
+/usr/bin/llama-tokenize
+/usr/bin/llama-tts
