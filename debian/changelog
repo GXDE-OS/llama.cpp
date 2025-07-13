@@ -1,3 +1,11 @@
+llama.cpp (5882+dfsg-2) unstable; urgency=medium
+
+  * Build-Depend on the exact version of ggml.
+    For the same reason the binaries depend on the exact version. Avoids
+    FTBFS because of frequent API/ABI breakages
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 13 Jul 2025 11:16:13 +0200
+
 llama.cpp (5882+dfsg-1) unstable; urgency=medium
 
   * New upstream version 5882+dfsg
