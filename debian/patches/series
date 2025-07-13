@@ -1,3 +1,4 @@
 Specify-default-theme-location.patch
 Drop-non-DFSG-free-server-frontend.patch
 cmake-Install-to-private-directories.patch
+gguf-py-depends-on-the-requests-library.patch
