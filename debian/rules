@@ -7,7 +7,7 @@ export PYBUILD_NAME=gguf
 export PYBUILD_DIR=gguf-py
 
 # Both llama.cpp and the ggml it depends on are private for now
-RPATH=/usr/lib/$(DEB_HOST_MULTIARCH)/ggml:/usr/lib/$(DEB_HOST_MULTIARCH)/llama.cpp
+RPATH=/usr/lib/$(DEB_HOST_MULTIARCH)/ggml:/usr/lib/$(DEB_HOST_MULTIARCH)/llama
 
 # FOR DEB_VERSION_UPSTREAM
 include /usr/share/dpkg/pkg-info.mk

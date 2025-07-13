@@ -19,8 +19,8 @@ index c79ccd0..0fd5375 100644
  
 -set(LLAMA_INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "Location of header  files")
 -set(LLAMA_LIB_INSTALL_DIR     ${CMAKE_INSTALL_LIBDIR}     CACHE PATH "Location of library files")
-+set(LLAMA_INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/llama.cpp CACHE PATH "Location of header  files")
-+set(LLAMA_LIB_INSTALL_DIR     ${CMAKE_INSTALL_LIBDIR}/llama.cpp     CACHE PATH "Location of library files")
++set(LLAMA_INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/llama CACHE PATH "Location of header  files")
++set(LLAMA_LIB_INSTALL_DIR     ${CMAKE_INSTALL_LIBDIR}/llama     CACHE PATH "Location of library files")
  set(LLAMA_BIN_INSTALL_DIR     ${CMAKE_INSTALL_BINDIR}     CACHE PATH "Location of binary  files")
  
  set(LLAMA_PUBLIC_HEADERS
@@ -30,7 +30,7 @@ index c79ccd0..0fd5375 100644
  
 -install(TARGETS llama LIBRARY PUBLIC_HEADER)
 +install(TARGETS llama
-+    # On Debian, we install the library and headers to a private directory "llama.cpp"
++    # On Debian, we install the library and headers to a private directory "llama"
 +    LIBRARY DESTINATION ${LLAMA_LIB_INSTALL_DIR}
 +    PUBLIC_HEADER DESTINATION ${LLAMA_INCLUDE_INSTALL_DIR}
 +)

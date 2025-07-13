@@ -1,10 +1,10 @@
-usr/lib/${DEB_HOST_MULTIARCH}/llama.cpp/*.so
+usr/lib/${DEB_HOST_MULTIARCH}/llama/*.so
 # multi-modal shared libraries (mtmd, llava) are not yet in cmake config,
 # so we just copy them without patching the build itself
-usr/lib/${DEB_HOST_MULTIARCH}/*.so          usr/lib/${DEB_HOST_MULTIARCH}/llama.cpp/
+usr/lib/${DEB_HOST_MULTIARCH}/*.so          usr/lib/${DEB_HOST_MULTIARCH}/llama/
 
-usr/include/llama.cpp
-usr/include/*.h                             usr/include/llama.cpp/
+usr/include/llama
+usr/include/*.h                             usr/include/llama/
 
-usr/lib/${DEB_HOST_MULTIARCH}/cmake/llama/* usr/lib/${DEB_HOST_MULTIARCH}/llama.cpp/cmake-private
-usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig     usr/lib/${DEB_HOST_MULTIARCH}/llama.cpp
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/llama/* usr/lib/${DEB_HOST_MULTIARCH}/llama/cmake-private
+usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig     usr/lib/${DEB_HOST_MULTIARCH}/llama
