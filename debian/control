@@ -60,6 +60,7 @@ Description: LLM inference in C/C++ - metapackage
  packages.
 
 Package: libllama0
+Section: libs
 Architecture: any
 Multi-Arch: same
 Depends: libggml-cpu (>= 0.0~git20250712)
@@ -96,6 +97,7 @@ Description: LLM inference in C/C++ - libraries
  for now.
 
 Package: libllama-dev
+Section: libdevel
 Architecture: any
 Multi-Arch: same
 Depends: libllama0 (= ${binary:Version}),
@@ -248,6 +250,7 @@ Description: LLM inference in C/C++ - tests
  This package contains all of the test binaries, mainly for autopkgtests.
 
 Package: python3-gguf
+Section: python
 Architecture: all
 Depends: ${python3:Depends},
          ${misc:Depends},
