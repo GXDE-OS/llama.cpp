@@ -1,3 +1,17 @@
+llama.cpp (5882+dfsg-3~exp1) experimental; urgency=medium
+
+  * Split llama.cpp package into subpackages
+  * Build new package python3-gguf
+
+  * d/rules: Pass in LLAMA_BUILD_{NUMBER,COMMIT}
+  * Add gguf-py-depends-on-the-requests-library.patch
+  * Add Add-soversion-to-libraries.patch
+  * Rename private directories llama.cpp -> llama
+  * Improve llama-server theme handling
+  * Generate manpages using help2man
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 14 Jul 2025 17:17:43 +0200
+
 llama.cpp (5882+dfsg-2) unstable; urgency=medium
 
   * Build-Depend on the exact version of ggml.
