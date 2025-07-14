@@ -29,6 +29,21 @@ override_dh_auto_configure-arch:
 override_dh_auto_configure-indep:
 	dh_auto_configure --buildsystem=pybuild
 
+execute_after_dh_auto_build-arch:
+	mkdir -p man/man1
+	for progname in obj-*/bin/llama-*; do \
+		progname_base=$$(basename $$progname); \
+		[ "$$progname_base" != "llama-gen-docs" ] || continue ; \
+		help2man \
+			--source=debian \
+			--version-string=$(DEB_VERSION_UPSTREAM) \
+			--name=$$progname_base \
+			--section=1 \
+			--no-info \
+			--no-discard-stderr \
+			$$progname > man/man1/$$progname_base.1; \
+	done
+
 override_dh_auto_build-indep:
 	dh_auto_build --buildsystem=pybuild
 
@@ -38,6 +53,19 @@ override_dh_auto_test:
 
 override_dh_auto_install-indep:
 	dh_auto_install --buildsystem=pybuild
+	mkdir -p man/man1
+	for progname in debian/python3-gguf/usr/bin/gguf-*; do \
+		progname_base=$$(basename $$progname); \
+		[ "$$progname_base" != "gguf-editor-gui" ] || continue ; \
+		PYTHONPATH=gguf-py help2man \
+			--source=debian \
+			--version-string=$(DEB_VERSION_UPSTREAM) \
+			--name=$$progname_base \
+			--section=1 \
+			--no-info \
+			--no-discard-stderr \
+			$$progname > man/man1/$$progname_base.1; \
+	done
 
 override_dh_auto_clean-indep:
 	dh_auto_clean --buildsystem=pybuild

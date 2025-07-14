@@ -1,0 +1,3 @@
+man/
+gguf-py/__pycache__/
+gguf-py/scripts/__pycache__/
