@@ -1,6 +1,4 @@
 man/man1/llama-batched-bench.1
-man/man1/llama-cvector-generator.1
-man/man1/llama-export-lora.1
 man/man1/llama-gguf-split.1
 man/man1/llama-imatrix.1
 man/man1/llama-mtmd-cli.1
@@ -8,3 +6,6 @@ man/man1/llama-perplexity.1
 man/man1/llama-run.1
 man/man1/llama-tokenize.1
 man/man1/llama-tts.1
+# Not available with GGML_BACKEND_DL=ON
+#man/man1/llama-cvector-generator.1
+#man/man1/llama-export-lora.1

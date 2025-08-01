@@ -1,5 +1,4 @@
 /usr/bin/llama-batched
-/usr/bin/llama-convert-llama2c-to-ggml
 /usr/bin/llama-embedding
 /usr/bin/llama-eval-callback
 /usr/bin/llama-finetune
@@ -20,3 +19,5 @@
 /usr/bin/llama-simple-chat
 /usr/bin/llama-speculative
 /usr/bin/llama-speculative-simple
+# Not available with GGML_BACKEND_DL=ON
+#/usr/bin/llama-convert-llama2c-to-ggml

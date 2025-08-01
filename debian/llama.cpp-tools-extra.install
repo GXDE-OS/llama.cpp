@@ -1,6 +1,4 @@
 /usr/bin/llama-batched-bench
-/usr/bin/llama-cvector-generator
-/usr/bin/llama-export-lora
 /usr/bin/llama-gguf-split
 /usr/bin/llama-imatrix
 /usr/bin/llama-mtmd-cli
@@ -8,3 +6,6 @@
 /usr/bin/llama-run
 /usr/bin/llama-tokenize
 /usr/bin/llama-tts
+# Not available with GGML_BACKEND_DL=ON
+#/usr/bin/llama-cvector-generator
+#/usr/bin/llama-export-lora

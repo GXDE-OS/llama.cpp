@@ -1,5 +1,4 @@
 man/man1/llama-batched.1
-man/man1/llama-convert-llama2c-to-ggml.1
 man/man1/llama-embedding.1
 man/man1/llama-eval-callback.1
 man/man1/llama-finetune.1
@@ -21,3 +20,5 @@ man/man1/llama-simple.1
 man/man1/llama-simple-chat.1
 man/man1/llama-speculative.1
 man/man1/llama-speculative-simple.1
+# Not available with GGML_BACKEND_DL=ON
+#man/man1/llama-convert-llama2c-to-ggml.1
