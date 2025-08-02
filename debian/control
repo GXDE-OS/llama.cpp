@@ -67,7 +67,6 @@ Depends: libggml-cpu (>= 0.0~git20250712)
             | libggml-backend (>= 0.0~git20250712),
          libggml-cpu (<< 0.0~git20250713)
             | libggml-backend (<< 0.0~git20250713),
-         python3,
          ${misc:Depends},
          ${shlibs:Depends},
 Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
