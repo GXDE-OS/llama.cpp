@@ -6,7 +6,7 @@ usr/bin/llama-server
 # Bash completion
 usr/share/bash-completion/completions/llama-bench
 usr/share/bash-completion/completions/llama-cli
-usr/share/bash-completion/completions/llama-quantize
+#usr/share/bash-completion/completions/llama-quantize # does not actually use these options
 usr/share/bash-completion/completions/llama-server
 
 # This needs a ton of dependencies through python3-torch. Until we figure out
