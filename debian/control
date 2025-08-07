@@ -10,7 +10,8 @@ Homepage: https://github.com/ggml-org/llama.cpp/
 # We could B-D on libc6 (>= 2.33) to ensure support for Hardware Capabilities,
 # but with our install layout, a lack of support means that the baseline
 # version will be used in such a case.
-Build-Depends: cmake,
+Build-Depends: dh-sequence-bash-completion,
+               cmake,
                dh-python,
                debhelper-compat (= 13),
                help2man,
@@ -18,7 +19,6 @@ Build-Depends: cmake,
                libggml-dev (>= 0.0~git20250712),
                libggml-dev (<< 0.0~git20250713),
                pkgconf,
-               bash-completion, dh-sequence-bash-completion,
 Build-Depends-Indep: dh-sequence-python3,
                      python3-all,
                      pybuild-plugin-pyproject,
