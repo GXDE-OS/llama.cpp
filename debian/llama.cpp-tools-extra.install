@@ -9,13 +9,3 @@
 # Not available with GGML_BACKEND_DL=ON
 #/usr/bin/llama-cvector-generator
 #/usr/bin/llama-export-lora
-
-# Bash completion
-usr/share/bash-completion/completions/llama-batched-bench
-usr/share/bash-completion/completions/llama-gguf-split
-usr/share/bash-completion/completions/llama-imatrix
-usr/share/bash-completion/completions/llama-mtmd-cli
-usr/share/bash-completion/completions/llama-perplexity
-usr/share/bash-completion/completions/llama-run
-usr/share/bash-completion/completions/llama-tokenize
-usr/share/bash-completion/completions/llama-tts

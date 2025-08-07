@@ -46,16 +46,15 @@ execute_after_dh_auto_build-arch:
 	
 execute_after_dh_auto_install-arch:
 	# Bash completion file
-	mkdir -p debian/tmp/usr/share/bash-completion/completions
+	mkdir -p completions
 	LD_LIBRARY_PATH=debian/tmp/usr/lib/${DEB_HOST_MULTIARCH}/llama \
 		debian/tmp/usr/bin/llama-cli --device none --completion-bash \
-		> debian/tmp/usr/share/bash-completion/completions/llama-cli
+		> completions/llama-cli
 
 	for progname in debian/tmp/usr/bin/llama-*; do \
 		progname_base=$$(basename $$progname); \
 		[ "$$progname_base" != "llama-cli" ] || continue ; \
-		ln -r -s debian/tmp/usr/share/bash-completion/completions/llama-cli \
-		 debian/tmp/usr/share/bash-completion/completions/$$progname_base; \
+		ln -r -s completions/llama-cli completions/$$progname_base; \
 	done
 
 override_dh_auto_build-indep:

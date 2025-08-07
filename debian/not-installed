@@ -1,4 +1,1 @@
 usr/bin/llama-gen-docs
-
-# Unused bash completion files
-usr/share/bash-completion/completions/*
