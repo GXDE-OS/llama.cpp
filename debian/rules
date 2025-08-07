@@ -43,6 +43,19 @@ execute_after_dh_auto_build-arch:
 			--no-discard-stderr \
 			$$progname > man/man1/$$progname_base.1; \
 	done
+	
+execute_after_dh_auto_install-arch:
+	# Bash completion file
+	mkdir -p completions
+	LD_LIBRARY_PATH=debian/tmp/usr/lib/${DEB_HOST_MULTIARCH}/llama \
+		debian/tmp/usr/bin/llama-cli --device none --completion-bash \
+		> completions/llama-cli
+
+	for progname in debian/tmp/usr/bin/llama-*; do \
+		progname_base=$$(basename $$progname); \
+		[ "$$progname_base" != "llama-cli" ] || continue ; \
+		ln -r -s completions/llama-cli completions/$$progname_base; \
+	done
 
 override_dh_auto_build-indep:
 	dh_auto_build --buildsystem=pybuild
