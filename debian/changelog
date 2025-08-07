@@ -1,3 +1,14 @@
+llama.cpp (5882+dfsg-3~exp3) experimental; urgency=medium
+
+  [ Christian Kastner ]
+  * Switch over to SOVERsioned, dynamic-backend-loading ggml
+  * libllama0: Drop spurious python3 dependency
+
+  [ Mathieu Baudier ]
+  * llama.cpp-tools: Introduce bash completion
+
+ -- Christian Kastner <ckk@debian.org>  Thu, 07 Aug 2025 12:43:22 +0200
+
 llama.cpp (5882+dfsg-3~exp2) experimental; urgency=medium
 
   * Correct the Section field of a few packages
