@@ -121,6 +121,7 @@ License: Expat
 
 Files: debian/*
 Copyright: 2024-2025 Christian Kastner <ckk@debian.org>
+           2025 Mathieu Baudier <mbaudier@argeo.org>
 License: Expat
 
 License: Expat
