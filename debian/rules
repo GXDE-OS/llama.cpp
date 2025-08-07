@@ -85,3 +85,6 @@ override_dh_auto_clean-indep:
 
 execute_after_dh_auto_clean:
 	rm -f common/build-info.cpp
+
+override_dh_compress:
+	dh_compress -X.py
