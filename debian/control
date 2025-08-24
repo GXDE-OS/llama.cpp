@@ -153,8 +153,8 @@ Description: LLM inference in C/C++ - main utilities
  The compute functionality is provided by ggml. By default, ggml's CPU backend
  is installed, but there are many other backends for CPUs and GPUs.
  .
- This package contains the subset of the most commonly used utilities, such
- for example llama-cli, and llama-server.
+ This package contains the subset of the most commonly used utilities:
+ llama-cli, llama-server, llama-bench, and llama-quantize.
 
 Package: llama.cpp-tools-extra
 Architecture: any
@@ -184,7 +184,8 @@ Description: LLM inference in C/C++ - extra utilities
  The compute functionality is provided by ggml. By default, ggml's CPU backend
  is installed, but there are many other backends for CPUs and GPUs.
  .
- This package contains all utilities that are not included in llaam.cpp-tools.
+ This package contains all tools that are not already shipped in package
+ llama.cpp-tools.
 
 Package: llama.cpp-examples
 Architecture: any
@@ -260,5 +261,5 @@ Description: Python library for working with GGUF files
  using PyTorch or another framework, and then converted to GGUF for use in
  GGML.
  .
- This package provides a Python library for reading and write files in the GGUF
- format, and exposes this to the CLI in the form of a few utilities.
+ This package provides a Python library for reading and writing files in the
+ GGUF format, and exposes this to the CLI in the form of a few utilities.
