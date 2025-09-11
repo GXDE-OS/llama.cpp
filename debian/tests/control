@@ -1,0 +1,24 @@
+Test-Command: debian/tests/llama.cpp-tools
+Features: test-name=backend-cpu
+Depends: llama.cpp-tools, libggml0-backend-cpu
+Restrictions: skippable, allow-stderr
+
+Test-Command: debian/tests/gpuisol-test-launcher amd debian/tests/llama.cpp-tools
+Features: test-name=backend-hip
+Depends: llama.cpp-tools, libggml0-backend-hip
+Restrictions: skippable, allow-stderr
+
+Test-Command: debian/tests/gpuisol-test-launcher amd debian/tests/llama.cpp-tools
+Features: test-name=backend-vulkan-amd
+Depends: llama.cpp-tools, libggml0-backend-vulkan, mesa-vulkan-drivers
+Restrictions: skippable, allow-stderr
+
+Test-Command: debian/tests/gpuisol-test-launcher nvidia debian/tests/llama.cpp-tools
+Features: test-name=backend-cuda
+Depends: llama.cpp-tools, libggml0-backend-cuda
+Restrictions: skippable, allow-stderr, skip-not-installable
+
+Test-Command: debian/tests/gpuisol-test-launcher nvidia debian/tests/llama.cpp-tools
+Features: test-name=backend-cuda-vulkan
+Depends: llama.cpp-tools, libggml0-backend-vulkan, nvidia-vulkan-icd
+Restrictions: skippable, allow-stderr
