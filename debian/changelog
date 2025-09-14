@@ -1,3 +1,12 @@
+llama.cpp (5882+dfsg-4) unstable; urgency=medium
+
+  * Add autopkgtests.
+    - The tests expect a /models directory in the testbed
+    - This includes a test helper for running tests on AMD and NVIDIA
+      GPUs, if the system has one available.
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 14 Sep 2025 23:13:11 +0200
+
 llama.cpp (5882+dfsg-3) unstable; urgency=medium
 
   * Upload to unstable
