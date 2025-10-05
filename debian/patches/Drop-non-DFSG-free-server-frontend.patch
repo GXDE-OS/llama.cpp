@@ -12,11 +12,11 @@ Forwarded: not-needed
  tools/server/server.cpp     | 15 ---------------
  2 files changed, 16 deletions(-)
 
-diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
-index c2a56aa..acdc5d2 100644
---- a/tools/server/CMakeLists.txt
-+++ b/tools/server/CMakeLists.txt
-@@ -14,7 +14,6 @@ set(TARGET_SRCS
+Index: llama.cpp/tools/server/CMakeLists.txt
+===================================================================
+--- llama.cpp.orig/tools/server/CMakeLists.txt
++++ llama.cpp/tools/server/CMakeLists.txt
+@@ -12,7 +12,6 @@ set(TARGET_SRCS
      utils.hpp
  )
  set(PUBLIC_ASSETS
@@ -24,10 +24,10 @@ index c2a56aa..acdc5d2 100644
      loading.html
  )
  
-diff --git a/tools/server/server.cpp b/tools/server/server.cpp
-index 57b917f..bf5cc3d 100644
---- a/tools/server/server.cpp
-+++ b/tools/server/server.cpp
+Index: llama.cpp/tools/server/server.cpp
+===================================================================
+--- llama.cpp.orig/tools/server/server.cpp
++++ llama.cpp/tools/server/server.cpp
 @@ -15,7 +15,6 @@
  #define MIMETYPE_JSON "application/json; charset=utf-8"
  
@@ -36,7 +36,7 @@ index 57b917f..bf5cc3d 100644
  #include "loading.html.hpp"
  
  #include <atomic>
-@@ -4811,20 +4810,6 @@ int main(int argc, char ** argv) {
+@@ -5212,20 +5211,6 @@ int main(int argc, char ** argv) {
                  LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
                  return 1;
              }

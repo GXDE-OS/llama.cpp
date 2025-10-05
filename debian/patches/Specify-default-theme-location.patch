@@ -10,12 +10,12 @@ Forwarded: not-needed
  common/common.h | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/common/common.h b/common/common.h
-index a5abe32..6ee8d48 100644
---- a/common/common.h
-+++ b/common/common.h
-@@ -369,7 +369,8 @@ struct common_params {
-     int32_t n_cache_reuse  = 0;            // min chunk size to reuse from the cache via KV shifting
+Index: llama.cpp/common/common.h
+===================================================================
+--- llama.cpp.orig/common/common.h
++++ llama.cpp/common/common.h
+@@ -427,7 +427,8 @@ struct common_params {
+     int32_t n_swa_checkpoints = 3;            // max number of SWA checkpoints per slot
  
      std::string hostname      = "127.0.0.1";
 -    std::string public_path   = "";                                                                         // NOLINT
