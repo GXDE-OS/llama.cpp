@@ -6,7 +6,6 @@ man/man1/llama-finetune.1
 #/man/man1/llama-gen-docs.1
 man/man1/llama-gguf.1
 man/man1/llama-gguf-hash.1
-man/man1/llama-gritlm.1
 man/man1/llama-lookahead.1
 man/man1/llama-lookup.1
 man/man1/llama-lookup-create.1

@@ -1,11 +1,12 @@
 /usr/bin/llama-batched
+/usr/bin/llama-diffusion-cli
 /usr/bin/llama-embedding
 /usr/bin/llama-eval-callback
 /usr/bin/llama-finetune
 /usr/bin/llama-gen-docs
 /usr/bin/llama-gguf
 /usr/bin/llama-gguf-hash
-/usr/bin/llama-gritlm
+/usr/bin/llama-logits
 /usr/bin/llama-lookahead
 /usr/bin/llama-lookup
 /usr/bin/llama-lookup-create
