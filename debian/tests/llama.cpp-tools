@@ -11,7 +11,7 @@ elif ! [ -d "$MODELS_DIR" ]; then
 fi
 
 if [ -z "${MODEL_NAMES:-}" ]; then
-	MODEL_NAMES="$(cat debian/tests/supported-models.non-free)"
+	MODEL_NAMES="$(grep -Ev '^(#.*|[[:space:]]*)$' debian/tests/supported-models.non-free)"
 fi
 
 at_least_one=0
