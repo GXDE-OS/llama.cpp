@@ -1,3 +1,26 @@
+llama.cpp (6641+dfsg-1) unstable; urgency=medium
+
+  [ Christian Kastner ]
+  * New upstream version 6641+dfsg
+    - Refresh patches
+  * Depend on versioned ggml
+    Upstream is experimenting with semantic versioning of ggml, so we can
+    switch our dependencies to that format.
+    However, because this is still experimental, we continue do depend on a
+    very specific version. This will be relaxed as soon as we have symbols
+    tracking.
+  * autopkgtests: Support blank lines/comments in d/t/supported-models.*
+  * autopkgtests: Improve upon supported test models list
+  * Update installed examples
+    - Added: llama-diffusion-cli, llama-logits
+    - Dropped: llama-gritlm
+  * d/clean: Also remove generated completions/
+
+  [ Kentaro Hayashi ]
+  * Use d/watch 5.
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 05 Oct 2025 22:09:48 +0200
+
 llama.cpp (5882+dfsg-4) unstable; urgency=medium
 
   * Add autopkgtests.
