@@ -1,0 +1,15 @@
+Description: Make the build reproducible
+Author: Chris Lamb <lamby@debian.org>
+Last-Update: 2025-09-02
+
+--- llama.cpp-5882+dfsg.orig/common/arg.cpp
++++ llama.cpp-5882+dfsg/common/arg.cpp
+@@ -1297,7 +1297,7 @@ common_params_context common_params_pars
+     ).set_examples({LLAMA_EXAMPLE_MAIN, LLAMA_EXAMPLE_SPECULATIVE, LLAMA_EXAMPLE_LOOKUP}));
+     add_opt(common_arg(
+         {"-t", "--threads"}, "N",
+-        string_format("number of threads to use during generation (default: %d)", params.cpuparams.n_threads),
++        "number of threads to use during generation (default: <num_cpus>)",
+         [](common_params & params, int value) {
+             params.cpuparams.n_threads = value;
+             if (params.cpuparams.n_threads <= 0) {
