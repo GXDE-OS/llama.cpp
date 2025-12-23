@@ -25,4 +25,4 @@ Test-Command: debian/tests/gpuisol-test-launcher nvidia debian/tests/llama.cpp-t
 Features: test-name=backend-vulkan-nvidia
 Architecture: amd64 arm64 ppc64el
 Depends: llama.cpp-tools, libggml0-backend-vulkan, nvidia-vulkan-icd
-Restrictions: skippable, allow-stderr
+Restrictions: skippable, allow-stderr, skip-not-installable
