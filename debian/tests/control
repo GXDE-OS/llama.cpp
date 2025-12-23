@@ -1,6 +1,6 @@
 Test-Command: debian/tests/llama.cpp-tools
 Features: test-name=backend-cpu
-Depends: llama.cpp-tools, libggml0-backend-cpu
+Depends: llama.cpp-tools
 Restrictions: skippable, allow-stderr
 
 Test-Command: debian/tests/gpuisol-test-launcher amd debian/tests/llama.cpp-tools
