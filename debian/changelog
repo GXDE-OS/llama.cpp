@@ -1,3 +1,16 @@
+llama.cpp (6641+dfsg-2) unstable; urgency=medium
+
+  [ Chris Lamb ]
+  * Add reproducible-builds.patch (Closes: #1113813)
+
+  [ Christian Kastner ]
+  * autopkgtest: Explicitly limit architectures for GPU tests
+  * autopkgtest: Use Q4_K_M quants, as per mbaudier's suggestion
+  * Replace libggml0-backend-cpu dependencies with libggml0
+  * autopkgtest: backend-vulkan-nvidia is also skip-not-installable
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 23 Dec 2025 21:24:32 +0100
+
 llama.cpp (6641+dfsg-1) unstable; urgency=medium
 
   [ Christian Kastner ]
