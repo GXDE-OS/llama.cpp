@@ -1,3 +1,9 @@
+llama.cpp (6641+dfsg-3) unstable; urgency=medium
+
+  * autopkgtest: Add Classes to enable filtering by custom tools
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 28 Dec 2025 16:05:04 +0100
+
 llama.cpp (6641+dfsg-2) unstable; urgency=medium
 
   [ Chris Lamb ]
