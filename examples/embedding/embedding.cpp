@@ -70,6 +70,29 @@ static void batch_decode(llama_context * ctx, llama_batch & batch, float * outpu
     }
 }
 
+// plain, pipe-friendly output: one embedding per line
+static void print_raw_embeddings(const float * emb,
+                                 int n_embd_count,
+                                 int n_embd,
+                                 const llama_model * model,
+                                 enum llama_pooling_type pooling_type,
+                                 int embd_normalize) {
+    const uint32_t n_cls_out = llama_model_n_cls_out(model);
+    const bool is_rank = (pooling_type == LLAMA_POOLING_TYPE_RANK);
+    const int cols = is_rank ? std::min<int>(n_embd, (int) n_cls_out) : n_embd;
+
+    for (int j = 0; j < n_embd_count; ++j) {
+        for (int i = 0; i < cols; ++i) {
+            if (embd_normalize == 0) {
+                LOG("%1.0f%s", emb[j * n_embd + i], (i + 1 < cols ? " " : ""));
+            } else {
+                LOG("%1.7f%s", emb[j * n_embd + i], (i + 1 < cols ? " " : ""));
+            }
+        }
+        LOG("\n");
+    }
+}
+
 int main(int argc, char ** argv) {
     common_params params;
 
@@ -81,12 +104,16 @@ int main(int argc, char ** argv) {
 
     params.embedding = true;
 
+    // get max number of sequences per batch
+    const int n_seq_max = llama_max_parallel_sequences();
+
     // if the number of prompts that would be encoded is known in advance, it's more efficient to specify the
     //   --parallel argument accordingly. for convenience, if not specified, we fallback to unified KV cache
     //   in order to support any number of prompts
     if (params.n_parallel == 1) {
         LOG_INF("%s: n_parallel == 1 -> unified KV cache is enabled\n", __func__);
         params.kv_unified = true;
+        params.n_parallel = n_seq_max;
     }
 
     // utilize the full context
@@ -100,17 +127,14 @@ int main(int argc, char ** argv) {
         params.n_ubatch = params.n_batch;
     }
 
-    // get max number of sequences per batch
-    const int n_seq_max = llama_max_parallel_sequences();
-
     llama_backend_init();
     llama_numa_init(params.numa);
 
     // load the model
-    common_init_result llama_init = common_init_from_params(params);
+    auto llama_init = common_init_from_params(params);
 
-    llama_model * model = llama_init.model.get();
-    llama_context * ctx = llama_init.context.get();
+    auto * model = llama_init->model();
+    auto * ctx = llama_init->context();
 
     if (model == NULL) {
         LOG_ERR("%s: unable to load model\n", __func__);
@@ -372,6 +396,8 @@ int main(int argc, char ** argv) {
         }
 
         if (notArray) LOG("\n}\n");
+    } else if (params.embd_out == "raw") {
+        print_raw_embeddings(emb, n_embd_count, n_embd, model, pooling_type, params.embd_normalize);
     }
 
     LOG("\n");
