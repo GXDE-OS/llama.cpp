@@ -23,6 +23,15 @@ Comment:
  .
  We remove some pre-built files of the Web UI, as well as of the Android
  sources.
+ .
+ False positives
+ ---------------
+ The following files contain the string "copyright", but these aren't
+ assertions, just part of documentation or output or other:
+  - docs/backend/CUDA-FEDORA.md
+  - examples/retrieval/README.md
+  - scripts/apple/validate-macos.sh
+  - licenses/LICENSE-CURL (but no curl source is included)
 
 Files: *
 Copyright: 2023-2024, The ggml authors
@@ -37,7 +46,7 @@ Copyright: 2024-2025, Intel Corporation
            2025, Codeplay Software Ltd.
 License: Expat and Apache-2.0 with LLVM exception
 
-Files: ggml/src/ggml-cpu/ggml-cpu.c
+Files: ggml/src/ggml-cpu/ops.cpp
        ggml/src/ggml-cuda/rope.cu
        ggml/src/ggml-metal/ggml-metal.metal
        ggml/src/ggml-opencl/kernels/rope.cl
@@ -50,8 +59,12 @@ Files: ggml/src/ggml-cpu/kleidiai/*
 Copyright: 2025, Arm Limited and/or its affiliates <open-source-office@arm.com>
 License: Expat
 
-Files: ggml/src/ggml-cpu/llamafile/sgemm.cpp
+Files: ggml/src/ggml-cpu/llamafile/sgemm.*
 Copyright: 2024, Mozilla Foundation
+License: Expat
+
+Files: gguf-py/*
+Copyright: 2023 Georgi Gerganov
 License: Expat
 
 Files: examples/gguf-hash/deps/xxhash/xxhash.*
@@ -100,7 +113,7 @@ Comment:
  ------------------------------------------------------------------------------
 
 Files: vendor/cpp-httplib/*
-Copyright: 2025 Yuji Hirose
+Copyright: 2017 Yuji Hirose
 License: Expat
 
 Files: vendor/miniaudio/*
@@ -119,9 +132,13 @@ Files: vendor/minja/*
 Copyright: 2024 Google LLC
 License: Expat
 
+Files: vendor/sheredom/subprocess.h
+Copyright: Placed in the public domain
+License: public-domain-2
+
 Files: debian/*
-Copyright: 2024-2025 Christian Kastner <ckk@debian.org>
-           2025 Mathieu Baudier <mbaudier@argeo.org>
+Copyright: 2024-2026 Christian Kastner <ckk@debian.org>
+           2025-2026 Mathieu Baudier <mbaudier@argeo.org>
 License: Expat
 
 License: Expat
@@ -268,18 +285,22 @@ License: public-domain-1
 
 License: public-domain-2
  This is free and unencumbered software released into the public domain.
+ .
  Anyone is free to copy, modify, publish, use, compile, sell, or distribute this
  software, either in source code form or as a compiled binary, for any purpose,
  commercial or non-commercial, and by any means.
+ .
  In jurisdictions that recognize copyright laws, the author or authors of this
  software dedicate any and all copyright interest in the software to the public
  domain. We make this dedication for the benefit of the public at large and to
  the detriment of our heirs and successors. We intend this dedication to be an
  overt act of relinquishment in perpetuity of all present and future rights to
  this software under copyright law.
+ .
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Comment: For more information, please refer to <http://unlicense.org/>
