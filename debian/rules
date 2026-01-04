@@ -6,15 +6,12 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export PYBUILD_NAME=gguf
 export PYBUILD_DIR=gguf-py
 
-# Both llama.cpp and the ggml it depends on are private for now
-RPATH=/usr/lib/$(DEB_HOST_MULTIARCH)/ggml:/usr/lib/$(DEB_HOST_MULTIARCH)/llama
-
 # FOR DEB_VERSION_UPSTREAM
 include /usr/share/dpkg/pkg-info.mk
 
-CMAKE_FLAGS = -DCMAKE_INSTALL_RPATH=$(RPATH) \
+# llama.cpp's libs are still private, hence the RPATH
+CMAKE_FLAGS = -DCMAKE_INSTALL_RPATH=/usr/lib/$(DEB_HOST_MULTIARCH)/llama \
               -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
-	      -DCMAKE_PREFIX_PATH=/usr/lib/$(DEB_HOST_MULTIARCH)/ggml/cmake-private \
 	      -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 	      -DLLAMA_BUILD_NUMBER=$(subst +dfsg,,$(DEB_VERSION_UPSTREAM)) \
 	      -DLLAMA_BUILD_COMMIT=Debian \
