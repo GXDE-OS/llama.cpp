@@ -10,12 +10,12 @@ Forwarded: not-needed
  common/common.h | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Index: llama.cpp/common/common.h
-===================================================================
---- llama.cpp.orig/common/common.h
-+++ llama.cpp/common/common.h
-@@ -427,7 +427,8 @@ struct common_params {
-     int32_t n_swa_checkpoints = 3;            // max number of SWA checkpoints per slot
+diff --git a/common/common.h b/common/common.h
+index f8bc686..356d27f 100644
+--- a/common/common.h
++++ b/common/common.h
+@@ -468,7 +468,8 @@ struct common_params {
+     int32_t cache_ram_mib     = 8192;         // -1 = no limit, 0 - disable, 1 = 1 MiB, etc.
  
      std::string hostname      = "127.0.0.1";
 -    std::string public_path   = "";                                                                         // NOLINT
@@ -23,4 +23,4 @@ Index: llama.cpp/common/common.h
 +    std::string public_path   = "/usr/share/llama.cpp-tools/llama-server/active-theme";                     // NOLINT
      std::string api_prefix    = "";                                                                         // NOLINT
      std::string chat_template = "";                                                                         // NOLINT
-     bool use_jinja = false;                                                                                 // NOLINT
+     bool use_jinja = true;                                                                                  // NOLINT

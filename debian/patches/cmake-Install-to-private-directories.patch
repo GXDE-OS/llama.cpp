@@ -9,11 +9,11 @@ not yet stable.
  cmake/llama.pc.in |  4 ++--
  2 files changed, 9 insertions(+), 5 deletions(-)
 
-Index: llama.cpp/CMakeLists.txt
-===================================================================
---- llama.cpp.orig/CMakeLists.txt
-+++ llama.cpp/CMakeLists.txt
-@@ -223,8 +223,8 @@ endif()
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c231ec0..0050b01 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -242,8 +242,8 @@ endif()
  include(GNUInstallDirs)
  include(CMakePackageConfigHelpers)
  
@@ -24,7 +24,7 @@ Index: llama.cpp/CMakeLists.txt
  set(LLAMA_BIN_INSTALL_DIR     ${CMAKE_INSTALL_BINDIR}     CACHE PATH "Location of binary  files")
  
  set(LLAMA_PUBLIC_HEADERS
-@@ -235,7 +235,11 @@ set_target_properties(llama
+@@ -254,7 +254,11 @@ set_target_properties(llama
      PROPERTIES
          PUBLIC_HEADER "${LLAMA_PUBLIC_HEADERS}")
  
@@ -37,10 +37,10 @@ Index: llama.cpp/CMakeLists.txt
  
  configure_package_config_file(
          ${CMAKE_CURRENT_SOURCE_DIR}/cmake/llama-config.cmake.in
-Index: llama.cpp/cmake/llama.pc.in
-===================================================================
---- llama.cpp.orig/cmake/llama.pc.in
-+++ llama.cpp/cmake/llama.pc.in
+diff --git a/cmake/llama.pc.in b/cmake/llama.pc.in
+index 6fb58b5..56d46c9 100644
+--- a/cmake/llama.pc.in
++++ b/cmake/llama.pc.in
 @@ -1,7 +1,7 @@
  prefix=@CMAKE_INSTALL_PREFIX@
  exec_prefix=@CMAKE_INSTALL_PREFIX@

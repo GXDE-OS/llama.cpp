@@ -1,15 +1,22 @@
-Description: Make the build reproducible
-Author: Chris Lamb <lamby@debian.org>
-Last-Update: 2025-09-02
+From: Chris Lamb <lamby@debian.org>
+Date: Sun, 4 Jan 2026 13:02:14 +0100
+Subject: Make the build reproducible
 
---- llama.cpp-5882+dfsg.orig/common/arg.cpp
-+++ llama.cpp-5882+dfsg/common/arg.cpp
-@@ -1297,7 +1297,7 @@ common_params_context common_params_pars
-     ).set_examples({LLAMA_EXAMPLE_MAIN, LLAMA_EXAMPLE_SPECULATIVE, LLAMA_EXAMPLE_LOOKUP}));
+Last-Update: 2025-09-02
+---
+ common/arg.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/common/arg.cpp b/common/arg.cpp
+index 62d3139..a8d9e6a 100644
+--- a/common/arg.cpp
++++ b/common/arg.cpp
+@@ -973,7 +973,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
+     ).set_examples({LLAMA_EXAMPLE_COMPLETION, LLAMA_EXAMPLE_CLI, LLAMA_EXAMPLE_SPECULATIVE, LLAMA_EXAMPLE_LOOKUP}));
      add_opt(common_arg(
          {"-t", "--threads"}, "N",
--        string_format("number of threads to use during generation (default: %d)", params.cpuparams.n_threads),
-+        "number of threads to use during generation (default: <num_cpus>)",
+-        string_format("number of CPU threads to use during generation (default: %d)", params.cpuparams.n_threads),
++        string_format("number of CPU threads to use during generation (default: <num_cpus>)"),
          [](common_params & params, int value) {
              params.cpuparams.n_threads = value;
              if (params.cpuparams.n_threads <= 0) {

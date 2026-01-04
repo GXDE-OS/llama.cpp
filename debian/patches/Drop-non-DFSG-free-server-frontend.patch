@@ -8,41 +8,41 @@ available in Debian.
 
 Forwarded: not-needed
 ---
- tools/server/CMakeLists.txt |  1 -
- tools/server/server.cpp     | 15 ---------------
+ tools/server/CMakeLists.txt  |  1 -
+ tools/server/server-http.cpp | 15 ---------------
  2 files changed, 16 deletions(-)
 
-Index: llama.cpp/tools/server/CMakeLists.txt
-===================================================================
---- llama.cpp.orig/tools/server/CMakeLists.txt
-+++ llama.cpp/tools/server/CMakeLists.txt
-@@ -12,7 +12,6 @@ set(TARGET_SRCS
-     utils.hpp
+diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
+index a39b4c5..b1cdd62 100644
+--- a/tools/server/CMakeLists.txt
++++ b/tools/server/CMakeLists.txt
+@@ -40,7 +40,6 @@ set(TARGET_SRCS
+     server-models.h
  )
  set(PUBLIC_ASSETS
 -    index.html.gz
      loading.html
  )
  
-Index: llama.cpp/tools/server/server.cpp
-===================================================================
---- llama.cpp.orig/tools/server/server.cpp
-+++ llama.cpp/tools/server/server.cpp
-@@ -15,7 +15,6 @@
- #define MIMETYPE_JSON "application/json; charset=utf-8"
+diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
+index 5d67e57..c9a5524 100644
+--- a/tools/server/server-http.cpp
++++ b/tools/server/server-http.cpp
+@@ -9,7 +9,6 @@
+ #include <thread>
  
  // auto generated files (see README.md for details)
 -#include "index.html.gz.hpp"
  #include "loading.html.hpp"
  
- #include <atomic>
-@@ -5212,20 +5211,6 @@ int main(int argc, char ** argv) {
+ //
+@@ -242,20 +241,6 @@ bool server_http_context::init(const common_params & params) {
                  LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
                  return 1;
              }
 -        } else {
 -            // using embedded static index.html
--            svr->Get(params.api_prefix + "/", [](const httplib::Request & req, httplib::Response & res) {
+-            srv->Get(params.api_prefix + "/", [](const httplib::Request & req, httplib::Response & res) {
 -                if (req.get_header_value("Accept-Encoding").find("gzip") == std::string::npos) {
 -                    res.set_content("Error: gzip is not supported by this browser", "text/plain");
 -                } else {
@@ -56,4 +56,4 @@ Index: llama.cpp/tools/server/server.cpp
 -            });
          }
      }
- 
+     return true;
