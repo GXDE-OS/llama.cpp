@@ -1,3 +1,13 @@
+llama.cpp (7593+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 7593+dfsg
+  * Refresh patches
+  * Switch build to the now public libggml
+  * Also install libmtmd to private directory
+  * Refresh copyright
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 04 Jan 2026 13:37:14 +0100
+
 llama.cpp (6641+dfsg-3) unstable; urgency=medium
 
   * autopkgtest: Add Classes to enable filtering by custom tools
