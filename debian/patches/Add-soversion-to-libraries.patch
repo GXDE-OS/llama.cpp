@@ -21,7 +21,7 @@ index 762ea65..6e802b1 100644
      target_compile_definitions(llama PUBLIC  LLAMA_SHARED)
  endif()
 diff --git a/tools/mtmd/CMakeLists.txt b/tools/mtmd/CMakeLists.txt
-index 317d5f1..1206ecf 100644
+index b357d38..7c10297 100644
 --- a/tools/mtmd/CMakeLists.txt
 +++ b/tools/mtmd/CMakeLists.txt
 @@ -44,6 +44,7 @@ target_compile_features   (mtmd PRIVATE cxx_std_17)

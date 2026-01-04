@@ -5,26 +5,47 @@ Subject: cmake-Install-to-private-directories
 Install libraries and public headers to a private directory as they are
 not yet stable.
 ---
- CMakeLists.txt    | 10 +++++++---
- cmake/llama.pc.in |  4 ++--
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ CMakeLists.txt            | 23 +++++++++++++++--------
+ cmake/llama.pc.in         |  4 ++--
+ tools/mtmd/CMakeLists.txt |  5 ++++-
+ 3 files changed, 21 insertions(+), 11 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c231ec0..0050b01 100644
+index c231ec0..122506d 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -242,8 +242,8 @@ endif()
- include(GNUInstallDirs)
- include(CMakePackageConfigHelpers)
+@@ -199,6 +199,16 @@ if (NOT TARGET ggml AND NOT LLAMA_USE_SYSTEM_GGML)
+     # ... otherwise assume ggml is added by a parent CMakeLists.txt
+ endif()
  
--set(LLAMA_INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "Location of header  files")
--set(LLAMA_LIB_INSTALL_DIR     ${CMAKE_INSTALL_LIBDIR}     CACHE PATH "Location of library files")
++#
++# Define destinations
++#
++include(GNUInstallDirs)
++include(CMakePackageConfigHelpers)
++
 +set(LLAMA_INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/llama CACHE PATH "Location of header  files")
 +set(LLAMA_LIB_INSTALL_DIR     ${CMAKE_INSTALL_LIBDIR}/llama     CACHE PATH "Location of library files")
- set(LLAMA_BIN_INSTALL_DIR     ${CMAKE_INSTALL_BINDIR}     CACHE PATH "Location of binary  files")
++set(LLAMA_BIN_INSTALL_DIR     ${CMAKE_INSTALL_BINDIR}     CACHE PATH "Location of binary  files")
++
+ #
+ # build the library
+ #
+@@ -239,13 +249,6 @@ endif()
+ # install
+ #
  
+-include(GNUInstallDirs)
+-include(CMakePackageConfigHelpers)
+-
+-set(LLAMA_INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "Location of header  files")
+-set(LLAMA_LIB_INSTALL_DIR     ${CMAKE_INSTALL_LIBDIR}     CACHE PATH "Location of library files")
+-set(LLAMA_BIN_INSTALL_DIR     ${CMAKE_INSTALL_BINDIR}     CACHE PATH "Location of binary  files")
+-
  set(LLAMA_PUBLIC_HEADERS
-@@ -254,7 +254,11 @@ set_target_properties(llama
+     ${CMAKE_CURRENT_SOURCE_DIR}/include/llama.h
+     ${CMAKE_CURRENT_SOURCE_DIR}/include/llama-cpp.h)
+@@ -254,7 +257,11 @@ set_target_properties(llama
      PROPERTIES
          PUBLIC_HEADER "${LLAMA_PUBLIC_HEADERS}")
  
@@ -51,3 +72,19 @@ index 6fb58b5..56d46c9 100644
  
  Name: llama
  Description: Port of Facebook's LLaMA model in C/C++
+diff --git a/tools/mtmd/CMakeLists.txt b/tools/mtmd/CMakeLists.txt
+index 317d5f1..b357d38 100644
+--- a/tools/mtmd/CMakeLists.txt
++++ b/tools/mtmd/CMakeLists.txt
+@@ -57,7 +57,10 @@ set_target_properties(mtmd
+     PROPERTIES
+     PUBLIC_HEADER "${MTMD_PUBLIC_HEADERS}")
+ 
+-install(TARGETS mtmd LIBRARY PUBLIC_HEADER)
++install(TARGETS mtmd
++    LIBRARY DESTINATION ${LLAMA_LIB_INSTALL_DIR}
++    PUBLIC_HEADER DESTINATION ${LLAMA_INCLUDE_INSTALL_DIR}
++)
+ 
+ if (NOT MSVC)
+     # for stb_image.h and miniaudio.h
