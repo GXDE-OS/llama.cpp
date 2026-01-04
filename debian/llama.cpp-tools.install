@@ -1,5 +1,6 @@
 usr/bin/llama-bench
 usr/bin/llama-cli
+usr/bin/llama-completion
 usr/bin/llama-quantize
 usr/bin/llama-server
 

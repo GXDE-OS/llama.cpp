@@ -4,6 +4,7 @@ llama.cpp (7593+dfsg-1) unstable; urgency=medium
   * Refresh patches
   * Switch build to the now public libggml
   * Also install libmtmd to private directory
+  * Install newly appeared tools
   * Refresh copyright
 
  -- Christian Kastner <ckk@debian.org>  Sun, 04 Jan 2026 13:37:14 +0100

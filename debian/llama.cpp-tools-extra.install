@@ -1,6 +1,7 @@
 /usr/bin/llama-batched-bench
 /usr/bin/llama-gguf-split
 /usr/bin/llama-imatrix
+/usr/bin/llama-fit-params
 /usr/bin/llama-mtmd-cli
 /usr/bin/llama-perplexity
 /usr/bin/llama-run
