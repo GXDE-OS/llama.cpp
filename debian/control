@@ -28,6 +28,7 @@ Rules-Requires-Root: no
 
 Package: llama.cpp
 Architecture: all
+Multi-Arch: foreign
 Depends: llama.cpp-tools,
          ${misc:Depends},
 Recommends: llama.cpp-tools-extra,
