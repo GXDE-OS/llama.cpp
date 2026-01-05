@@ -1,3 +1,3 @@
 # libllama and ggml are both not yet stable, so they are installed in private
 # directories.
-llama.cpp-tests: custom-library-search-path RUNPATH /usr/lib/x86_64-linux-gnu/llama *
+llama.cpp-tests: custom-library-search-path RUNPATH /usr/lib/*/llama [usr/libexec/*/llama.cpp-tests/*]
