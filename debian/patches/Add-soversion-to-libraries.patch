@@ -2,6 +2,9 @@ From: Christian Kastner <ckk@kvr.at>
 Date: Sun, 13 Jul 2025 21:57:01 +0200
 Subject: Add soversion to libraries
 
+We do this even though our library is private because much of our tooling
+expects a SOVER.
+
 Forwarded: not-needed
 ---
  src/CMakeLists.txt        | 1 +

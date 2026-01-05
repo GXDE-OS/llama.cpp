@@ -2,7 +2,11 @@ From: Chris Lamb <lamby@debian.org>
 Date: Sun, 4 Jan 2026 13:02:14 +0100
 Subject: Make the build reproducible
 
-Last-Update: 2025-09-02
+We don't forward this, because the build is actually reproducible. It's the
+man page generated from the runtime help that causes the problems.
+
+Forwarded: not-needed
+Last-Update: 2026-01-05
 ---
  common/arg.cpp | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

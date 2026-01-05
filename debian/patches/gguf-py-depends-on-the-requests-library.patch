@@ -2,6 +2,7 @@ From: Christian Kastner <ckk@kvr.at>
 Date: Sun, 13 Jul 2025 14:05:51 +0200
 Subject: gguf-py depends on the requests library
 
+Forwarded: https://github.com/ggml-org/llama.cpp/pull/18629
 ---
  gguf-py/pyproject.toml | 1 +
  1 file changed, 1 insertion(+)
