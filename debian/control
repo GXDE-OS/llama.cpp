@@ -93,6 +93,7 @@ Section: libdevel
 Architecture: any
 Multi-Arch: same
 Depends: libllama0 (= ${binary:Version}),
+         libggml-dev (>= 0.9.5),
          ${misc:Depends},
 Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
 Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
