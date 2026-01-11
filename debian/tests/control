@@ -1,3 +1,7 @@
+Tests: upstream-basic
+Depends: llama.cpp-tests
+Restrictions: allow-stderr
+
 Test-Command: debian/tests/llama.cpp-tools
 Features: test-name=backend-cpu
 Depends: llama.cpp-tools
