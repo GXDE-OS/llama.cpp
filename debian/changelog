@@ -1,3 +1,16 @@
+llama.cpp (7593+dfsg-2) unstable; urgency=medium
+
+  * Re-add accidentally dropped dependency on libggml-dev
+  * Designate bin:llama.cpp as Multi-Arch: foreign
+  * Bump Standards-Version to 4.7.3
+    - Drop Priority: optional, it's the dpkg default since trixie
+  * Update patch metadata
+  * Enable Salsa CI
+  * Tweak lintian overrides
+  * autopkgtest: Also run upstream's basic (non-LLM) tests
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 11 Jan 2026 16:26:14 +0100
+
 llama.cpp (7593+dfsg-1) unstable; urgency=medium
 
   * New upstream version 7593+dfsg
