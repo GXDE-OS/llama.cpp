@@ -32,5 +32,5 @@ for model_name in $MODEL_NAMES; do
 done
 
 # If not a single test could be run, treat this as an overall skip
-[ "$at_least_one" -ge 0 ] ||  exit 77
+[ "$at_least_one" -gt 0 ] ||  exit 77
 exit $exitcode
