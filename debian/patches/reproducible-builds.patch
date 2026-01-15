@@ -6,10 +6,11 @@ We don't forward this, because the build is actually reproducible. It's the
 man page generated from the runtime help that causes the problems.
 
 Forwarded: not-needed
-Last-Update: 2026-01-05
+Last-Update: 2026-01-15
 ---
- common/arg.cpp | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/arg.cpp                    | 2 +-
+ tools/llama-bench/llama-bench.cpp | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/common/arg.cpp b/common/arg.cpp
 index 62d3139..a8d9e6a 100644
@@ -24,3 +25,17 @@ index 62d3139..a8d9e6a 100644
          [](common_params & params, int value) {
              params.cpuparams.n_threads = value;
              if (params.cpuparams.n_threads <= 0) {
+diff --git a/tools/llama-bench/llama-bench.cpp b/tools/llama-bench/llama-bench.cpp
+index a98ede0..1fd81e9 100644
+--- a/tools/llama-bench/llama-bench.cpp
++++ b/tools/llama-bench/llama-bench.cpp
+@@ -427,8 +427,7 @@ static void print_usage(int /* argc */, char ** argv) {
+            join(transform_to_str(cmd_params_defaults.type_k, ggml_type_name), ",").c_str());
+     printf("  -ctv, --cache-type-v <t>                  (default: %s)\n",
+            join(transform_to_str(cmd_params_defaults.type_v, ggml_type_name), ",").c_str());
+-    printf("  -t, --threads <n>                         (default: %s)\n",
+-           join(cmd_params_defaults.n_threads, ",").c_str());
++    printf("  -t, --threads <n>                         (default: <num_cpus>)\n");
+     printf("  -C, --cpu-mask <hex,hex>                  (default: %s)\n",
+            join(cmd_params_defaults.cpu_mask, ",").c_str());
+     printf("  --cpu-strict <0|1>                        (default: %s)\n",
