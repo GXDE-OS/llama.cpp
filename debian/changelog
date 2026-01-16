@@ -1,3 +1,14 @@
+llama.cpp (7593+dfsg-3) unstable; urgency=medium
+
+  * autopkgtest: Fix detection of skipped tests
+  * Also make llama-bench(1) reproducible (Closes: #1113813)
+  * autopkgtest: Temporarily disable models >4GB
+    Not all workers support these models, and the test runner needs to be
+    adapted to discover this at runtime
+  * autopkgtest: Export JSON tests results as artifacts
+
+ -- Christian Kastner <ckk@debian.org>  Fri, 16 Jan 2026 18:30:50 +0100
+
 llama.cpp (7593+dfsg-2) unstable; urgency=medium
 
   * Re-add accidentally dropped dependency on libggml-dev
