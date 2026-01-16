@@ -26,7 +26,18 @@ for model_name in $MODEL_NAMES; do
 
 	echo "Running tests using model: $model_fullpath"
 
-	llama-bench -m "$model_fullpath" || exitcode=1
+	# We're telling llama-bench to output JSON to stderr. On success, move the
+	# JSON result to the artifacts; on failure, re-output stderr
+	tmp_output="$AUTOPKGTEST_TMP/tmp_output"
+	if llama-bench -m "$model_fullpath" -oe json 2>"$tmp_output"; then
+		artifact_fullpath="$AUTOPKGTEST_ARTIFACTS/llama-bench/$(basename "$model_name").json"
+		mkdir -p "$(dirname "$artifact_fullpath")"
+		mv "$tmp_output" "$artifact_fullpath"
+	else
+		cat "$tmp_output" >&2
+		rm -f "$tmp_output"
+		exitcode=1
+	fi
 
 	echo "Finished running tests using model: $model_fullpath"
 done
