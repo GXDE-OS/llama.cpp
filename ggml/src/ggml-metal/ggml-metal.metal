@@ -2737,6 +2737,83 @@ kernel void kernel_rwkv_wkv7_f32(
     }
 }
 
+constant short FC_solve_tri_nsg [[function_constant(FC_SOLVE_TRI + 0)]];
+constant short FC_solve_tri_n   [[function_constant(FC_SOLVE_TRI + 1)]];
+constant short FC_solve_tri_k   [[function_constant(FC_SOLVE_TRI + 2)]];
+
+kernel void kernel_solve_tri_f32(
+        constant ggml_metal_kargs_solve_tri & args,
+        device   const char * src0,
+        device   const char * src1,
+        device         char * dst,
+        threadgroup    char * shmem [[threadgroup(0)]],
+        ushort3 tgpig[[threadgroup_position_in_grid]],
+        ushort  sgitg[[simdgroup_index_in_threadgroup]],
+        ushort  tiisg[[thread_index_in_simdgroup]],
+        ushort3   ntg[[threads_per_threadgroup]]) {
+    constexpr short NW = N_SIMDWIDTH;
+
+    const short NSG = FC_solve_tri_nsg;
+    const short N   = FC_solve_tri_n;
+    const short K   = FC_solve_tri_k;
+    const short NP  = PAD2(N, NW);
+
+    const int32_t ne02 = args.ne02;
+    const int32_t ne03 = args.ne03;
+
+    const int32_t i03 = tgpig.z;
+    const int32_t i02 = tgpig.y;
+    const int32_t i01 = tgpig.x*NSG + sgitg;
+
+    threadgroup float * sh0 = (threadgroup float *) shmem;
+
+    device const float * src0_ptr = (device const float *)(src0 + i02 * args.nb02 + i03 * args.nb03) + sgitg*N;
+    device const float * src1_ptr = (device const float *)(src1 + i02 * args.nb12 + i03 * args.nb13) + i01;
+    device       float * dst_ptr  = (device       float *)(dst  + i02 * args.nb2  + i03 * args.nb3)  + i01;
+
+    for (short rr = 0; rr < N; rr += NSG) {
+        threadgroup_barrier(mem_flags::mem_threadgroup);
+
+        {
+            threadgroup float * sh0_cur = sh0 + sgitg*NP;
+
+            for (short t = 0; t*NW < N; ++t) {
+                const short idx = t*NW + tiisg;
+                sh0_cur[idx] = src0_ptr[idx];
+            }
+
+            src0_ptr += NSG*N;
+        }
+
+        threadgroup_barrier(mem_flags::mem_threadgroup);
+
+        if (i01 >= args.ne10) {
+            continue;
+        }
+
+        for (short ir = 0; ir < NSG && rr + ir < N; ++ir) {
+            const short r = rr + ir;
+
+            threadgroup float * sh0_cur = sh0 + ir*NP;
+
+            float sum = 0.0f;
+
+            for (short t = 0; t*NW < r; ++t) {
+                const short idx = t*NW + tiisg;
+                sum += sh0_cur[idx] * dst_ptr[idx*K] * (idx < r);
+            }
+
+            sum = simd_sum(sum);
+
+            if (tiisg == 0) {
+                const float diag = sh0_cur[r];
+
+                dst_ptr[r*K] = (src1_ptr[r*K] - sum) / diag;
+            }
+        }
+    }
+}
+
 kernel void kernel_argmax_f32(
         constant ggml_metal_kargs_argmax & args,
         device   const char * src0,
@@ -5208,6 +5285,7 @@ constant int32_t FC_flash_attn_ext_blk_ncpsg [[function_constant(FC_FLASH_ATTN_E
 // scan the blocks of the mask that are not masked
 // 0 -     masked (i.e. full of -INF, skip)
 // 1 - not masked (i.e. at least one element of the mask is not -INF)
+// 2 - all zero
 kernel void kernel_flash_attn_ext_blk(
         constant ggml_metal_kargs_flash_attn_ext_blk & args,
         device const char * mask,
@@ -5229,27 +5307,29 @@ kernel void kernel_flash_attn_ext_blk(
 
     device const half * mask_src = (device const half *) (mask + (i1*Q)*args.nb31 + i2*args.nb32 + i3*args.nb33) + i0*C + tiisg;
 
-    // fast route
-    if (res == 0) {
-        if (simd_max(*mask_src) > -MAXHALF/2) {
-            res = 1;
-        }
-    }
-
     // detailed check of the elements of the block
     if ((C > NW || Q > 1) && res == 0) {
-        half m = -MAXHALF;
+        half mmin =  MAXHALF;
+        half mmax = -MAXHALF;
 
         FOR_UNROLL (short j = 0; j < Q; ++j) {
             FOR_UNROLL (short ii = 0; ii < C/NW; ++ii) {
-                m = max(m, mask_src[ii*NW]);
+                mmin = min(mmin, mask_src[ii*NW]);
+                mmax = max(mmax, mask_src[ii*NW]);
             }
 
             mask_src += args.nb31/2;
         }
 
-        if (simd_max(m) > -MAXHALF/2) {
-            res = 1;
+        mmin = simd_min(mmin);
+        mmax = simd_max(mmax);
+
+        if (mmax > -MAXHALF) {
+            if (mmin == 0.0 && mmax == 0.0) {
+                res = 2;
+            } else {
+                res = 1;
+            }
         }
     }
 
@@ -5491,9 +5571,13 @@ void kernel_flash_attn_ext_impl(
                 ic = 0;
             }
 
+            char blk_cur = 1;
+
             // read the mask into shared mem
             if (FC_flash_attn_ext_has_mask) {
-                if (blk[ic0] == 0) {
+                blk_cur = blk[ic0];
+
+                if (blk_cur == 0) {
                     FOR_UNROLL (short jj = 0; jj < NQ; ++jj) {
                         pm2[jj] += NW;
                     }
@@ -5501,16 +5585,22 @@ void kernel_flash_attn_ext_impl(
                     continue;
                 }
 
-                FOR_UNROLL (short jj = 0; jj < NQ; ++jj) {
-                    const short j = jj*NSG + sgitg;
+                if (blk_cur == 1) {
+                    FOR_UNROLL (short jj = 0; jj < NQ; ++jj) {
+                        const short j = jj*NSG + sgitg;
 
-                    if (FC_flash_attn_ext_bc_mask) {
-                        sm2[j*SH + tiisg] = (iq1 + j) < args.ne31 ? pm2[jj][tiisg] : half2(-MAXHALF, -MAXHALF);
-                    } else {
-                        sm2[j*SH + tiisg] = pm2[jj][tiisg];
+                        if (FC_flash_attn_ext_bc_mask) {
+                            sm2[j*SH + tiisg] = (iq1 + j) < args.ne31 ? pm2[jj][tiisg] : half2(-MAXHALF, -MAXHALF);
+                        } else {
+                            sm2[j*SH + tiisg] = pm2[jj][tiisg];
+                        }
+
+                        pm2[jj] += NW;
                     }
-
-                    pm2[jj] += NW;
+                } else if (blk_cur == 2) {
+                    FOR_UNROLL (short jj = 0; jj < NQ; ++jj) {
+                        pm2[jj] += NW;
+                    }
                 }
 
 #if 0
@@ -5552,9 +5642,7 @@ void kernel_flash_attn_ext_impl(
 
                 constexpr short NC = (C/8)/NSG;
 
-                // note: do not unroll for large heads
-                #pragma unroll (DK <= 64 ? NC : 1)
-                for (short cc = 0; cc < NC; ++cc) {
+                FOR_UNROLL (short cc = 0; cc < NC; ++cc) {
                     qk8x8_t mqk = make_filled_simdgroup_matrix<qk_t, 8>((qk_t) 0.0f);
 
                     if (DK % 16 != 0) {
@@ -5575,7 +5663,9 @@ void kernel_flash_attn_ext_impl(
                         k8x8_t mk[2];
                         q8x8_t mq[2];
 
-                        FOR_UNROLL (short i = 0; i < DK8/2; ++i) {
+                        // note: too much unroll can tank the performance for large heads
+                        #pragma unroll (MIN(DK8/2, 4*NSG))
+                        for (short i = 0; i < DK8/2; ++i) {
                             simdgroup_barrier(mem_flags::mem_none);
 
                             simdgroup_load(mq[0], pq + 0*8 + 16*i, DK);
@@ -5675,10 +5765,12 @@ void kernel_flash_attn_ext_impl(
                 }
 
                 // mqk = mqk + slope*mask
-                if (FC_flash_attn_ext_has_bias) {
-                    s2 += s2_t(sm2[j*SH + tiisg])*slope;
-                } else {
-                    s2 += s2_t(sm2[j*SH + tiisg]);
+                if (blk_cur != 2) {
+                    if (FC_flash_attn_ext_has_bias) {
+                        s2 += s2_t(sm2[j*SH + tiisg])*slope;
+                    } else {
+                        s2 += s2_t(sm2[j*SH + tiisg]);
+                    }
                 }
 
                 M[jj] = simd_max(max(M[jj], max(s2[0], s2[1])));
@@ -5749,7 +5841,9 @@ void kernel_flash_attn_ext_impl(
                                 pv  += 8*NS20;
                             }
                         } else {
-                            FOR_UNROLL (short cc = 0; cc < (C/8)/2; ++cc) {
+                            constexpr short NC = (C/8)/2;
+
+                            FOR_UNROLL (short cc = 0; cc < NC; ++cc) {
                                 s8x8_t vs[2];
 
                                 simdgroup_load(vs[0], ss + 16*cc + 0, SH, 0, false);
@@ -5929,7 +6023,7 @@ template<
     void (*deq_v)(device const vd4x4_t *, short, thread v4x4_t &),
     short DK,         // K head size
     short DV,         // V head size
-    short Q  = OP_FLASH_ATTN_EXT_NQPTG, // queries per threadgroup
+    short Q  = OP_FLASH_ATTN_EXT_NQPSG, // queries per threadgroup
     short C  = OP_FLASH_ATTN_EXT_NCPSG> // cache items per threadgroup
 kernel void kernel_flash_attn_ext(
         constant ggml_metal_kargs_flash_attn_ext & args,
@@ -5952,6 +6046,7 @@ kernel void kernel_flash_attn_ext(
       //case 1: kernel_flash_attn_ext_impl<FWD_TMPL, 1>(FWD_ARGS); break;
       //case 2: kernel_flash_attn_ext_impl<FWD_TMPL, 2>(FWD_ARGS); break;
         case 4: kernel_flash_attn_ext_impl<FWD_TMPL, 4>(FWD_ARGS); break;
+        case 8: kernel_flash_attn_ext_impl<FWD_TMPL, 8>(FWD_ARGS); break;
     }
 #undef FWD_TMPL
 #undef FWD_ARGS
@@ -6138,11 +6233,10 @@ template<
     void (*deq_v_t4)(device const vd4_t *, short, thread v4_t &),
     short DK,       // K head size
     short DV,       // V head size
-    short NE,       // head elements per thread
-    short Q,        // queries per threadgroup
-    short C,        // cache items per threadgroup
-    short NSG>      // number of simd groups
-void kernel_flash_attn_ext_vec_impl(
+    short NE = 4,   // head elements per thread
+    short Q  = OP_FLASH_ATTN_EXT_VEC_NQPSG,  // queries per threadgroup
+    short C  = OP_FLASH_ATTN_EXT_VEC_NCPSG>  // cache items per threadgroup
+kernel void kernel_flash_attn_ext_vec(
         constant ggml_metal_kargs_flash_attn_ext_vec & args,
         device const char * q,
         device const char * k,
@@ -6159,6 +6253,7 @@ void kernel_flash_attn_ext_vec_impl(
     static_assert(DV % 32 == 0, "DV must be divisible by 32");
 
 #define NWG  (FC_flash_attn_ext_vec_nwg)
+#define NSG  (FC_flash_attn_ext_vec_nsg)
 
 #define NS10 (FC_flash_attn_ext_vec_ns10)
 #define NS20 (FC_flash_attn_ext_vec_ns20)
@@ -6187,12 +6282,12 @@ void kernel_flash_attn_ext_vec_impl(
 
     const short T = PK + NSG*SH; // shared memory size per query in (half)
 
-  //threadgroup q_t   * sq  = (threadgroup q_t   *) (shmem_f16 +                    0*PK); // holds the query data
-    threadgroup q4_t  * sq4 = (threadgroup q4_t  *) (shmem_f16 +                    0*PK); // same as above but in q4_t
-    threadgroup s_t   * ss  = (threadgroup s_t   *) (shmem_f16 +   sgitg*SH       + Q*PK); // scratch buffer for attention
-    threadgroup s4_t  * ss4 = (threadgroup s4_t  *) (shmem_f16 +   sgitg*SH       + Q*PK); // same as above but in s4_t
-    threadgroup half  * sm  = (threadgroup half  *) (shmem_f16 +   sgitg*SH + 2*C + Q*PK); // scratch buffer for mask
-    threadgroup o4_t  * so4 = (threadgroup o4_t  *) (shmem_f16 + 2*sgitg*PV       + Q*T);  // scratch buffer for the results
+  //threadgroup q_t   * sq  = (threadgroup q_t   *) (shmem_f16 +                      0*PK); // holds the query data
+    threadgroup q4_t  * sq4 = (threadgroup q4_t  *) (shmem_f16 +                      0*PK); // same as above but in q4_t
+    threadgroup s_t   * ss  = (threadgroup s_t   *) (shmem_f16 +   sgitg*SH       + NSG*PK); // scratch buffer for attention
+    threadgroup s4_t  * ss4 = (threadgroup s4_t  *) (shmem_f16 +   sgitg*SH       + NSG*PK); // same as above but in s4_t
+    threadgroup half  * sm  = (threadgroup half  *) (shmem_f16 +   sgitg*SH + 2*C + NSG*PK); // scratch buffer for mask
+    threadgroup o4_t  * so4 = (threadgroup o4_t  *) (shmem_f16 + 2*sgitg*PV       + NSG*PK + NSG*SH); // scratch buffer for the results
 
     // store the result for all queries in shared memory (the O matrix from the paper)
     so4 += tiisg;
@@ -6210,11 +6305,13 @@ void kernel_flash_attn_ext_vec_impl(
     // load heads from Q to shared memory
     device const float4 * q4 = (device const float4 *) ((device const char *) q);
 
-    for (short i = tiisg; i < PK4; i += NW) {
-        if (iq1 < args.ne01 && i < DK4) {
-            sq4[i] = (q4_t) q4[i];
-        } else {
-            sq4[i] = (q4_t) 0.0f;
+    if (iq1 < args.ne01) {
+        for (short i = tiisg; i < PK4; i += NW) {
+            if (i < DK4) {
+                sq4[i] = (q4_t) q4[i];
+            } else {
+                sq4[i] = (q4_t) 0.0f;
+            }
         }
     }
 
@@ -6292,7 +6389,7 @@ void kernel_flash_attn_ext_vec_impl(
             }
 
             // skip -INF blocks
-            if (simd_max(sm[tiisg]) == -INFINITY) {
+            if (simd_max(sm[tiisg]) <= -MAXHALF) {
                 continue;
             }
 
@@ -6566,55 +6663,9 @@ void kernel_flash_attn_ext_vec_impl(
     }
 
 #undef NWG
+#undef NSG
 #undef NS10
 #undef NS20
-}
-
-template<
-    typename q4_t,  // query types in shared memory
-    typename k4_t,  // key types in shared memory
-    typename v4_t,  // value types in shared memory
-    typename qk_t,  // Q*K types
-    typename s_t,   // soft-max types
-    typename s4_t,
-    typename o4_t,  // attention accumulation types
-    typename kd4_t, // key type in device memory
-    short nl_k,
-    void (*deq_k_t4)(device const kd4_t *, short, thread k4_t &),
-    typename vd4_t, // value type in device memory
-    short nl_v,
-    void (*deq_v_t4)(device const vd4_t *, short, thread v4_t &),
-    short DK,       // K head size
-    short DV,       // V head size
-    short NE = 4,   // head elements per thread
-    short Q  = OP_FLASH_ATTN_EXT_VEC_NQPTG,  // queries per threadgroup
-    short C  = OP_FLASH_ATTN_EXT_VEC_NCPSG>  // cache items per threadgroup
-kernel void kernel_flash_attn_ext_vec(
-        constant ggml_metal_kargs_flash_attn_ext_vec & args,
-        device const char * q,
-        device const char * k,
-        device const char * v,
-        device const char * mask,
-        device const char * sinks,
-        device const char * pad,
-        device       char * dst,
-        threadgroup  half * shmem_f16 [[threadgroup(0)]],
-        uint3   tgpig[[threadgroup_position_in_grid]],
-        ushort  tiisg[[thread_index_in_simdgroup]],
-        ushort  sgitg[[simdgroup_index_in_threadgroup]]) {
-#define FWD_TMPL q4_t, k4_t, v4_t, qk_t, s_t, s4_t, o4_t, kd4_t, nl_k, deq_k_t4, vd4_t, nl_v, deq_v_t4, DK, DV, NE, Q, C
-#define FWD_ARGS args, q, k, v, mask, sinks, pad, dst, shmem_f16, tgpig, tiisg, sgitg
-    switch (FC_flash_attn_ext_vec_nsg) {
-      // note: disabled cases to reduce library load time
-        case 1:  kernel_flash_attn_ext_vec_impl<FWD_TMPL,  1>(FWD_ARGS); break;
-        case 2:  kernel_flash_attn_ext_vec_impl<FWD_TMPL,  2>(FWD_ARGS); break;
-        case 4:  kernel_flash_attn_ext_vec_impl<FWD_TMPL,  4>(FWD_ARGS); break;
-      //case 8:  kernel_flash_attn_ext_vec_impl<FWD_TMPL,  8>(FWD_ARGS); break;
-      //case 16: kernel_flash_attn_ext_vec_impl<FWD_TMPL, 16>(FWD_ARGS); break;
-      //case 32: kernel_flash_attn_ext_vec_impl<FWD_TMPL, 32>(FWD_ARGS); break;
-    }
-#undef FWD_TMPL
-#undef FWD_ARGS
 }
 
 // note: I think the s_t can be half instead of float, because the Q*K scaling is done before storing to shared mem
@@ -8779,6 +8830,26 @@ kernel void kernel_set_rows_f(
     }
 }
 
+kernel void kernel_diag_f32(
+        constant ggml_metal_kargs_diag & args,
+        device   const char * src0,
+        device         char * dst,
+        uint3  tgpig[[threadgroup_position_in_grid]],
+        ushort tiitg[[thread_index_in_threadgroup]]) {
+    constexpr short NW = N_SIMDWIDTH;
+
+    const int32_t i3 = tgpig.z;
+    const int32_t i2 = tgpig.y;
+    const int32_t i1 = tgpig.x;
+
+    device const float * src0_ptr = (device const float *)(src0 +                i2*args.nb02 + i3*args.nb03);
+    device       float * dst_ptr  = (device       float *)(dst  + i1*args.nb01 + i2*args.nb2  + i3*args.nb3);
+
+    for (int i0 = tiitg; i0 < args.ne0; i0 += NW) {
+        dst_ptr[i0] = i0 == i1 ? src0_ptr[i0] : 0.0f;
+    }
+}
+
 constant bool FC_mul_mm_bc_inp [[function_constant(FC_MUL_MM + 0)]];
 constant bool FC_mul_mm_bc_out [[function_constant(FC_MUL_MM + 1)]];
 
@@ -9148,6 +9219,7 @@ typedef decltype(kernel_mul_mm_id_map0<1>) kernel_mul_mm_id_map0_t;
 template [[host_name("kernel_mul_mm_id_map0_ne20_1" )]] kernel kernel_mul_mm_id_map0_t kernel_mul_mm_id_map0<1>;
 template [[host_name("kernel_mul_mm_id_map0_ne20_2" )]] kernel kernel_mul_mm_id_map0_t kernel_mul_mm_id_map0<2>;
 template [[host_name("kernel_mul_mm_id_map0_ne20_4" )]] kernel kernel_mul_mm_id_map0_t kernel_mul_mm_id_map0<4>;
+template [[host_name("kernel_mul_mm_id_map0_ne20_5" )]] kernel kernel_mul_mm_id_map0_t kernel_mul_mm_id_map0<5>;
 template [[host_name("kernel_mul_mm_id_map0_ne20_6" )]] kernel kernel_mul_mm_id_map0_t kernel_mul_mm_id_map0<6>;
 template [[host_name("kernel_mul_mm_id_map0_ne20_8" )]] kernel kernel_mul_mm_id_map0_t kernel_mul_mm_id_map0<8>;
 template [[host_name("kernel_mul_mm_id_map0_ne20_10")]] kernel kernel_mul_mm_id_map0_t kernel_mul_mm_id_map0<10>;
@@ -9866,6 +9938,74 @@ kernel void kernel_pool_2d_avg_f32(
     }
 
     o_ptr[cur_oh * args.OW + cur_ow] = res;
+}
+
+
+kernel void kernel_pool_1d_max_f32(
+        constant        ggml_metal_kargs_pool_1d & args,
+        device  const   float * src,
+        device          float * dst,
+        uint            gid [[thread_position_in_grid]]
+) {
+
+    if (gid >= args.np) {
+        return;
+    }
+
+    const int ow  = (int)gid % args.OW;
+    const int row = (int)gid / args.OW;
+
+    const int base = ow * args.s0 - args.p0;
+
+    float acc = -INFINITY;
+
+    const int src_off = row * args.IW;
+    const int dst_off = row * args.OW;
+
+    for (int ki = 0; ki < args.k0; ++ki) {
+        int j = base + ki;
+        if (j < 0 || j >= args.IW){
+            continue;
+        }
+        float v = src[src_off + j];
+        acc = max(acc, v);
+    }
+
+    dst[dst_off + ow] = acc;
+}
+
+kernel void kernel_pool_1d_avg_f32(
+        constant        ggml_metal_kargs_pool_1d & args,
+        device  const   float * src,
+        device          float * dst,
+        uint            gid [[thread_position_in_grid]]
+) {
+
+    if (gid >= args.np) {
+        return;
+    }
+
+    const int ow  = (int)gid % args.OW;
+    const int row = (int)gid / args.OW;
+
+    const int base = ow * args.s0 - args.p0;
+
+    float acc = 0.0f;
+    int   cnt = 0;
+
+    const int src_off = row * args.IW;
+    const int dst_off = row * args.OW;
+
+    for (int ki = 0; ki < args.k0; ++ki) {
+        const int j = base + ki;
+        if (j < 0 || j >= args.IW) {
+            continue;
+        }
+        acc += src[src_off + j];
+        cnt += 1;
+    }
+
+    dst[dst_off + ow] = (cnt > 0) ? (acc / (float)cnt) : 0.0f;
 }
 
 kernel void kernel_opt_step_adamw_f32(
