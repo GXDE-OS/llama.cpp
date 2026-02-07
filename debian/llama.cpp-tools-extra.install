@@ -4,7 +4,6 @@
 /usr/bin/llama-fit-params
 /usr/bin/llama-mtmd-cli
 /usr/bin/llama-perplexity
-/usr/bin/llama-run
 /usr/bin/llama-tokenize
 /usr/bin/llama-tts
 # Not available with GGML_BACKEND_DL=ON
