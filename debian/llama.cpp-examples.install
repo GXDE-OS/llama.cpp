@@ -7,7 +7,6 @@
 /usr/bin/llama-gguf
 /usr/bin/llama-gguf-hash
 /usr/bin/llama-idle
-/usr/bin/llama-logits
 /usr/bin/llama-lookahead
 /usr/bin/llama-lookup
 /usr/bin/llama-lookup-create
