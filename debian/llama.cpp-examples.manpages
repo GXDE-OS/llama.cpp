@@ -1,4 +1,5 @@
 man/man1/llama-batched.1
+man/man1/llama-debug.1
 man/man1/llama-embedding.1
 man/man1/llama-eval-callback.1
 man/man1/llama-finetune.1

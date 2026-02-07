@@ -1,4 +1,5 @@
 /usr/bin/llama-batched
+/usr/bin/llama-debug
 /usr/bin/llama-diffusion-cli
 /usr/bin/llama-embedding
 /usr/bin/llama-eval-callback
