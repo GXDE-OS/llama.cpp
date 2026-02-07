@@ -11,10 +11,10 @@ Forwarded: not-needed
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/common/common.h b/common/common.h
-index f8bc686..356d27f 100644
+index 398ebb0..5939c43 100644
 --- a/common/common.h
 +++ b/common/common.h
-@@ -468,7 +468,8 @@ struct common_params {
+@@ -526,7 +526,8 @@ struct common_params {
      int32_t cache_ram_mib     = 8192;         // -1 = no limit, 0 - disable, 1 = 1 MiB, etc.
  
      std::string hostname      = "127.0.0.1";

@@ -13,10 +13,10 @@ Last-Update: 2026-01-15
  2 files changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/common/arg.cpp b/common/arg.cpp
-index 62d3139..a8d9e6a 100644
+index 5fbc902..9cf2651 100644
 --- a/common/arg.cpp
 +++ b/common/arg.cpp
-@@ -973,7 +973,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
+@@ -1107,7 +1107,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
      ).set_examples({LLAMA_EXAMPLE_COMPLETION, LLAMA_EXAMPLE_CLI, LLAMA_EXAMPLE_SPECULATIVE, LLAMA_EXAMPLE_LOOKUP}));
      add_opt(common_arg(
          {"-t", "--threads"}, "N",
@@ -26,10 +26,10 @@ index 62d3139..a8d9e6a 100644
              params.cpuparams.n_threads = value;
              if (params.cpuparams.n_threads <= 0) {
 diff --git a/tools/llama-bench/llama-bench.cpp b/tools/llama-bench/llama-bench.cpp
-index a98ede0..1fd81e9 100644
+index 7da6c39..81525dc 100644
 --- a/tools/llama-bench/llama-bench.cpp
 +++ b/tools/llama-bench/llama-bench.cpp
-@@ -427,8 +427,7 @@ static void print_usage(int /* argc */, char ** argv) {
+@@ -429,8 +429,7 @@ static void print_usage(int /* argc */, char ** argv) {
             join(transform_to_str(cmd_params_defaults.type_k, ggml_type_name), ",").c_str());
      printf("  -ctv, --cache-type-v <t>                  (default: %s)\n",
             join(transform_to_str(cmd_params_defaults.type_v, ggml_type_name), ",").c_str());
