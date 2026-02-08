@@ -12,10 +12,6 @@ Comment:
  This includes an embedded copy of ggml, but we don't use it. We use the
  system library instead.
  .
- This includes an embedded copy of linenoise.cpp. There seem to be multiple
- versions of this library, so we'll ship upstream's preferred version for now,
- and package one of the others for inclusion.
- .
  DFSG compliance
  ---------------
  We remove all of the model-related files, as some where generated from
@@ -31,7 +27,6 @@ Comment:
   - docs/backend/CUDA-FEDORA.md
   - examples/retrieval/README.md
   - scripts/apple/validate-macos.sh
-  - licenses/LICENSE-CURL (but no curl source is included)
 
 Files: *
 Copyright: 2023-2024, The ggml authors
@@ -82,12 +77,6 @@ Files: tools/mtmd/legacy-models/minicpmv-convert-image-encoder-to-gguf.py
 Copyright: 2024, Google AI and The HuggingFace Team
 License: Apache-2.0
 
-Files: tools/run/linenoise.cpp/*
-Copyright: 2010-2023, Salvatore Sanfilippo <antirez at gmail dot com>
-           2010-2013, Pieter Noordhuis <pcnoordhuis at gmail dot com>
-           2025, Eric Curtin <ericcurtin17 at gmail dot com>
-License: BSD-2-clause
-
 Files: vendor/nlohmann/*
 Copyright: 2009, Florian Loitsch <https://florian.loitsch.com/>
            2008-2009 Bjoern Hoehrmann <bjoern@hoehrmann.de>
@@ -127,10 +116,6 @@ Comment:
  ------------------------------------------------------------------------------
  ALTERNATIVE B - MIT No Attribution
  ------------------------------------------------------------------------------
-
-Files: vendor/minja/*
-Copyright: 2024 Google LLC
-License: Expat
 
 Files: vendor/sheredom/subprocess.h
 Copyright: Placed in the public domain
