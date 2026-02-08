@@ -1,5 +1,6 @@
 man/man1/llama-batched.1
 man/man1/llama-debug.1
+man/man1/llama-diffusion-cli.1
 man/man1/llama-embedding.1
 man/man1/llama-eval-callback.1
 man/man1/llama-finetune.1
@@ -7,6 +8,7 @@ man/man1/llama-finetune.1
 #/man/man1/llama-gen-docs.1
 man/man1/llama-gguf.1
 man/man1/llama-gguf-hash.1
+man/man1/llama-idle.1
 man/man1/llama-lookahead.1
 man/man1/llama-lookup.1
 man/man1/llama-lookup-create.1
