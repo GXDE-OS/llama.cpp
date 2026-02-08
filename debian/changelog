@@ -7,6 +7,10 @@ llama.cpp (7965+dfsg-1) unstable; urgency=medium
   * Drop patch included upstream
   * Refresh patches
   * Bump libggml-dev dependency to 0.9.6
+  * Replace libcurl4-openssl-dev with libssl-dev
+  * d/copyright: Drop references to no longer embedded libs
+  * Install additional man pages
+  * Refresh copyrights
 
  -- Christian Kastner <ckk@debian.org>  Sun, 08 Feb 2026 10:18:39 +0100
 
