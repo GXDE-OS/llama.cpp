@@ -29,7 +29,7 @@ Comment:
   - scripts/apple/validate-macos.sh
 
 Files: *
-Copyright: 2023-2024, The ggml authors
+Copyright: 2023-2026, The ggml authors
 License: Expat
 
 Files: common/base64.hpp
@@ -102,7 +102,7 @@ Comment:
  ------------------------------------------------------------------------------
 
 Files: vendor/cpp-httplib/*
-Copyright: 2017 Yuji Hirose
+Copyright: 2026 Yuji Hirose
 License: Expat
 
 Files: vendor/miniaudio/*
