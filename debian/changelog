@@ -1,3 +1,10 @@
+llama.cpp (8064+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 8064+dfsg
+  * autopkgtest: CUDA no longer supported on ppc64el
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 15 Feb 2026 22:11:57 +0100
+
 llama.cpp (7965+dfsg-1) unstable; urgency=medium
 
   * New upstream version 7965+dfsg
