@@ -1,0 +1,14 @@
+[Unit]
+Description=llama.cpp LLM inference server
+After=network-online.target
+
+[Service]
+User=llama
+Group=llama
+
+ExecStart=/usr/bin/llama-server
+EnvironmentFile=/etc/default/llama-server
+
+[Install]
+WantedBy=multi-user.target
+
