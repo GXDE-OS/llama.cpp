@@ -16,10 +16,11 @@ case "$1" in
 
   # Sane defaults:
 
-  [ -z "$SERVER_HOME" ] && SERVER_HOME=/var/lib/llama
-  [ -z "$SERVER_USER" ] && SERVER_USER=llama
+  [ -z "$SERVER_HOME" ] && SERVER_HOME=/var/lib/llama-server
+  [ -z "$SERVER_CACHE" ] && SERVER_CACHE=/var/cache/llama-server
+  [ -z "$SERVER_USER" ] && SERVER_USER=_llama-server
   [ -z "$SERVER_NAME" ] && SERVER_NAME="llama.cpp server"
-  [ -z "$SERVER_GROUP" ] && SERVER_GROUP=llama
+  [ -z "$SERVER_GROUP" ] && SERVER_GROUP=_llama-server
 
   # create user to avoid running server as root
   # 1. create group if not existing
@@ -57,6 +58,12 @@ case "$1" in
   then
       chown $SERVER_USER:$SERVER_GROUP $SERVER_HOME
       chmod u=rwx $SERVER_HOME
+  fi
+  if ! dpkg-statoverride --list $SERVER_CACHE >/dev/null
+  then
+      mkdir -p $SERVER_CACHE
+      chown $SERVER_USER:$SERVER_GROUP $SERVER_CACHE
+      chmod u=rwx $SERVER_CACHE
   fi
   ;;
   *)
