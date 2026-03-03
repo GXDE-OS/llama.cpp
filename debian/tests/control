@@ -1,5 +1,5 @@
 Tests: upstream-basic
-Depends: llama.cpp-tests
+Depends: dpkg-dev, llama.cpp-tests
 Restrictions: allow-stderr
 
 Test-Command: debian/tests/llama.cpp-tools
