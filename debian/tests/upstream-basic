@@ -3,8 +3,9 @@
 testsdir="/usr/libexec/$(dpkg-architecture -qDEB_HOST_MULTIARCH)/llama.cpp-tests/"
 
 # Some of these tests need additional arguments and/or data that we still
-# need to figure out
+# need to figure out, or require network access (test-arg-parser)
 skip_tests="\
+test-arg-parser
 test-autorelease
 test-chat
 test-chat-template
