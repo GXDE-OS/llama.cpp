@@ -76,6 +76,13 @@ override_dh_auto_install-indep:
 			--no-discard-stderr \
 			$$progname > man/man1/$$progname_base.1; \
 	done
+	
+	# llama-server systemd service configuration
+	install -D -m0644 debian/llama-server.default debian/llama.cpp-tools/etc/default/llama-server
+
+override_dh_installsystemd:
+	# Do not enable llama-server.service by default
+	dh_installsystemd --no-enable --no-start --name llama-server
 
 override_dh_auto_clean-indep:
 	dh_auto_clean --buildsystem=pybuild

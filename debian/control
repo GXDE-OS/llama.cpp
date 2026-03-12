@@ -125,6 +125,7 @@ Package: llama.cpp-tools
 Architecture: any
 Multi-Arch: foreign
 Depends: libllama0 (= ${binary:Version}),
+         adduser,
          ${misc:Depends},
          ${shlibs:Depends},
 Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
