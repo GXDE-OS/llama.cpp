@@ -452,34 +452,6 @@ void string_replace_all(std::string & s, const std::string & search, const std::
     s = std::move(builder);
 }
 
-bool string_ends_with(const std::string_view & str, const std::string_view & suffix) {
-    return str.size() >= suffix.size() && str.compare(str.size()-suffix.size(), suffix.size(), suffix) == 0;
-}
-
-bool string_remove_suffix(std::string & str, const std::string_view & suffix) {
-    bool has_suffix = string_ends_with(str, suffix);
-    if (has_suffix) {
-        str = str.substr(0, str.size() - suffix.size());
-    }
-    return has_suffix;
-}
-
-size_t string_find_partial_stop(const std::string_view & str, const std::string_view & stop) {
-    if (!str.empty() && !stop.empty()) {
-        const char text_last_char = str.back();
-        for (int64_t char_index = stop.size() - 1; char_index >= 0; char_index--) {
-            if (stop[char_index] == text_last_char) {
-                const auto current_partial = stop.substr(0, char_index + 1);
-                if (string_ends_with(str, current_partial)) {
-                    return str.size() - char_index - 1;
-                }
-            }
-        }
-    }
-
-    return std::string::npos;
-}
-
 std::string regex_escape(const std::string & s) {
     static const std::regex special_chars("[.^$|()*+?\\[\\]{}\\\\]");
     return std::regex_replace(s, special_chars, "\\$&");
@@ -704,7 +676,7 @@ bool fs_validate_filename(const std::string & filename, bool allow_subdirs) {
 
     size_t offset = 0;
     while (offset < filename.size()) {
-        utf8_parse_result result = parse_utf8_codepoint(filename, offset);
+        utf8_parse_result result = common_parse_utf8_codepoint(filename, offset);
 
         if (result.status != utf8_parse_result::SUCCESS) {
             return false;
@@ -1095,7 +1067,7 @@ common_init_result::common_init_result(common_params & params) :
 
     const llama_vocab * vocab = llama_model_get_vocab(model);
 
-    // load and optionally apply lora adapters (must be loaded before context creation)
+    // load and optionally apply lora adapters
     for (auto & la : params.lora_adapters) {
         llama_adapter_lora_ptr lora;
         lora.reset(llama_adapter_lora_init(model, la.path.c_str()));
@@ -1787,4 +1759,66 @@ float lr_opt::get_lr(float epoch) const {
         lr0 * std::pow(0.5f, epoch * scale_epoch);
     LOG_INF("epoch %.2g lr=%.2g\n", epoch, r);
     return r;
+}
+
+bool common_replay_last_token(struct llama_context * ctx, llama_token last_token, int32_t pos) {
+    llama_batch batch = llama_batch_get_one(&last_token, 1);
+    batch.pos = &pos;
+    if (llama_decode(ctx, batch)) {
+        LOG_ERR("%s: failed to replay last token\n", __func__);
+        return false;
+    }
+    return true;
+}
+
+bool common_prompt_batch_decode(
+              struct llama_context * ctx,
+    const std::vector<llama_token> & tokens,
+                               int & n_past,
+                               int   n_batch,
+                  std::string_view   state_path,
+                              bool   save_state) {
+    const int n_eval = tokens.size();
+    if (n_eval == 0) {
+        return true;
+    }
+
+    if (save_state && n_eval > 1) {
+        const int n_tokens_before_last = n_eval - 1;
+
+        GGML_ASSERT(n_eval <= n_batch);
+
+        // Decode all but the last token so we can save the memory state before decoding the last token.
+        // This is done so we can restore the session state later and replay the last token.
+        // Memory implementations in recurrent/hybrid models don't support removing tokens from their
+        // memory, so we can't just remove the last token from the memory and replay the last token which
+        // is the reason for this logic.
+        if (llama_decode(ctx, llama_batch_get_one(const_cast<llama_token*>(tokens.data()), n_tokens_before_last))) {
+            LOG_ERR("%s : failed to eval\n", __func__);
+            return false;
+        }
+        n_past += n_tokens_before_last;
+
+        llama_state_save_file(ctx, state_path.data(), tokens.data(), n_tokens_before_last);
+        LOG_INF("saved session before last token to %s, n_tokens = %d\n", state_path.data(), n_tokens_before_last);
+
+        llama_token last_token = tokens.back();
+        llama_batch batch = llama_batch_get_one(&last_token, 1);
+        int32_t pos = n_past;
+        batch.pos = &pos;
+
+        if (llama_decode(ctx, batch)) {
+            LOG_ERR("%s : failed to eval last token\n", __func__);
+            return false;
+        }
+        n_past++;
+    } else {
+        if (llama_decode(ctx, llama_batch_get_one(const_cast<llama_token*>(tokens.data()), n_eval))) {
+            LOG_ERR("%s : failed to eval\n", __func__);
+            return false;
+        }
+        n_past += n_eval;
+    }
+
+    return true;
 }
