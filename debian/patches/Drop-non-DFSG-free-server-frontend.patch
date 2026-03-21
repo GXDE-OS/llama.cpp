@@ -12,11 +12,11 @@ Forwarded: not-needed
  tools/server/server-http.cpp | 15 ---------------
  2 files changed, 16 deletions(-)
 
-diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
-index a39b4c5..b1cdd62 100644
---- a/tools/server/CMakeLists.txt
-+++ b/tools/server/CMakeLists.txt
-@@ -40,7 +40,6 @@ set(TARGET_SRCS
+Index: llama.cpp/tools/server/CMakeLists.txt
+===================================================================
+--- llama.cpp.orig/tools/server/CMakeLists.txt
++++ llama.cpp/tools/server/CMakeLists.txt
+@@ -36,7 +36,6 @@ set(TARGET_SRCS
      server-models.h
  )
  set(PUBLIC_ASSETS
@@ -24,10 +24,10 @@ index a39b4c5..b1cdd62 100644
      loading.html
  )
  
-diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
-index 00897ee..89afe63 100644
---- a/tools/server/server-http.cpp
-+++ b/tools/server/server-http.cpp
+Index: llama.cpp/tools/server/server-http.cpp
+===================================================================
+--- llama.cpp.orig/tools/server/server-http.cpp
++++ llama.cpp/tools/server/server-http.cpp
 @@ -9,7 +9,6 @@
  #include <thread>
  
@@ -36,7 +36,7 @@ index 00897ee..89afe63 100644
  #include "loading.html.hpp"
  
  //
-@@ -248,20 +247,6 @@ bool server_http_context::init(const common_params & params) {
+@@ -248,20 +247,6 @@ bool server_http_context::init(const com
                  LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
                  return 1;
              }
