@@ -27,10 +27,13 @@ override_dh_auto_configure-indep:
 	dh_auto_configure --buildsystem=pybuild
 
 execute_after_dh_auto_build-arch:
+	# We skip some progs because they don't have a --help option
 	mkdir -p man/man1
 	for progname in obj-*/bin/llama-*; do \
 		progname_base=$$(basename $$progname); \
 		[ "$$progname_base" != "llama-gen-docs" ] || continue ; \
+		[ "$$progname_base" != "llama-debug-options-parser" ] || continue ; \
+		[ "$$progname_base" != "llama-template-analysis" ] || continue ; \
 		help2man \
 			--source=debian \
 			--version-string=$(DEB_VERSION_UPSTREAM) \
