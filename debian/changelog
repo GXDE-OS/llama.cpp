@@ -1,3 +1,17 @@
+llama.cpp (8461+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 8461+dfsg
+  * Refresh patches
+  * Bump ggml Build-Depends to 0.9.8
+  * Ship newly appeared tools
+    - llama-debug-template-parser
+    - llama-results
+    - llama-template-analysis
+  * Use relative paths in *.install
+  * Drop Rules-Requires-Root: no, default since trixie
+
+ -- Christian Kastner <ckk@debian.org>  Sat, 21 Mar 2026 09:35:28 +0100
+
 llama.cpp (8064+dfsg-2) unstable; urgency=medium
 
   * Introduce llama-server systemd unit file (disabled by default)
