@@ -52,7 +52,7 @@ Copyright: 2023-2024, The ggml authors
 License: Expat and Apache-2.0 with LLVM exception
 
 Files: ggml/src/ggml-cpu/kleidiai/*
-Copyright: 2025, Arm Limited and/or its affiliates <open-source-office@arm.com>
+Copyright: 2025-2026, Arm Limited and/or its affiliates <open-source-office@arm.com>
 License: Expat
 
 Files: ggml/src/ggml-cpu/llamafile/sgemm.*
@@ -107,7 +107,7 @@ Copyright: 2026 Yuji Hirose
 License: Expat
 
 Files: vendor/miniaudio/*
-Copyright: 2025, David Reid
+Copyright: 2026, David Reid
 License: public-domain-2 or MIT-no-attribution
 Comment:
  ------------------------------------------------------------------------------
