@@ -4,6 +4,7 @@ Upstream-Contact:
 Source: https://github.com/ggml-org/llama.cpp
 Files-Excluded: tools/server/public_legacy
                 tools/server/public/index.html.gz
+                tools/server/public/bundle.*
                 examples/llama.android/gradle/wrapper/gradle-wrapper.jar
                 models
 Comment:
