@@ -8,52 +8,61 @@ available in Debian.
 
 Forwarded: not-needed
 ---
- tools/server/CMakeLists.txt  |  1 -
- tools/server/server-http.cpp | 15 ---------------
- 2 files changed, 16 deletions(-)
+ tools/server/CMakeLists.txt  |  3 ---
+ tools/server/server-http.cpp | 22 ----------------------
+ 2 files changed, 25 deletions(-)
 
-Index: llama.cpp/tools/server/CMakeLists.txt
-===================================================================
---- llama.cpp.orig/tools/server/CMakeLists.txt
-+++ llama.cpp/tools/server/CMakeLists.txt
-@@ -36,7 +36,6 @@ set(TARGET_SRCS
-     server-models.h
- )
- set(PUBLIC_ASSETS
--    index.html.gz
-     loading.html
- )
+diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
+index 451a045..fa2761d 100644
+--- a/tools/server/CMakeLists.txt
++++ b/tools/server/CMakeLists.txt
+@@ -42,9 +42,6 @@ option(LLAMA_BUILD_WEBUI "Build the embedded Web UI" ON)
  
-Index: llama.cpp/tools/server/server-http.cpp
-===================================================================
---- llama.cpp.orig/tools/server/server-http.cpp
-+++ llama.cpp/tools/server/server-http.cpp
-@@ -9,7 +9,6 @@
- #include <thread>
+ if (LLAMA_BUILD_WEBUI)
+     set(PUBLIC_ASSETS
+-        index.html
+-        bundle.js
+-        bundle.css
+         loading.html
+     )
  
+diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
+index f52240b..c933ff8 100644
+--- a/tools/server/server-http.cpp
++++ b/tools/server/server-http.cpp
+@@ -10,9 +10,6 @@
+ 
+ #ifdef LLAMA_BUILD_WEBUI
  // auto generated files (see README.md for details)
--#include "index.html.gz.hpp"
+-#include "index.html.hpp"
+-#include "bundle.js.hpp"
+-#include "bundle.css.hpp"
  #include "loading.html.hpp"
+ #endif
  
- //
-@@ -248,20 +247,6 @@ bool server_http_context::init(const com
+@@ -271,25 +268,6 @@ bool server_http_context::init(const common_params & params) {
                  LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
                  return 1;
              }
 -        } else {
+-#ifdef LLAMA_BUILD_WEBUI
 -            // using embedded static index.html
--            srv->Get(params.api_prefix + "/", [](const httplib::Request & req, httplib::Response & res) {
--                if (req.get_header_value("Accept-Encoding").find("gzip") == std::string::npos) {
--                    res.set_content("Error: gzip is not supported by this browser", "text/plain");
--                } else {
--                    res.set_header("Content-Encoding", "gzip");
--                    // COEP and COOP headers, required by pyodide (python interpreter)
--                    res.set_header("Cross-Origin-Embedder-Policy", "require-corp");
--                    res.set_header("Cross-Origin-Opener-Policy", "same-origin");
--                    res.set_content(reinterpret_cast<const char*>(index_html_gz), index_html_gz_len, "text/html; charset=utf-8");
--                }
+-            srv->Get(params.api_prefix + "/", [](const httplib::Request & /*req*/, httplib::Response & res) {
+-                // COEP and COOP headers, required by pyodide (python interpreter)
+-                res.set_header("Cross-Origin-Embedder-Policy", "require-corp");
+-                res.set_header("Cross-Origin-Opener-Policy", "same-origin");
+-                res.set_content(reinterpret_cast<const char*>(index_html), index_html_len, "text/html; charset=utf-8");
 -                return false;
 -            });
+-            srv->Get(params.api_prefix + "/bundle.js", [](const httplib::Request & /*req*/, httplib::Response & res) {
+-                res.set_content(reinterpret_cast<const char*>(bundle_js), bundle_js_len, "application/javascript; charset=utf-8");
+-                return false;
+-            });
+-            srv->Get(params.api_prefix + "/bundle.css", [](const httplib::Request & /*req*/, httplib::Response & res) {
+-                res.set_content(reinterpret_cast<const char*>(bundle_css), bundle_css_len, "text/css; charset=utf-8");
+-                return false;
+-            });
+-#endif
          }
      }
      return true;

@@ -10,11 +10,11 @@ Forwarded: not-needed
  common/common.h | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Index: llama.cpp/common/common.h
-===================================================================
---- llama.cpp.orig/common/common.h
-+++ llama.cpp/common/common.h
-@@ -583,7 +583,8 @@ struct common_params {
+diff --git a/common/common.h b/common/common.h
+index 17dc3fb..eca2eb2 100644
+--- a/common/common.h
++++ b/common/common.h
+@@ -584,7 +584,8 @@ struct common_params {
      int32_t cache_ram_mib       = 8192;  // -1 = no limit, 0 - disable, 1 = 1 MiB, etc.
  
      std::string hostname      = "127.0.0.1";

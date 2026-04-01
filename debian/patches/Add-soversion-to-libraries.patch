@@ -11,10 +11,10 @@ Forwarded: not-needed
  tools/mtmd/CMakeLists.txt | 1 +
  2 files changed, 2 insertions(+)
 
-Index: llama.cpp/src/CMakeLists.txt
-===================================================================
---- llama.cpp.orig/src/CMakeLists.txt
-+++ llama.cpp/src/CMakeLists.txt
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 283823f..37013af 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
 @@ -164,6 +164,7 @@ target_link_libraries(llama PUBLIC ggml)
  
  if (BUILD_SHARED_LIBS)
@@ -23,11 +23,11 @@ Index: llama.cpp/src/CMakeLists.txt
      target_compile_definitions(llama PRIVATE LLAMA_BUILD)
      target_compile_definitions(llama PUBLIC  LLAMA_SHARED)
  endif()
-Index: llama.cpp/tools/mtmd/CMakeLists.txt
-===================================================================
---- llama.cpp.orig/tools/mtmd/CMakeLists.txt
-+++ llama.cpp/tools/mtmd/CMakeLists.txt
-@@ -49,6 +49,7 @@ target_compile_features   (mtmd PRIVATE
+diff --git a/tools/mtmd/CMakeLists.txt b/tools/mtmd/CMakeLists.txt
+index c95d7df..32971f2 100644
+--- a/tools/mtmd/CMakeLists.txt
++++ b/tools/mtmd/CMakeLists.txt
+@@ -51,6 +51,7 @@ target_compile_features   (mtmd PRIVATE cxx_std_17)
  
  if (BUILD_SHARED_LIBS)
      set_target_properties     (mtmd PROPERTIES POSITION_INDEPENDENT_CODE ON)

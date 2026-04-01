@@ -12,14 +12,15 @@ Forwarded: not-needed
  tools/mtmd/CMakeLists.txt |  5 ++++-
  3 files changed, 21 insertions(+), 11 deletions(-)
 
-Index: llama.cpp/CMakeLists.txt
-===================================================================
---- llama.cpp.orig/CMakeLists.txt
-+++ llama.cpp/CMakeLists.txt
-@@ -186,6 +186,16 @@ if (NOT TARGET ggml AND NOT LLAMA_USE_SY
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index caea48c..78c3827 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -186,6 +186,16 @@ if (NOT TARGET ggml AND NOT LLAMA_USE_SYSTEM_GGML)
+     # ... otherwise assume ggml is added by a parent CMakeLists.txt
  endif()
  
- #
++#
 +# Define destinations
 +#
 +include(GNUInstallDirs)
@@ -29,11 +30,10 @@ Index: llama.cpp/CMakeLists.txt
 +set(LLAMA_LIB_INSTALL_DIR     ${CMAKE_INSTALL_LIBDIR}/llama     CACHE PATH "Location of library files")
 +set(LLAMA_BIN_INSTALL_DIR     ${CMAKE_INSTALL_BINDIR}     CACHE PATH "Location of binary  files")
 +
-+#
+ #
  # build the library
  #
- 
-@@ -231,13 +241,6 @@ endif()
+@@ -232,13 +242,6 @@ endif()
  # install
  #
  
@@ -47,7 +47,7 @@ Index: llama.cpp/CMakeLists.txt
  set(LLAMA_PUBLIC_HEADERS
      ${CMAKE_CURRENT_SOURCE_DIR}/include/llama.h
      ${CMAKE_CURRENT_SOURCE_DIR}/include/llama-cpp.h)
-@@ -246,7 +249,11 @@ set_target_properties(llama
+@@ -247,7 +250,11 @@ set_target_properties(llama
      PROPERTIES
          PUBLIC_HEADER "${LLAMA_PUBLIC_HEADERS}")
  
@@ -60,10 +60,10 @@ Index: llama.cpp/CMakeLists.txt
  
  configure_package_config_file(
          ${CMAKE_CURRENT_SOURCE_DIR}/cmake/llama-config.cmake.in
-Index: llama.cpp/cmake/llama.pc.in
-===================================================================
---- llama.cpp.orig/cmake/llama.pc.in
-+++ llama.cpp/cmake/llama.pc.in
+diff --git a/cmake/llama.pc.in b/cmake/llama.pc.in
+index 6fb58b5..56d46c9 100644
+--- a/cmake/llama.pc.in
++++ b/cmake/llama.pc.in
 @@ -1,7 +1,7 @@
  prefix=@CMAKE_INSTALL_PREFIX@
  exec_prefix=@CMAKE_INSTALL_PREFIX@
@@ -74,11 +74,11 @@ Index: llama.cpp/cmake/llama.pc.in
  
  Name: llama
  Description: Port of Facebook's LLaMA model in C/C++
-Index: llama.cpp/tools/mtmd/CMakeLists.txt
-===================================================================
---- llama.cpp.orig/tools/mtmd/CMakeLists.txt
-+++ llama.cpp/tools/mtmd/CMakeLists.txt
-@@ -66,7 +66,10 @@ set_target_properties(mtmd
+diff --git a/tools/mtmd/CMakeLists.txt b/tools/mtmd/CMakeLists.txt
+index b3cf15f..c95d7df 100644
+--- a/tools/mtmd/CMakeLists.txt
++++ b/tools/mtmd/CMakeLists.txt
+@@ -68,7 +68,10 @@ set_target_properties(mtmd
      PROPERTIES
      PRIVATE_HEADER debug/mtmd-debug.h)
  
