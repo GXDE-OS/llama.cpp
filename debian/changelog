@@ -1,3 +1,20 @@
+llama.cpp (8611+dfsg-1) unstable; urgency=medium
+
+  [ Talha Can Havadar ]
+  * d/t/control: add missing dpkg-dev dependency for upstream-basic
+  * d/t/upstream-basic: add test-arg-parser to skip_tests
+  * d/t/upstream-basic: skip test-chat-auto-parse as it requires templates
+  * d/t/upstream-basic: skip test-llama-archs as known to be broken
+
+  [ Christian Kastner ]
+  * New upstream version 8611+dfsg
+    - Refresh patches
+  * Bump libggml0 Build-Depends to 0.9.10
+  * d/copyright: Exclude more bundled/miminimized JavaScript
+  * Refresh copyrights
+
+ -- Christian Kastner <ckk@debian.org>  Wed, 01 Apr 2026 18:20:14 +0200
+
 llama.cpp (8461+dfsg-1) unstable; urgency=medium
 
   * New upstream version 8461+dfsg
