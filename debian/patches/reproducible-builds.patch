@@ -13,10 +13,10 @@ Last-Update: 2026-01-15
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/common/arg.cpp b/common/arg.cpp
-index 538d2a4..7dab873 100644
+index 2e0f46d..2fb6e86 100644
 --- a/common/arg.cpp
 +++ b/common/arg.cpp
-@@ -1107,7 +1107,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
+@@ -1109,7 +1109,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
      ).set_examples({LLAMA_EXAMPLE_COMPLETION, LLAMA_EXAMPLE_CLI, LLAMA_EXAMPLE_SPECULATIVE, LLAMA_EXAMPLE_LOOKUP}));
      add_opt(common_arg(
          {"-t", "--threads"}, "N",
@@ -26,10 +26,10 @@ index 538d2a4..7dab873 100644
              params.cpuparams.n_threads = value;
              if (params.cpuparams.n_threads <= 0) {
 diff --git a/tools/llama-bench/llama-bench.cpp b/tools/llama-bench/llama-bench.cpp
-index 0a23f69..64b016e 100644
+index 0b395b4..e461e61 100644
 --- a/tools/llama-bench/llama-bench.cpp
 +++ b/tools/llama-bench/llama-bench.cpp
-@@ -432,7 +432,7 @@ static void print_usage(int /* argc */, char ** argv) {
+@@ -438,7 +438,7 @@ static void print_usage(int /* argc */, char ** argv) {
      printf("  -ub, --ubatch-size <n>                      (default: %s)\n", join(cmd_params_defaults.n_ubatch, ",").c_str());
      printf("  -ctk, --cache-type-k <t>                    (default: %s)\n", join(transform_to_str(cmd_params_defaults.type_k, ggml_type_name), ",").c_str());
      printf("  -ctv, --cache-type-v <t>                    (default: %s)\n", join(transform_to_str(cmd_params_defaults.type_v, ggml_type_name), ",").c_str());

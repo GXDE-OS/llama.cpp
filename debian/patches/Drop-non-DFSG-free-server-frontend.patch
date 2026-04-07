@@ -27,7 +27,7 @@ index 451a045..fa2761d 100644
      )
  
 diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
-index f52240b..c933ff8 100644
+index 37e7cbe..fb213c1 100644
 --- a/tools/server/server-http.cpp
 +++ b/tools/server/server-http.cpp
 @@ -10,9 +10,6 @@
@@ -40,7 +40,7 @@ index f52240b..c933ff8 100644
  #include "loading.html.hpp"
  #endif
  
-@@ -271,25 +268,6 @@ bool server_http_context::init(const common_params & params) {
+@@ -275,25 +272,6 @@ bool server_http_context::init(const common_params & params) {
                  LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
                  return 1;
              }
