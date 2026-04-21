@@ -13,7 +13,7 @@ Forwarded: not-needed
  3 files changed, 21 insertions(+), 11 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index caea48c..78c3827 100644
+index 310a3dc..ab8b743 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -186,6 +186,16 @@ if (NOT TARGET ggml AND NOT LLAMA_USE_SYSTEM_GGML)
@@ -58,8 +58,8 @@ index caea48c..78c3827 100644
 +    PUBLIC_HEADER DESTINATION ${LLAMA_INCLUDE_INSTALL_DIR}
 +)
  
- configure_package_config_file(
-         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/llama-config.cmake.in
+ if (LLAMA_BUILD_COMMON)
+     install(TARGETS llama-common LIBRARY)
 diff --git a/cmake/llama.pc.in b/cmake/llama.pc.in
 index 6fb58b5..56d46c9 100644
 --- a/cmake/llama.pc.in
@@ -75,10 +75,10 @@ index 6fb58b5..56d46c9 100644
  Name: llama
  Description: Port of Facebook's LLaMA model in C/C++
 diff --git a/tools/mtmd/CMakeLists.txt b/tools/mtmd/CMakeLists.txt
-index 6ffdb67..bac3d4c 100644
+index 3998761..20b21bf 100644
 --- a/tools/mtmd/CMakeLists.txt
 +++ b/tools/mtmd/CMakeLists.txt
-@@ -70,7 +70,10 @@ set_target_properties(mtmd
+@@ -74,7 +74,10 @@ set_target_properties(mtmd
      PROPERTIES
      PRIVATE_HEADER debug/mtmd-debug.h)
  
