@@ -7,13 +7,13 @@ not yet stable.
 
 Forwarded: not-needed
 ---
- CMakeLists.txt            | 23 +++++++++++++++--------
+ CMakeLists.txt            | 29 ++++++++++++++++++++---------
  cmake/llama.pc.in         |  4 ++--
  tools/mtmd/CMakeLists.txt |  5 ++++-
- 3 files changed, 21 insertions(+), 11 deletions(-)
+ 3 files changed, 26 insertions(+), 12 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 310a3dc..ab8b743 100644
+index 310a3dc..2d1b6ee 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -186,6 +186,16 @@ if (NOT TARGET ggml AND NOT LLAMA_USE_SYSTEM_GGML)
@@ -47,7 +47,7 @@ index 310a3dc..ab8b743 100644
  set(LLAMA_PUBLIC_HEADERS
      ${CMAKE_CURRENT_SOURCE_DIR}/include/llama.h
      ${CMAKE_CURRENT_SOURCE_DIR}/include/llama-cpp.h)
-@@ -247,7 +250,11 @@ set_target_properties(llama
+@@ -247,10 +250,18 @@ set_target_properties(llama
      PROPERTIES
          PUBLIC_HEADER "${LLAMA_PUBLIC_HEADERS}")
  
@@ -59,7 +59,15 @@ index 310a3dc..ab8b743 100644
 +)
  
  if (LLAMA_BUILD_COMMON)
-     install(TARGETS llama-common LIBRARY)
+-    install(TARGETS llama-common LIBRARY)
++    install(TARGETS llama-common
++        # On Debian, we install the library and headers to a private directory "llama"
++        LIBRARY DESTINATION ${LLAMA_LIB_INSTALL_DIR}
++        PUBLIC_HEADER DESTINATION ${LLAMA_INCLUDE_INSTALL_DIR}
++    )
+ endif()
+ 
+ configure_package_config_file(
 diff --git a/cmake/llama.pc.in b/cmake/llama.pc.in
 index 6fb58b5..56d46c9 100644
 --- a/cmake/llama.pc.in
