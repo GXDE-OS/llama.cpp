@@ -33,6 +33,14 @@ Files: *
 Copyright: 2023-2026, The ggml authors
 License: Expat
 
+Files: debian/legacy-themes
+Copyright: 2023-2026, The ggml authors
+License: Expat
+Comment:
+ Upstream removed these themes in b8708. We have re-added copies of these
+ under debian/legacy-themes because we need at least one DFSG-compliant
+ theme for the server.
+
 Files: common/base64.hpp
 Copyright: Placed in the public domain
 License: public-domain-1

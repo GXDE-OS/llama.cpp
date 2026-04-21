@@ -8,7 +8,10 @@ usr/bin/llama-server
 # how to best deal with it, just ship it in docs
 usr/bin/convert_hf_to_gguf.py		usr/share/doc/llama.cpp-tools/scripts/
 
-# Install the themese but rename the simplechat directory
-tools/server/public_simplechat/*    usr/share/llama.cpp-tools/llama-server/themes/simplechat
-tools/server/themes/buttons-top     usr/share/llama.cpp-tools/llama-server/themes/
-tools/server/themes/wild            usr/share/llama.cpp-tools/llama-server/themes/
+# Install the themes but rename the simplechat directory
+# These are copies of the legacy themes that upstream used to ship until they
+# were removed in b8701. We re-add them so that we can ship a DFSG-free
+# version.
+debian/legacy-themes/public_simplechat/*    usr/share/llama.cpp-tools/llama-server/themes/simplechat
+debian/legacy-themes/themes/buttons-top     usr/share/llama.cpp-tools/llama-server/themes/
+debian/legacy-themes/themes/wild            usr/share/llama.cpp-tools/llama-server/themes/
