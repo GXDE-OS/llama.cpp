@@ -722,7 +722,10 @@ class MultiChatUI {
 class Me {
 
     constructor() {
-        this.baseURL = "http://127.0.0.1:8080";
+        const host = window.location.hostname.includes(":")
+            ? `[${window.location.hostname}]`
+            : window.location.hostname;
+        this.baseURL = `${window.location.protocol}//${host}:8080`;
         this.defaultChatIds = [ "Default", "Other" ];
         this.multiChat = new MultiChatUI();
         this.bStream = true;
