@@ -1,3 +1,15 @@
+llama.cpp (8870+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 8870+dfsg
+    - Refresh patches
+  * Update private library patch for new libllama-common
+  * Re-introduce server themes dropped by upstream
+    We need at least one DFSG-free version
+  * Don't hardcode URL in server "simplechat" web UI
+    Thanks to Petter Reinholdtsen for the fix. (Closes: #1128381)
+
+ -- Christian Kastner <ckk@debian.org>  Wed, 22 Apr 2026 21:39:06 +0200
+
 llama.cpp (8681+dfsg-1) unstable; urgency=medium
 
   * New upstream version 8681+dfsg
