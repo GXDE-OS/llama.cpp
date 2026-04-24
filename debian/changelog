@@ -2,6 +2,7 @@ llama.cpp (8870+dfsg-1) unstable; urgency=medium
 
   * New upstream version 8870+dfsg
     - Refresh patches
+  * Bump ggml dependency to 0.10.0
   * Update private library patch for new libllama-common
   * Re-introduce server themes dropped by upstream
     We need at least one DFSG-free version
