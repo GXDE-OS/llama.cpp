@@ -33,14 +33,6 @@ Files: *
 Copyright: 2023-2026, The ggml authors
 License: Expat
 
-Files: debian/legacy-themes
-Copyright: 2023-2026, The ggml authors
-License: Expat
-Comment:
- Upstream removed these themes in b8708. We have re-added copies of these
- under debian/legacy-themes because we need at least one DFSG-compliant
- theme for the server.
-
 Files: common/base64.hpp
 Copyright: Placed in the public domain
 License: public-domain-1
@@ -134,6 +126,14 @@ Files: debian/*
 Copyright: 2024-2026 Christian Kastner <ckk@debian.org>
            2025-2026 Mathieu Baudier <mbaudier@argeo.org>
 License: Expat
+
+Files: debian/legacy-themes/*
+Copyright: 2023-2026, The ggml authors
+License: Expat
+Comment:
+ Upstream removed these themes in b8708. We have re-added copies of these
+ under debian/legacy-themes because we need at least one DFSG-compliant
+ theme for the server.
 
 License: Expat
  Permission is hereby granted, free of charge, to any person obtaining a copy
