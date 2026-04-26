@@ -13,10 +13,10 @@ Forwarded: not-needed
  2 files changed, 25 deletions(-)
 
 diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
-index 0cce99f..b2ec9ee 100644
+index 71cc0e7..f052e98 100644
 --- a/tools/server/CMakeLists.txt
 +++ b/tools/server/CMakeLists.txt
-@@ -42,9 +42,6 @@ option(LLAMA_BUILD_WEBUI "Build the embedded Web UI" ON)
+@@ -44,9 +44,6 @@ option(LLAMA_BUILD_WEBUI "Build the embedded Web UI" ON)
  
  if (LLAMA_BUILD_WEBUI)
      set(PUBLIC_ASSETS
