@@ -1,3 +1,12 @@
+llama.cpp (8941+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 8941+dfsg
+    - Refresh patches
+  * libllama-dev needs libggml >= 0.10.0
+  * d/copyright: Correct pattern for d/legacy-themes
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 26 Apr 2026 23:45:18 +0200
+
 llama.cpp (8870+dfsg-1) unstable; urgency=medium
 
   * New upstream version 8870+dfsg
