@@ -27,7 +27,7 @@ index 71cc0e7..f052e98 100644
      )
  
 diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
-index ae39fbf..ac26b20 100644
+index 6f24f83..f19a6c8 100644
 --- a/tools/server/server-http.cpp
 +++ b/tools/server/server-http.cpp
 @@ -10,9 +10,6 @@
