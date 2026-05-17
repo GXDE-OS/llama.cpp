@@ -8,17 +8,16 @@ available in Debian.
 
 Forwarded: not-needed
 ---
- tools/server/CMakeLists.txt  |  3 ---
- tools/server/server-http.cpp | 22 ----------------------
- 2 files changed, 25 deletions(-)
+ tools/ui/CMakeLists.txt | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
-index 71cc0e7..f052e98 100644
---- a/tools/server/CMakeLists.txt
-+++ b/tools/server/CMakeLists.txt
-@@ -44,9 +44,6 @@ option(LLAMA_BUILD_WEBUI "Build the embedded Web UI" ON)
+diff --git a/tools/ui/CMakeLists.txt b/tools/ui/CMakeLists.txt
+index 9687ca9..6dc8d26 100644
+--- a/tools/ui/CMakeLists.txt
++++ b/tools/ui/CMakeLists.txt
+@@ -21,9 +21,6 @@ if(LLAMA_BUILD_WEBUI OR LLAMA_BUILD_UI)
+     endif()
  
- if (LLAMA_BUILD_WEBUI)
      set(PUBLIC_ASSETS
 -        index.html
 -        bundle.js
@@ -26,43 +25,3 @@ index 71cc0e7..f052e98 100644
          loading.html
      )
  
-diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
-index 6f24f83..f19a6c8 100644
---- a/tools/server/server-http.cpp
-+++ b/tools/server/server-http.cpp
-@@ -10,9 +10,6 @@
- 
- #ifdef LLAMA_BUILD_WEBUI
- // auto generated files (see README.md for details)
--#include "index.html.hpp"
--#include "bundle.js.hpp"
--#include "bundle.css.hpp"
- #include "loading.html.hpp"
- #endif
- 
-@@ -274,25 +271,6 @@ bool server_http_context::init(const common_params & params) {
-                 LOG_ERR("%s: static assets path not found: %s\n", __func__, params.public_path.c_str());
-                 return 1;
-             }
--        } else {
--#ifdef LLAMA_BUILD_WEBUI
--            // using embedded static index.html
--            srv->Get(params.api_prefix + "/", [](const httplib::Request & /*req*/, httplib::Response & res) {
--                // COEP and COOP headers, required by pyodide (python interpreter)
--                res.set_header("Cross-Origin-Embedder-Policy", "require-corp");
--                res.set_header("Cross-Origin-Opener-Policy", "same-origin");
--                res.set_content(reinterpret_cast<const char*>(index_html), index_html_len, "text/html; charset=utf-8");
--                return false;
--            });
--            srv->Get(params.api_prefix + "/bundle.js", [](const httplib::Request & /*req*/, httplib::Response & res) {
--                res.set_content(reinterpret_cast<const char*>(bundle_js), bundle_js_len, "application/javascript; charset=utf-8");
--                return false;
--            });
--            srv->Get(params.api_prefix + "/bundle.css", [](const httplib::Request & /*req*/, httplib::Response & res) {
--                res.set_content(reinterpret_cast<const char*>(bundle_css), bundle_css_len, "text/css; charset=utf-8");
--                return false;
--            });
--#endif
-         }
-     }
-     return true;
