@@ -127,7 +127,7 @@ Copyright: 2024-2026 Christian Kastner <ckk@debian.org>
            2025-2026 Mathieu Baudier <mbaudier@argeo.org>
 License: Expat
 
-Files: debian/legacy-themes/*
+Files: debian/simplechat-legacy-ui/*
 Copyright: 2023-2026, The ggml authors
 License: Expat
 Comment:

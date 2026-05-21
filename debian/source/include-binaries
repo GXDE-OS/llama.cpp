@@ -1,7 +1,1 @@
-debian/legacy-themes/public_simplechat/simplechat_screens.webp
-debian/legacy-themes/themes/wild/llama_cpp.png
-debian/legacy-themes/themes/wild/wild.png
-debian/legacy-themes/themes/wild/favicon.ico
-debian/legacy-themes/themes/wild/llamapattern.png
-debian/legacy-themes/themes/buttons-top/buttons_top.png
-debian/legacy-themes/themes/buttons-top/favicon.ico
+debian/simplechat-legacy-ui/simplechat_screens.webp
