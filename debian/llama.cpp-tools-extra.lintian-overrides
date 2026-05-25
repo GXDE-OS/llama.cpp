@@ -1,3 +1,2 @@
-# libllama and ggml are both not yet stable, so they are installed in private
-# directories.
+# libllama is not yet stable, so it is installed to a private directory
 llama.cpp-tools-extra: custom-library-search-path RUNPATH /usr/lib/*/llama [usr/bin/*]
