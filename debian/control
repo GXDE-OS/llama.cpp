@@ -125,8 +125,11 @@ Architecture: any
 Multi-Arch: foreign
 Depends: libllama0 (= ${binary:Version}),
          adduser,
+         debconf,
+         wget | curl,
          ${misc:Depends},
          ${shlibs:Depends},
+Suggests: llama.cpp-tools-webui-downloader
 Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
 Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
 Description: LLM inference in C/C++ - main utilities
