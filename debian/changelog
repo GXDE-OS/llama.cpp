@@ -1,3 +1,18 @@
+llama.cpp (9190+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 9190+dfsg
+    - Refresh patches
+    - Update UI management patches to support downloaded UI
+  * Deactivate build-time build/download of the WebUI
+  * Convert UI management from alternatives to debconf
+  * Reduce legacy theme support to just SimpleChat
+  * Add d/NEWS for UI management switch
+  * Fix comments in lintian-overrides, calling ggml not-yet-stable
+  * Drop README.Source, no longer needed
+  * d/copyright: Drop obsolete paths from Files-Excluded
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 26 May 2026 16:35:09 +0200
+
 llama.cpp (9071+dfsg-1) unstable; urgency=medium
 
   * New upstream version 9071+dfsg
