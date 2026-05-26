@@ -1,0 +1,156 @@
+From: Christian Kastner <ckk@debian.org>
+Date: Tue, 26 May 2026 10:49:53 +0200
+Subject: Dynamically load WebUI, if available
+
+---
+ tools/server/server-http.cpp | 80 +++++++++++++++++++++++++++++++++++---------
+ tools/ui/CMakeLists.txt      |  4 ++-
+ 2 files changed, 67 insertions(+), 17 deletions(-)
+
+diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
+index 39a21f4..c88bc1d 100644
+--- a/tools/server/server-http.cpp
++++ b/tools/server/server-http.cpp
+@@ -6,9 +6,13 @@
+ #include <cpp-httplib/httplib.h>
+ 
+ #include <cstdlib>
++#include <filesystem>
++#include <fstream>
+ #include <functional>
+ #include <future>
++#include <sstream>
+ #include <string>
++#include <system_error>
+ #include <thread>
+ 
+ //
+@@ -81,6 +85,32 @@ bool server_http_context::init(const common_params & params) {
+     port = params.port;
+     hostname = params.hostname;
+ 
++    // <Debian>
++    //
++    // Instead of relying on upstream's build-time LLAMA_BUILD_UI to
++    // determine whether to server loading.html, use it if and only if
++    // the user // configured llama.cpp-tools to download the UI.
++    //
++    // Couple of assumptions here that we could do more error checking
++    // for, but errors can really only occur if the admin messes with
++    // components that are under package, not admin, control.
++    bool has_default_ui = false;
++    bool default_ui_is_upstream = false;
++    static const std::filesystem::path default_ui_path = "/usr/share/llama.cpp/llama-server/default-ui";
++    std:: error_code ec;
++    if (std::filesystem::is_symlink(default_ui_path, ec) && !ec) {
++        has_default_ui = true;
++        std::filesystem::path target = std::filesystem::read_symlink(default_ui_path, ec);
++        if (!ec) {
++            std::string target_s = target.string();
++            std::string prefix = "/var/lib/llama.cpp/llama-server";
++            if (target_s.size() >= prefix.size() && target_s.compare(0, prefix.size(), prefix) == 0) {
++                default_ui_is_upstream = true;
++            }
++        }
++    }
++    // </Debian>
++
+     if (gcp.enabled) {
+         SRV_INF("Google Cloud Platform compat: health route = %s, predict route = %s, port = %d\n", gcp.path_health.c_str(), gcp.path_predict.c_str(), gcp.port);
+ 
+@@ -230,19 +260,26 @@ bool server_http_context::init(const common_params & params) {
+         return false;
+     };
+ 
+-    auto middleware_server_state = [this](const httplib::Request & req, httplib::Response & res) {
++    auto middleware_server_state = [this, has_default_ui, default_ui_is_upstream](const httplib::Request & req, httplib::Response & res) {
+         (void)req; // suppress unused parameter warning when LLAMA_BUILD_UI / LLAMA_BUILD_WEBUI is not defined
+         bool ready = is_ready.load();
+         if (!ready) {
+-// Support both old and new preprocessor defines
+-#if defined(LLAMA_BUILD_UI) || defined(LLAMA_BUILD_WEBUI)
+-            auto tmp = string_split<std::string>(req.path, '.');
+-            if (req.path == "/" || (tmp.size() > 0 && tmp.back() == "html")) {
+-                res.status = 503;
+-                res.set_content(reinterpret_cast<const char*>(loading_html), loading_html_len, "text/html; charset=utf-8");
+-                return false;
++
++            // Debian-specific again
++            if (default_ui_is_upstream) {
++                auto tmp = string_split<std::string>(req.path, '.');
++                if (req.path == "/" || (tmp.size() > 0 && tmp.back() == "html")) {
++                    std::ifstream loading_f(default_ui_path / "loading.html", std::ios::binary);
++                    if (loading_f) {
++                        std::ostringstream loading_ss;
++                        loading_ss << loading_f.rdbuf();
++                        res.status = 503;
++                        res.set_content(loading_ss.str(), "text/html; charset=utf-8");
++                        return false;
++                    }
++                }
+             }
+-#endif
++
+             // no endpoints are allowed to be accessed when the server is not ready
+             // this is to prevent any data races or inconsistent states
+             res.status = 503;
+@@ -312,26 +349,37 @@ bool server_http_context::init(const common_params & params) {
+                 SRV_ERR("static assets path not found: %s\n", params.public_path.c_str());
+                 return 1;
+             }
+-        } else {
+-// Support both old and new preprocessor defines
+-#if defined(LLAMA_BUILD_UI) || defined(LLAMA_BUILD_WEBUI)
++        } else if (has_default_ui && default_ui_is_upstream) {
++            // Debian-specific again
++
+             // using embedded static index.html
+             srv->Get(params.api_prefix + "/", [](const httplib::Request & /*req*/, httplib::Response & res) {
+                 // COEP and COOP headers, required by pyodide (python interpreter)
+                 res.set_header("Cross-Origin-Embedder-Policy", "require-corp");
+                 res.set_header("Cross-Origin-Opener-Policy", "same-origin");
+-                res.set_content(reinterpret_cast<const char*>(index_html), index_html_len, "text/html; charset=utf-8");
++                std::ifstream index_f(default_ui_path / "index.html", std::ios::binary);
++                std::ostringstream index_ss;
++                index_ss << index_f.rdbuf();
++                res.set_content(index_ss.str(), "text/html; charset=utf-8");
+                 return false;
+             });
+             srv->Get(params.api_prefix + "/bundle.js", [](const httplib::Request & /*req*/, httplib::Response & res) {
+-                res.set_content(reinterpret_cast<const char*>(bundle_js), bundle_js_len, "application/javascript; charset=utf-8");
++                std::ifstream bundle_js_f(default_ui_path / "bundle.js", std::ios::binary);
++                std::ostringstream bundle_js_ss;
++                bundle_js_ss << bundle_js_f.rdbuf();
++                res.set_content(bundle_js_ss.str(), "application/javascript; charset=utf-8");
+                 return false;
+             });
+             srv->Get(params.api_prefix + "/bundle.css", [](const httplib::Request & /*req*/, httplib::Response & res) {
+-                res.set_content(reinterpret_cast<const char*>(bundle_css), bundle_css_len, "text/css; charset=utf-8");
++                std::ifstream bundle_css_f(default_ui_path / "bundle.css", std::ios::binary);
++                std::ostringstream bundle_css_ss;
++                bundle_css_ss << bundle_css_f.rdbuf();
++                res.set_content(bundle_css_ss.str(), "text/css; charset=utf-8");
+                 return false;
+             });
+-#endif
++        } else if (has_default_ui) {
++            // Debian-specific again
++            srv->set_mount_point(params.api_prefix + "/", default_ui_path);
+         }
+     }
+     return true;
+diff --git a/tools/ui/CMakeLists.txt b/tools/ui/CMakeLists.txt
+index 9687ca9..ef39198 100644
+--- a/tools/ui/CMakeLists.txt
++++ b/tools/ui/CMakeLists.txt
+@@ -137,7 +137,9 @@ if(LLAMA_BUILD_WEBUI OR LLAMA_BUILD_UI)
+         list(APPEND UI_COMPILE_DEFS LLAMA_WEBUI_DEFAULT_ENABLED=0 LLAMA_UI_DEFAULT_ENABLED=0)
+     endif()
+ else()
+-    list(APPEND UI_COMPILE_DEFS LLAMA_WEBUI_DEFAULT_ENABLED=0 LLAMA_UI_DEFAULT_ENABLED=0)
++    # Debian: enable the UI by default, despite not building it. We ship it
++    # by other means
++    list(APPEND UI_COMPILE_DEFS LLAMA_WEBUI_DEFAULT_ENABLED=1 LLAMA_UI_DEFAULT_ENABLED=1)
+ endif()
+ 
+ # Build the static library

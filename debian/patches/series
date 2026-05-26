@@ -1,5 +1,4 @@
-Specify-default-theme-location.patch
-Drop-non-DFSG-free-server-frontend.patch
+Dynamically-load-WebUI-if-available.patch
 cmake-Install-to-private-directories.patch
 Add-soversion-to-libraries.patch
 reproducible-builds.patch
