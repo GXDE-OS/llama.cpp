@@ -1,3 +1,36 @@
+llama.cpp (9413+dfsg-1) unstable; urgency=medium
+
+  [ Christian Kastner ]
+  * New upstream version 9413+dfsg
+    - Update WebUI patch for improved upstream solution
+    - Add cmake-Install-impls-to-private-directories.patch
+    - Refresh patches
+    - Rename one patch
+    - Drop examples no longer shipped by upstream
+      + llama-save-load-state
+  * Disable 'llama' app build for now
+    - Until we've figured out how we want to ship it
+  * Change install source path of convert_hf_to_gguf.py
+  * Bump ggml dependency to 0.13.1
+  * debian/NEWS:
+    - Fix NEWS entry text for 9190+dfsg-1
+    - Fix NEWS entry version 9091 -> 9190
+    - Reformat NEWS as per the DevRef
+  * d/control: Fix spelling of metapackage
+  * autopkgtest:
+    - Drop stray output line
+    - Skip new tests needing models
+    - Reactivate some skipped tests
+    - Temporarily skip failing test-quant-type-selection. (Closes: #1138196)
+
+  [ Petter Reinholdtsen ]
+  * Fix stream handling in SimpleChat web UI (Closes: #1138159)
+
+  [ Américo Monteiro ]
+  * Add debconf translations for PT (Closes: #1138492)
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 31 May 2026 13:33:18 +0200
+
 llama.cpp (9190+dfsg-1) unstable; urgency=medium
 
   * New upstream version 9190+dfsg
