@@ -53,7 +53,7 @@ Description: LLM inference in C/C++ - metapackage
  The compute functionality is provided by ggml. By default, ggml's CPU backend
  is installed, but there are many other backends for CPUs and GPUs.
  .
- This is a meta-package that either depends on all of the relevant binary
+ This is a metapackage that either depends on all of the relevant binary
  packages.
 
 Package: libllama0
