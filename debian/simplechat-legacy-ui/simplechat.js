@@ -149,7 +149,9 @@ class SimpleChat {
      * @param {string} content
      */
     append_response(content) {
-        this.latestResponse += content;
+        if (content != null && typeof content === 'string') {
+            this.latestResponse += content;
+        }
     }
 
     /**
@@ -304,14 +306,19 @@ class SimpleChat {
     response_extract_stream(respBody, apiEP) {
         let assistant = "";
         if (apiEP == ApiEP.Type.Chat) {
-            if (respBody["choices"][0]["finish_reason"] !== "stop") {
-                assistant = respBody["choices"][0]["delta"]["content"];
+            const choice = respBody["choices"]?.[0];
+            if (!choice || !choice.delta || choice["finish_reason"] === "stop") {
+                return assistant;
+            }
+            if (choice.delta.reasoning_content != null) {
+                assistant = choice.delta.reasoning_content;
+            } else if (choice.delta.content != null) {
+                assistant = choice.delta.content;
             }
         } else {
-            try {
-                assistant = respBody["choices"][0]["text"];
-            } catch {
-                assistant = respBody["content"];
+            const text = respBody["choices"]?.[0]?.["text"] ?? respBody["content"];
+            if (text != null) {
+                assistant = String(text);
             }
         }
         return assistant;
@@ -410,7 +417,12 @@ class SimpleChat {
                 if (curLine.trim() === "[DONE]") {
                     break;
                 }
-                let curJson = JSON.parse(curLine);
+                let curJson;
+                try {
+                    curJson = JSON.parse(curLine);
+                } catch(e) {
+                    continue;
+                }
                 console.debug("DBUG:SC:PART:Json:", curJson);
                 this.append_response(this.response_extract_stream(curJson, apiEP));
             }
