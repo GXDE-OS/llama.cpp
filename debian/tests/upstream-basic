@@ -17,6 +17,8 @@ test-chat-template
 test-gbnf-validator
 test-llama-archs
 test-model-load-cancel
+test-recurrent-state-rollback
+test-save-load-state
 test-state-restore-fragmented
 test-thread-safety
 test-tokenizer-0
