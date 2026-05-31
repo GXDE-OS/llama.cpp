@@ -12,10 +12,10 @@ Forwarded: not-needed
  2 files changed, 2 insertions(+)
 
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 7b1fcfc..ff04767 100644
+index d15ccfd..41e3d46 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -55,6 +55,7 @@ target_link_libraries(llama PUBLIC ggml)
+@@ -56,6 +56,7 @@ target_link_libraries(llama PUBLIC ggml)
  
  if (BUILD_SHARED_LIBS)
      set_target_properties(llama PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -24,7 +24,7 @@ index 7b1fcfc..ff04767 100644
      target_compile_definitions(llama PUBLIC  LLAMA_SHARED)
  endif()
 diff --git a/tools/mtmd/CMakeLists.txt b/tools/mtmd/CMakeLists.txt
-index 649eb7c..19d316e 100644
+index 7c43503..0d9cbda 100644
 --- a/tools/mtmd/CMakeLists.txt
 +++ b/tools/mtmd/CMakeLists.txt
 @@ -60,6 +60,7 @@ target_compile_features   (mtmd PRIVATE cxx_std_17)
