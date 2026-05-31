@@ -1,4 +1,6 @@
-usr/lib/${DEB_HOST_MULTIARCH}/llama/*.so
+usr/lib/${DEB_HOST_MULTIARCH}/llama/libllama.so
+usr/lib/${DEB_HOST_MULTIARCH}/llama/libllama-common.so
+usr/lib/${DEB_HOST_MULTIARCH}/llama/libmtmd.so
 
 usr/include/llama
 

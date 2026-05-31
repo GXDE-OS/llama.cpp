@@ -12,3 +12,7 @@ usr/bin/llama-tts
 # Not available with GGML_BACKEND_DL=ON
 #usr/bin/llama-cvector-generator
 #usr/bin/llama-export-lora
+
+usr/lib/*/llama/libllama-batched-bench-impl.so
+usr/lib/*/llama/libllama-fit-params-impl.so
+usr/lib/*/llama/libllama-perplexity-impl.so

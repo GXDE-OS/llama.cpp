@@ -4,6 +4,12 @@ usr/bin/llama-completion
 usr/bin/llama-quantize
 usr/bin/llama-server
 
+usr/lib/*/llama/libllama-bench-impl.so
+usr/lib/*/llama/libllama-cli-impl.so
+usr/lib/*/llama/libllama-completion-impl.so
+usr/lib/*/llama/libllama-quantize-impl.so
+usr/lib/*/llama/libllama-server-impl.so
+
 # This needs a ton of dependencies through python3-torch. Until we figure out
 # how to best deal with it, just ship it in docs
 usr/bin/convert_hf_to_gguf.py		usr/share/doc/llama.cpp-tools/scripts/
