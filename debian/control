@@ -9,6 +9,7 @@ Homepage: https://github.com/ggml-org/llama.cpp/
 Build-Depends: dh-sequence-bash-completion,
                cmake,
                dh-python,
+               dh-sequence-installsysusers,
                debhelper-compat (= 13),
                help2man,
                libssl-dev,
@@ -125,7 +126,6 @@ Package: llama.cpp-tools
 Architecture: any
 Multi-Arch: foreign
 Depends: libllama0 (= ${binary:Version}),
-         adduser,
          debconf,
          wget | curl,
          ${misc:Depends},
