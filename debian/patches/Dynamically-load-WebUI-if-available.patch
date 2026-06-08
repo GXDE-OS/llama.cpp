@@ -8,7 +8,7 @@ Forwarded: not-needed
  1 file changed, 69 insertions(+), 19 deletions(-)
 
 diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
-index 3616b3b..3b543f5 100644
+index 34a20c9..a8cc99a 100644
 --- a/tools/server/server-http.cpp
 +++ b/tools/server/server-http.cpp
 @@ -5,10 +5,13 @@
@@ -120,11 +120,12 @@ index 3616b3b..3b543f5 100644
                          return false;
                      }
 -                    res.set_header("ETag", a->etag);
++
 +                    auto etag = "\"" + std::to_string(st.st_mtime) + "-" + std::to_string(st.st_size) + "\"";
 +                    res.set_header("ETag", etag);
                      // Check If-None-Match for conditional GET (304 Not Modified)
                      if (const std::string & inm = req.get_header_value("If-None-Match");
--                        !inm.empty() && inm == a->etag) {
+-                        !inm.empty() && (inm == a->etag || inm == std::string("W/") + a->etag)) {
 +                        !inm.empty() && inm == etag) {
                          res.status = 304;
                          return false;
@@ -136,7 +137,6 @@ index 3616b3b..3b543f5 100644
                          res.set_header("Cross-Origin-Opener-Policy", "same-origin");
                      }
 -                    res.set_content(reinterpret_cast<const char*>(a->data), a->size, mime);
-+
 +                    std::string content((std::istreambuf_iterator<char>(asset_f)), std::istreambuf_iterator<char>());
 +                    res.set_content(std::move(content), mime);
                      return false;

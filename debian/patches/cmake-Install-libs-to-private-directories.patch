@@ -83,10 +83,10 @@ index 6fb58b5..56d46c9 100644
  Name: llama
  Description: Port of Facebook's LLaMA model in C/C++
 diff --git a/tools/mtmd/CMakeLists.txt b/tools/mtmd/CMakeLists.txt
-index ffd30c7..7c43503 100644
+index 20c5317..480f08f 100644
 --- a/tools/mtmd/CMakeLists.txt
 +++ b/tools/mtmd/CMakeLists.txt
-@@ -77,7 +77,10 @@ set_target_properties(mtmd
+@@ -82,7 +82,10 @@ set_target_properties(mtmd
      PROPERTIES
      PRIVATE_HEADER debug/mtmd-debug.h)
  
