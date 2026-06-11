@@ -24,10 +24,10 @@ index d15ccfd..41e3d46 100644
      target_compile_definitions(llama PUBLIC  LLAMA_SHARED)
  endif()
 diff --git a/tools/mtmd/CMakeLists.txt b/tools/mtmd/CMakeLists.txt
-index 480f08f..cb01ee0 100644
+index 4ede475..8b1f110 100644
 --- a/tools/mtmd/CMakeLists.txt
 +++ b/tools/mtmd/CMakeLists.txt
-@@ -65,6 +65,7 @@ target_compile_features   (mtmd PRIVATE cxx_std_17)
+@@ -72,6 +72,7 @@ endif()
  
  if (BUILD_SHARED_LIBS)
      set_target_properties     (mtmd PROPERTIES POSITION_INDEPENDENT_CODE ON)

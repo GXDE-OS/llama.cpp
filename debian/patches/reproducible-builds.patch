@@ -13,7 +13,7 @@ Last-Update: 2026-01-15
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/common/arg.cpp b/common/arg.cpp
-index 1b68847..8ae2f09 100644
+index 55795d3..c44e4ef 100644
 --- a/common/arg.cpp
 +++ b/common/arg.cpp
 @@ -1152,7 +1152,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
