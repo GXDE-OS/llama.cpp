@@ -1,3 +1,15 @@
+llama.cpp (9601+dfsg-1) unstable; urgency=medium
+
+  [ Christian Kastner ]
+  * New upstream version 9601+dfsg
+    - Refresh patches
+  * Bump ggml dependency to 0.15.0
+
+  [ Helge Kreutzmann ]
+  * Add po-debconf German translation (Closes: #1139707)
+
+ -- Christian Kastner <ckk@debian.org>  Thu, 11 Jun 2026 22:15:26 +0200
+
 llama.cpp (9555+dfsg-1) unstable; urgency=medium
 
   [ Carles Pina i Estany ]
