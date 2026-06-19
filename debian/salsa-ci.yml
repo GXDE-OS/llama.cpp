@@ -13,10 +13,7 @@
 include:
   - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/recipes/debian.yml
 
-# - i386 build never works (in fact, all 32-bit builds don't work)
-# - uscan mostly cannot work, as llama.cpp releases so often that tags quickly
-#   drop off the page due to pagination
+# i386 build never works (in fact, all 32-bit builds don't work)
 variables:
   SALSA_CI_DISABLE_BUILD_PACKAGE_I386: 1
-  SALSA_CI_DISABLE_USCAN: true
   SALSA_CI_IGNORED_BRANCHES: /^llama\.cpp-dev\//
