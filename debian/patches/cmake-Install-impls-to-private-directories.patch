@@ -111,10 +111,10 @@ index eead4c8..7499ee4 100644
  
  # llama-quantize executable
 diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
-index 7d42743..675146d 100644
+index 47bb582..bec3cb6 100644
 --- a/tools/server/CMakeLists.txt
 +++ b/tools/server/CMakeLists.txt
-@@ -45,7 +45,7 @@ target_include_directories(${TARGET} PRIVATE ../mtmd ${CMAKE_SOURCE_DIR})
+@@ -47,7 +47,7 @@ target_include_directories(${TARGET} PRIVATE ../mtmd ${CMAKE_SOURCE_DIR})
  target_link_libraries(${TARGET} PUBLIC server-context llama-ui cpp-httplib ${CMAKE_THREAD_LIBS_INIT})
  
  if(LLAMA_TOOLS_INSTALL)
