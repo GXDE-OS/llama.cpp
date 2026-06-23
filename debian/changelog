@@ -1,3 +1,19 @@
+llama.cpp (9721+dfsg-1) unstable; urgency=medium
+
+  [ Christian Kastner ]
+  * New upstream version 9721+dfsg
+    - Rewrite upstream WebUI patch
+    - Refresh patches
+  * postinst: Update WebUI download procedure for new asset structure
+  * d/watch: Use git mode
+  * Salsa: Fix SALSA_CI_IGNORED_BRANCHES
+  * Fix typo in debconf prompt (EN)
+
+  [ Frans Spiesschaert ]
+  * Add po-debconf Dutch translation (Closes: #1140088)
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 23 Jun 2026 21:11:21 +0200
+
 llama.cpp (9601+dfsg-1) unstable; urgency=medium
 
   [ Christian Kastner ]
