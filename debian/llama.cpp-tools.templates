@@ -9,7 +9,7 @@ _Description: Which default UI would you like to use with llama-server?
  llama-server.
  .
  This package comes with the minimal "SimpleChat" UI, which is no longer
- being actively developed. . The package maintainers suggest that instead,
+ being actively developed. The package maintainers suggest that instead,
  you choose to download the UI from upstream, which Debian cannot ship
  (yet) because of missing dependencies. If you choose to download the UI,
  you will need an active internet connection that can reach the
