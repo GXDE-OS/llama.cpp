@@ -77,8 +77,6 @@ if [ "$1" = "configure" ]; then
         rm -f /usr/share/llama.cpp-tools/llama-server/active-theme
     fi
 
-    rm -f "$default_ui_path"
-
     db_get llama.cpp-tools/default-ui
     UICHOICE="$RET"
 
