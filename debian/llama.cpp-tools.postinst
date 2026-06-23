@@ -37,7 +37,7 @@ download_ui_from_huggingface() {
     mkdir -p "$out_dir-temp"
 
     base_url="https://huggingface.co/buckets/ggml-org/llama-ui/resolve"
-    files="checksums.txt bundle.css bundle.js index.html loading.html"
+    files="dist.tar.gz dist.tar.gz.sha256"
     failed=0
     for iterfile in $files; do
         file_url="$base_url/b$build/$iterfile?download=true"
@@ -53,13 +53,16 @@ download_ui_from_huggingface() {
         fi
     done
 
-    if (cd "$out_dir-temp" && ! sha256sum --quiet -c checksums.txt); then
+    if (cd "$out_dir-temp" && ! sha256sum --quiet -c dist.tar.gz.sha256); then
         echo "Checksum mismatch on downloaded UI files." >&2
         rm -rf "$out_dir-temp"
         exit 1
     fi
 
+    tar -C "$out_dir-temp" -xaf "$out_dir-temp/dist.tar.gz"
+    rm -f "$out_dir-temp"/dist.tar.gz*
     mv "$out_dir-temp" "$out_dir"
+
     umask "$old_umask"
     echo "UI for llama.cpp b$build downloaded successfully."
 
