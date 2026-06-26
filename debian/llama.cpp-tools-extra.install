@@ -6,6 +6,7 @@ usr/bin/llama-fit-params
 usr/bin/llama-mtmd-cli
 usr/bin/llama-perplexity
 usr/bin/llama-results
+usr/bin/llama-rpc-server
 usr/bin/llama-template-analysis
 usr/bin/llama-tokenize
 usr/bin/llama-tts
