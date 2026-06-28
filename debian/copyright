@@ -48,6 +48,11 @@ Copyright: 2023-2024, The ggml authors
            2023, Jeffrey Quesnelle and Bowen Peng
 License: Expat and Apache-2.0 with LLVM exception
 
+Files:     ggml/src/ggml-openvino/openvino/frontend.h
+           ggml/src/ggml-openvino/openvino/rt_info/weightless_caching_attributes.hpp
+Copyright: 2018-2026, Intel Corporation
+Comment: These files are not used by our build.
+
 Files: ggml/src/ggml-cpu/kleidiai/*
 Copyright: 2025-2026, Arm Limited and/or its affiliates <open-source-office@arm.com>
 License: Expat
