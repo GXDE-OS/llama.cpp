@@ -6,13 +6,18 @@ usr/bin/llama-fit-params
 usr/bin/llama-mtmd-cli
 usr/bin/llama-perplexity
 usr/bin/llama-results
-usr/bin/llama-rpc-server
 usr/bin/llama-template-analysis
 usr/bin/llama-tokenize
 usr/bin/llama-tts
 # Not available with GGML_BACKEND_DL=ON
 #usr/bin/llama-cvector-generator
 #usr/bin/llama-export-lora
+
+# We don't install this in the public path yet, because we'd need to add a
+# dependency on libggml0-backend-rpc, which needs some more thought.
+#
+# Also, this will eventually be moved to some ggml package
+usr/bin/ggml-rpc-server usr/libexec/${DEB_HOST_MULTIARCH}/llama/bin
 
 usr/lib/*/llama/libllama-batched-bench-impl.so
 usr/lib/*/llama/libllama-fit-params-impl.so
