@@ -1,3 +1,22 @@
+llama.cpp (9895+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 9895+dfsg
+    - Drop Improve-rpc-server-and-export-graph-ops-names.patch
+    - Refresh patches
+  * Remove embedded ggml
+  * Add Modify-tests-for-non-embedded-ggml-use.patch
+  * Add Use-simple-printf-in-usage.patch
+  * Add missing attributions to d/copyright
+  * Strip build prefix from executables in man pages
+  * Bump ggml dependency to 0.15.3
+  * Ship ggml-rpc-server in a private directory
+    It's available in /usr/libexec/<multi-arch>/llama/bin and needs the
+    libggml0-backend-rpc package in order to work.
+    We don't officially support this, as this binary will eventually move to
+    ggml, and we are figuring out some other things in the process.
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 07 Jul 2026 14:30:04 +0200
+
 llama.cpp (9721+dfsg-1) unstable; urgency=medium
 
   [ Christian Kastner ]
