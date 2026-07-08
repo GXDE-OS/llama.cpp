@@ -1,3 +1,10 @@
+llama.cpp (9895+dfsg-2) unstable; urgency=medium
+
+  * autopkgtest: Also exclude test-export-graph-ops.
+    Not a real test, it's a tool that generates inputs for other tests.
+
+ -- Christian Kastner <ckk@debian.org>  Wed, 08 Jul 2026 06:53:36 +0200
+
 llama.cpp (9895+dfsg-1) unstable; urgency=medium
 
   * New upstream version 9895+dfsg
