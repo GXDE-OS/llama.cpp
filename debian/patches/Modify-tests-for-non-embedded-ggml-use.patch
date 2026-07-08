@@ -5,7 +5,7 @@ Subject: Modify tests for non-embedded ggml use
 Two tests are skipped (they have been imported into src:ggml), and one
 test doesn't need the headers of the embedded version.
 
-Forwarded: github.com/ggml-org/llama.cpp/pull/25179
+Forwarded: https://github.com/ggml-org/llama.cpp/pull/25179
 ---
  tests/CMakeLists.txt | 14 ++++++++++----
  1 file changed, 10 insertions(+), 4 deletions(-)
