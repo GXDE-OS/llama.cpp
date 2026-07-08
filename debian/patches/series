@@ -4,4 +4,4 @@ cmake-Install-impls-to-private-directories.patch
 Add-soversion-to-libraries.patch
 reproducible-builds.patch
 Modify-tests-for-non-embedded-ggml-use.patch
-Use-simple-printf-in-usage.patch
+Flush-the-log-before-exiting.patch
