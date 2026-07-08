@@ -1,3 +1,14 @@
+llama.cpp (9895+dfsg-3) unstable; urgency=medium
+
+  * Replace patch for stdout reproducibiltiy.
+    The old patch only fixed a few instances, but new instances popped up,
+    owing to the race of threads exiting. I hope this does the trick.
+    - Gone: Use-simple-printf-in-usage.patch
+    - New: Flush-the-log-before-exiting.patch
+  * Fix patch metadata (the scheme was missing)
+
+ -- Christian Kastner <ckk@debian.org>  Wed, 08 Jul 2026 22:30:04 +0200
+
 llama.cpp (9895+dfsg-2) unstable; urgency=medium
 
   * autopkgtest: Also exclude test-export-graph-ops.
