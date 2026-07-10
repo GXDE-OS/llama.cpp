@@ -1,3 +1,11 @@
+llama.cpp (9951+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 9951+dfsg
+    - Refresh patches
+  * Bump ggml dependency to 0.16.0
+
+ -- Christian Kastner <ckk@debian.org>  Fri, 10 Jul 2026 10:33:55 +0200
+
 llama.cpp (9895+dfsg-3) unstable; urgency=medium
 
   * Replace patch for stdout reproducibiltiy.
