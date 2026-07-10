@@ -33,11 +33,11 @@ index f6ed257..65df609 100644
  
  # llama-batched-bench executable
 diff --git a/tools/cli/CMakeLists.txt b/tools/cli/CMakeLists.txt
-index a3e6357..5290298 100644
+index 8449cdb..207ca47 100644
 --- a/tools/cli/CMakeLists.txt
 +++ b/tools/cli/CMakeLists.txt
-@@ -9,7 +9,7 @@ target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ../serve
- target_link_libraries(${TARGET} PUBLIC server-context llama-common ${CMAKE_THREAD_LIBS_INIT})
+@@ -11,7 +11,7 @@ target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ../serve
+ target_link_libraries(${TARGET} PUBLIC llama-server-impl llama-common ${CMAKE_THREAD_LIBS_INIT})
  
  if(LLAMA_TOOLS_INSTALL)
 -    install(TARGETS ${TARGET} LIBRARY)

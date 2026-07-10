@@ -9,7 +9,7 @@ messages logged with LOG() did not make it to stdout.
  1 file changed, 1 insertion(+)
 
 diff --git a/common/arg.cpp b/common/arg.cpp
-index d634fc2..8c35f14 100644
+index c5cd4ea..f817d96 100644
 --- a/common/arg.cpp
 +++ b/common/arg.cpp
 @@ -1071,6 +1071,7 @@ bool common_params_parse(int argc, char ** argv, common_params & params, llama_e

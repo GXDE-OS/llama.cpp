@@ -11,10 +11,10 @@ Forwarded: https://github.com/ggml-org/llama.cpp/pull/25179
  1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
-index d4ea3b9..f0e97cb 100644
+index 24da697..650f540 100644
 --- a/tests/CMakeLists.txt
 +++ b/tests/CMakeLists.txt
-@@ -238,7 +238,9 @@ if (NOT LLAMA_SANITIZE_ADDRESS AND NOT GGML_SCHED_NO_REALLOC)
+@@ -239,7 +239,9 @@ if (NOT LLAMA_SANITIZE_ADDRESS AND NOT GGML_SCHED_NO_REALLOC)
    # TODO: repair known memory leaks
    llama_build_and_test(test-opt.cpp)
  endif()
@@ -25,7 +25,7 @@ index d4ea3b9..f0e97cb 100644
  llama_build_and_test(test-backend-ops.cpp)
  
  llama_build_and_test(test-model-load-cancel.cpp LABEL "model")
-@@ -298,11 +300,15 @@ get_filename_component(TEST_TARGET test-c.c NAME_WE)
+@@ -299,11 +301,15 @@ get_filename_component(TEST_TARGET test-c.c NAME_WE)
  add_executable(${TEST_TARGET} test-c.c)
  target_link_libraries(${TEST_TARGET} PRIVATE llama)
  
