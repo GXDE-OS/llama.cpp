@@ -1,3 +1,10 @@
+llama.cpp (9951+dfsg-2) unstable; urgency=medium
+
+  * autopkgtest: Skip test requiring network connection.
+    Identified by Anshul Singh in LP#2157811
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 14 Jul 2026 16:36:37 +0200
+
 llama.cpp (9951+dfsg-1) unstable; urgency=medium
 
   * New upstream version 9951+dfsg
