@@ -31,19 +31,23 @@ override_dh_auto_configure-indep:
 
 execute_after_dh_auto_build-arch:
 	# We skip some progs because they don't have a --help option
+	# or because their --help option writes to stderr and we don't want
+	# to use --no-discard-stderr (which causes garbled man pages).
 	mkdir -p man/man1
 	for progname in obj-*/bin/llama-*; do \
 		progname_base=$$(basename $$progname); \
 		[ "$$progname_base" != "llama-gen-docs" ] || continue ; \
 		[ "$$progname_base" != "llama-debug-options-parser" ] || continue ; \
 		[ "$$progname_base" != "llama-template-analysis" ] || continue ; \
+		[ "$$progname_base" != "llama-debug-template-parser" ] || continue ; \
+		[ "$$progname_base" != "llama-lookup-merge" ] || continue ; \
 		help2man \
 			--source=debian \
 			--version-string=$(DEB_VERSION_UPSTREAM) \
 			--name=$$progname_base \
 			--section=1 \
 			--no-info \
-			--no-discard-stderr \
+			--help-option="--help | sed 's/^--/  --/'" \
 			$$progname > man/man1/$$progname_base.1; \
 	done
 	sed -i 's/obj\\-.*\///' man/man1/*.1
@@ -80,7 +84,6 @@ override_dh_auto_install-indep:
 			--name=$$progname_base \
 			--section=1 \
 			--no-info \
-			--no-discard-stderr \
 			$$progname > man/man1/$$progname_base.1; \
 	done
 	
