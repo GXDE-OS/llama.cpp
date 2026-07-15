@@ -1,6 +1,10 @@
 llama.cpp (9951+dfsg-3) unstable; urgency=medium
 
+  [ Mathieu Baudier ]
   * Fix man pages generation (Closes: #1126513)
+
+  [ Christian Kastner ]
+  * Add Mathieu to Uploaders.
 
  -- Mathieu Baudier <mbaudier@argeo.org>  Wed, 15 Jul 2026 15:43:21 +0000
 
