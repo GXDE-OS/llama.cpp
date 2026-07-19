@@ -5,14 +5,14 @@ Subject: Dynamically load WebUI, if available
 Forwarded: not-needed
 Last-Updated: 2026-06-23
 ---
- tools/server/server-http.cpp | 190 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 169 insertions(+), 21 deletions(-)
+ tools/server/server-http.cpp | 167 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 156 insertions(+), 11 deletions(-)
 
 diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
-index bb88dda..ce4bd32 100644
+index 783b01b..8ccf987 100644
 --- a/tools/server/server-http.cpp
 +++ b/tools/server/server-http.cpp
-@@ -7,11 +7,19 @@
+@@ -6,11 +6,19 @@
  
  #include <cpp-httplib/httplib.h>
  
@@ -32,7 +32,7 @@ index bb88dda..ce4bd32 100644
  
  //
  // HTTP implementation using cpp-httplib
-@@ -76,6 +84,133 @@ struct gcp_params {
+@@ -85,6 +93,133 @@ struct gcp_params {
      }
  };
  
@@ -166,49 +166,17 @@ index bb88dda..ce4bd32 100644
  bool server_http_context::init(const common_params & params) {
      const gcp_params gcp;
  
-@@ -184,7 +319,8 @@ bool server_http_context::init(const common_params & params) {
-             "/v1/models",
-             "/",
-         };
+@@ -187,7 +322,8 @@ bool server_http_context::init(const common_params & params) {
+     // Frontend paths - all embedded UI assets
+     static const std::unordered_set<std::string> frontend_paths = []() {
+         std::unordered_set<std::string> paths { "/" };
 -        for (const llama_ui_asset & a : llama_ui_get_assets()) {
 +        // Debian-specific: assets are loaded from disk instead of embedded
 +        for (const llama_ui_asset & a : llama_ui_get_assets_local()) {
-             endpoints.insert("/" + a.name);
+             paths.insert("/" + a.name);
          }
-         return endpoints;
-@@ -239,18 +375,21 @@ bool server_http_context::init(const common_params & params) {
- 
-     auto middleware_server_state = [this](const httplib::Request & req, httplib::Response & res) {
-         if (!is_ready.load()) {
--#if defined(LLAMA_UI_HAS_ASSETS)
--            if (const auto tmp = string_split<std::string>(req.path, '.');
--                req.path == "/" || (!tmp.empty() && tmp.back() == "html")) {
--                if (const llama_ui_asset * a = llama_ui_find_asset("loading.html")) {
--                    res.status = 503;
--                    res.set_content(reinterpret_cast<const char*>(a->data), a->size, "text/html; charset=utf-8");
--                    return false;
-+            // Debian-specific
-+            if (llama_ui_get_assets_local().size() > 0) {
-+                if (const auto tmp = string_split<std::string>(req.path, '.');
-+                    req.path == "/" || (!tmp.empty() && tmp.back() == "html")) {
-+                    // Debian-specific: assets are loaded from disk instead of embedded
-+                    if (const llama_ui_asset * a = llama_ui_find_asset_local("loading.html")) {
-+                        res.status = 503;
-+                        res.set_content(reinterpret_cast<const char*>(a->data), a->size, "text/html; charset=utf-8");
-+                        return false;
-+                    }
-                 }
-+            } else {
-+                (void)req;
-             }
--#else
--            (void)req;
--#endif
-+
-             // no endpoints are allowed to be accessed when the server is not ready
-             // this is to prevent any data races or inconsistent states
-             res.status = 503;
-@@ -319,13 +458,14 @@ bool server_http_context::init(const common_params & params) {
+         return paths;
+@@ -338,13 +474,14 @@ bool server_http_context::init(const common_params & params) {
                  SRV_ERR("static assets path not found: %s\n", params.public_path.c_str());
                  return false;
              }
@@ -229,7 +197,7 @@ index bb88dda..ce4bd32 100644
                  if (req.get_header_value("Accept-Encoding").find("gzip") == std::string::npos) {
                      res.status = 415; // unsupported media type
                      res.set_content("Error: gzip is not supported by this browser", "text/plain");
-@@ -341,7 +481,8 @@ bool server_http_context::init(const common_params & params) {
+@@ -360,7 +497,8 @@ bool server_http_context::init(const common_params & params) {
                      if (!handle_gzip_header(req, res)) {
                          return true; // returns error message
                      }
@@ -239,7 +207,7 @@ index bb88dda..ce4bd32 100644
                      if (!a) { res.status = 404; return false; }
                      res.set_header("ETag", a->etag);
                      if (const std::string & inm = req.get_header_value("If-None-Match");
-@@ -364,7 +505,8 @@ bool server_http_context::init(const common_params & params) {
+@@ -383,7 +521,8 @@ bool server_http_context::init(const common_params & params) {
                      if (!handle_gzip_header(req, res)) {
                          return true; // returns error message
                      }
@@ -249,7 +217,7 @@ index bb88dda..ce4bd32 100644
                      if (!a) {
                          res.status = 404;
                          return false;
-@@ -389,7 +531,8 @@ bool server_http_context::init(const common_params & params) {
+@@ -408,7 +547,8 @@ bool server_http_context::init(const common_params & params) {
                  "build.json"
              };
  
@@ -259,7 +227,7 @@ index bb88dda..ce4bd32 100644
                  if (a.name == "index.html") continue;  // served at "/" and "/index.html" above
                  if (no_cache_names.count(a.name)) {
                      SRV_DBG("serve nocache for %s\n", a.name.c_str());
-@@ -399,7 +542,12 @@ bool server_http_context::init(const common_params & params) {
+@@ -418,7 +558,12 @@ bool server_http_context::init(const common_params & params) {
                  }
              }
  

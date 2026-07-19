@@ -13,10 +13,10 @@ Last-Update: 2026-01-15
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/common/arg.cpp b/common/arg.cpp
-index 8a78291..c5cd4ea 100644
+index 8a74e5f..59cfe7e 100644
 --- a/common/arg.cpp
 +++ b/common/arg.cpp
-@@ -1281,7 +1281,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
+@@ -1325,7 +1325,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
      ).set_examples({LLAMA_EXAMPLE_COMPLETION, LLAMA_EXAMPLE_CLI, LLAMA_EXAMPLE_SPECULATIVE, LLAMA_EXAMPLE_LOOKUP}));
      add_opt(common_arg(
          {"-t", "--threads"}, "N",
