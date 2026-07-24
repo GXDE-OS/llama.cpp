@@ -1,3 +1,11 @@
+llama.cpp (10108+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 10108+dfsg
+    - Drop Modify-tests-for-non-embedded-ggml-use.patch, included upstream
+    - Refresh patches
+
+ -- Christian Kastner <ckk@debian.org>  Fri, 24 Jul 2026 10:01:46 +0200
+
 llama.cpp (9951+dfsg-3) unstable; urgency=medium
 
   [ Mathieu Baudier ]
