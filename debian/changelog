@@ -1,3 +1,10 @@
+llama.cpp (10108+dfsg-2) unstable; urgency=medium
+
+  * Bump ggml dependency to 0.17.0
+    Fixes a FTBFS
+
+ -- Christian Kastner <ckk@debian.org>  Sat, 25 Jul 2026 21:25:25 +0200
+
 llama.cpp (10108+dfsg-1) unstable; urgency=medium
 
   * New upstream version 10108+dfsg
