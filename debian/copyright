@@ -7,9 +7,11 @@ Files-Excluded: examples/llama.android/gradle/wrapper/gradle-wrapper.jar
                 ggml/include
                 ggml/src
                 models
+                tools/ui/src/lib/vendors
 Comment:
  We remove all of the embedded ggml except for ggml/cmake, which contains
- functionality needed by the llama.cpp build.
+ functionality needed by the llama.cpp build. This is to avoid unnecessary
+ repetition of copyright statements.
  .
  DFSG compliance
  ---------------
@@ -18,6 +20,8 @@ Comment:
  .
  We remove some pre-built files of the Web UI, as well as of the Android
  sources.
+ .
+ We remove vendor libraries of the Web UI, as we don't build the UI.
  .
  False positives
  ---------------
