@@ -3,4 +3,3 @@ cmake-Install-libs-to-private-directories.patch
 cmake-Install-impls-to-private-directories.patch
 Add-soversion-to-libraries.patch
 reproducible-builds.patch
-Flush-the-log-before-exiting.patch
