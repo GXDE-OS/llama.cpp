@@ -42,22 +42,19 @@ download_ui_from_huggingface() {
     # only when something changes) which means we have to find the most recent
     # release with a web UI build. We check the last 20 releases.
     upbuild="$build"
-    upbuild_found=0
     while [ "$upbuild" -ge "$((build - 20))" ]; do
         if [ -e /usr/bin/wget ]; then
             if wget --spider --quiet "$base_url/b$upbuild/dist.tar.gz"; then
-                upbuild_found=1
                 break
             fi
         else
             if curl --fail --silent "$base_url/b$upbuild/dist.tar.gz"; then
-                upbuild_found=1
                 break
             fi
         fi
         upbuild=$((upbuild - 1))
     done
-    if [ "$upbuild_found" -ne 1 ]; then
+    if [ "$upbuild" -eq "$((build - 21))" ]; then
         echo "No suitable upstream web UI build found." >&2
         rm -rf "$out_dir-temp"
         exit 1
