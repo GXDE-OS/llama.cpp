@@ -13,6 +13,8 @@ usr/lib/*/llama/libllama-server-impl.so
 # This needs a ton of dependencies through python3-torch. Until we figure out
 # how to best deal with it, just ship it in docs
 convert_hf_to_gguf.py		        usr/share/doc/llama.cpp-tools/scripts/
+# Since version 10108, this also needs a private module
+conversion/                         usr/share/llama.cpp/llama.cpp-tools/
 
 # These is a copy of the legacy theme that upstream used to ship until it
 # was removed in b8701. We re-add it so that we can ship a DFSG-free
