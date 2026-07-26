@@ -37,10 +37,38 @@ download_ui_from_huggingface() {
     mkdir -p "$out_dir-temp"
 
     base_url="https://huggingface.co/buckets/ggml-org/llama-ui/resolve"
-    files="dist.tar.gz dist.tar.gz.sha256"
+
+    # Upstream doesn't build the web UI every single release (presumably,
+    # only when something changes) which means we have to find the most recent
+    # release with a web UI build. We check the last 20 releases.
+    upbuild="$build"
+    upbuild_found=0
+    while [ "$upbuild" -ge "$((build - 20))" ]; do
+        if [ -e /usr/bin/wget ]; then
+            if wget --spider --quiet "$base_url/b$upbuild/dist.tar.gz"; then
+                upbuild_found=1
+                break
+            fi
+        else
+            if curl --fail --silent "$base_url/b$upbuild/dist.tar.gz"; then
+                upbuild_found=1
+                break
+            fi
+        fi
+        upbuild=$((upbuild - 1))
+    done
+    if [ "$upbuild_found" -ne 1 ]; then
+        echo "No suitable upstream web UI build found." >&2
+        rm -rf "$out_dir-temp"
+        exit 1
+    else
+        echo "Most recent web UI build is b$upbuild"
+    fi
+
     failed=0
+    files="dist.tar.gz dist.tar.gz.sha256"
     for iterfile in $files; do
-        file_url="$base_url/b$build/$iterfile?download=true"
+        file_url="$base_url/b$upbuild/$iterfile?download=true"
         if [ -e /usr/bin/wget ]; then
             wget -q -O "$out_dir-temp/$iterfile" "$file_url" || failed=1
         else
@@ -64,7 +92,7 @@ download_ui_from_huggingface() {
     mv "$out_dir-temp" "$out_dir"
 
     umask "$old_umask"
-    echo "UI for llama.cpp b$build downloaded successfully."
+    echo "UI for llama.cpp b$upbuild downloaded successfully."
 
     echo "Configuring llama-server to use the upstream UI by default."
     update_default_ui_link "$out_dir"
