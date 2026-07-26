@@ -1,3 +1,14 @@
+llama.cpp (10108+dfsg1-2) unstable; urgency=medium
+
+  * Drop Flush-the-log-before-exiting.patch, included upstream
+  * Install private Python module needed by some scripts
+  * Add Update-scripts-for-private-module-location.patch (Closes: #1142819)
+  * Enable downloading most recent WebUI instead of exact match
+    (Closes: #1142822)
+  * Add autopkgtest for web UI download
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 26 Jul 2026 20:43:37 +0200
+
 llama.cpp (10108+dfsg1-1) unstable; urgency=medium
 
   * Bump ggml dependency to 0.17.0
