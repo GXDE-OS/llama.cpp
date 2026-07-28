@@ -15,10 +15,12 @@ CMAKE_FLAGS = -DCMAKE_INSTALL_RPATH=/usr/lib/$(DEB_HOST_MULTIARCH)/llama \
 	      -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 	      -DLLAMA_BUILD_NUMBER=$(subst +dfsg,,$(DEB_VERSION_UPSTREAM)) \
 	      -DLLAMA_BUILD_COMMIT=Debian \
-	      -DLLAMA_BUILD_UI=OFF \
 	      -DLLAMA_USE_PREBUILT_UI=OFF \
 	      -DLLAMA_USE_SYSTEM_GGML=ON \
-	      -DLLAMA_BUILD_APP=OFF
+	      -DGGML_CUDA=ON \
+	      -DGGML_NATIVE=OFF \
+	      -DGGML_VULKAN=ON \
+	      -DGGML_HIP=ON
 
 %:
 	dh $@ --buildsystem=cmake
