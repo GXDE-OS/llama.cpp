@@ -13,10 +13,12 @@ test-arg-parser
 test-autorelease
 test-chat
 test-chat-auto-parser
-test-chat-template
+test-export-graph-ops
 test-gbnf-validator
-test-llama-archs
 test-model-load-cancel
+test-quant-type-selection
+test-recurrent-state-rollback
+test-save-load-state
 test-state-restore-fragmented
 test-thread-safety
 test-tokenizer-0
@@ -30,7 +32,6 @@ for testname in "$testsdir"/test*; do
         echo "Skipping $testname"
         continue
     fi
-    echo "$testname" >>/tmp/list
 
     $testname || exitcode=1
 done

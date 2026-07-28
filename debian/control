@@ -1,7 +1,8 @@
 Source: llama.cpp
 Section: science
 Maintainer: Debian Deep Learning Team <debian-ai@lists.debian.org>
-Uploaders: Christian Kastner <ckk@debian.org>
+Uploaders: Christian Kastner <ckk@debian.org>,
+           Mathieu Baudier <mbaudier@argeo.org>,
 Standards-Version: 4.7.4
 Vcs-Browser: https://salsa.debian.org/deeplearning-team/llama.cpp
 Vcs-Git: https://salsa.debian.org/deeplearning-team/llama.cpp.git
@@ -9,11 +10,13 @@ Homepage: https://github.com/ggml-org/llama.cpp/
 Build-Depends: dh-sequence-bash-completion,
                cmake,
                dh-python,
+               dh-sequence-installsysusers,
                debhelper-compat (= 13),
                help2man,
                libssl-dev,
-               libggml-dev (>= 0.9.10),
+               libggml-dev (>= 0.17.0),
                pkgconf,
+               po-debconf,
 Build-Depends-Indep: dh-sequence-python3,
                      python3-all,
                      pybuild-plugin-pyproject,
@@ -52,7 +55,7 @@ Description: LLM inference in C/C++ - metapackage
  The compute functionality is provided by ggml. By default, ggml's CPU backend
  is installed, but there are many other backends for CPUs and GPUs.
  .
- This is a meta-package that either depends on all of the relevant binary
+ This is a metapackage that either depends on all of the relevant binary
  packages.
 
 Package: libllama0
@@ -92,7 +95,7 @@ Section: libdevel
 Architecture: any
 Multi-Arch: same
 Depends: libllama0 (= ${binary:Version}),
-         libggml-dev (>= 0.9.6),
+         libggml-dev (>= 0.17.0),
          ${misc:Depends},
 Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
 Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
@@ -124,9 +127,11 @@ Package: llama.cpp-tools
 Architecture: any
 Multi-Arch: foreign
 Depends: libllama0 (= ${binary:Version}),
-         adduser,
+         debconf,
+         wget | curl,
          ${misc:Depends},
          ${shlibs:Depends},
+Suggests: llama.cpp-tools-webui-downloader
 Breaks: llama.cpp (<< 5882+dfsg-3~exp1)
 Replaces: llama.cpp (<< 5882+dfsg-3~exp1)
 Description: LLM inference in C/C++ - main utilities

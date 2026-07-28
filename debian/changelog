@@ -1,3 +1,223 @@
+llama.cpp (10108+dfsg1-2) unstable; urgency=medium
+
+  * Drop Flush-the-log-before-exiting.patch, included upstream
+  * Install private Python module needed by some scripts
+  * Add Update-scripts-for-private-module-location.patch (Closes: #1142819)
+  * Enable downloading most recent WebUI instead of exact match
+    (Closes: #1142822)
+  * Add autopkgtest for web UI download
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 26 Jul 2026 20:43:37 +0200
+
+llama.cpp (10108+dfsg1-1) unstable; urgency=medium
+
+  * Bump ggml dependency to 0.17.0
+    Fixes a FTBFS
+  * Exclude vendored JS libs to simplify d/copyright
+  * Drop no longer used license from d/copyright
+
+ -- Christian Kastner <ckk@debian.org>  Sat, 25 Jul 2026 22:28:19 +0200
+
+llama.cpp (10108+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 10108+dfsg
+    - Drop Modify-tests-for-non-embedded-ggml-use.patch, included upstream
+    - Refresh patches
+
+ -- Christian Kastner <ckk@debian.org>  Fri, 24 Jul 2026 10:01:46 +0200
+
+llama.cpp (9951+dfsg-3) unstable; urgency=medium
+
+  [ Mathieu Baudier ]
+  * Fix man pages generation (Closes: #1126513)
+
+  [ Christian Kastner ]
+  * Add Mathieu to Uploaders.
+
+ -- Mathieu Baudier <mbaudier@argeo.org>  Wed, 15 Jul 2026 15:43:21 +0000
+
+llama.cpp (9951+dfsg-2) unstable; urgency=medium
+
+  * autopkgtest: Skip test requiring network connection.
+    Identified by Anshul Singh in LP#2157811
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 14 Jul 2026 16:36:37 +0200
+
+llama.cpp (9951+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 9951+dfsg
+    - Refresh patches
+  * Bump ggml dependency to 0.16.0
+
+ -- Christian Kastner <ckk@debian.org>  Fri, 10 Jul 2026 10:33:55 +0200
+
+llama.cpp (9895+dfsg-3) unstable; urgency=medium
+
+  * Replace patch for stdout reproducibiltiy.
+    The old patch only fixed a few instances, but new instances popped up,
+    owing to the race of threads exiting. I hope this does the trick.
+    - Gone: Use-simple-printf-in-usage.patch
+    - New: Flush-the-log-before-exiting.patch
+  * Fix patch metadata (the scheme was missing)
+
+ -- Christian Kastner <ckk@debian.org>  Wed, 08 Jul 2026 22:30:04 +0200
+
+llama.cpp (9895+dfsg-2) unstable; urgency=medium
+
+  * autopkgtest: Also exclude test-export-graph-ops.
+    Not a real test, it's a tool that generates inputs for other tests.
+
+ -- Christian Kastner <ckk@debian.org>  Wed, 08 Jul 2026 06:53:36 +0200
+
+llama.cpp (9895+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 9895+dfsg
+    - Drop Improve-rpc-server-and-export-graph-ops-names.patch
+    - Refresh patches
+  * Remove embedded ggml
+  * Add Modify-tests-for-non-embedded-ggml-use.patch
+  * Add Use-simple-printf-in-usage.patch
+  * Add missing attributions to d/copyright
+  * Strip build prefix from executables in man pages
+  * Bump ggml dependency to 0.15.3
+  * Ship ggml-rpc-server in a private directory
+    It's available in /usr/libexec/<multi-arch>/llama/bin and needs the
+    libggml0-backend-rpc package in order to work.
+    We don't officially support this, as this binary will eventually move to
+    ggml, and we are figuring out some other things in the process.
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 07 Jul 2026 14:30:04 +0200
+
+llama.cpp (9721+dfsg-1) unstable; urgency=medium
+
+  [ Christian Kastner ]
+  * New upstream version 9721+dfsg
+    - Rewrite upstream WebUI patch
+    - Refresh patches
+  * postinst: Update WebUI download procedure for new asset structure
+  * d/watch: Use git mode
+  * Salsa: Fix SALSA_CI_IGNORED_BRANCHES
+  * Fix typo in debconf prompt (EN)
+
+  [ Frans Spiesschaert ]
+  * Add po-debconf Dutch translation (Closes: #1140088)
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 23 Jun 2026 21:11:21 +0200
+
+llama.cpp (9601+dfsg-1) unstable; urgency=medium
+
+  [ Christian Kastner ]
+  * New upstream version 9601+dfsg
+    - Refresh patches
+  * Bump ggml dependency to 0.15.0
+
+  [ Helge Kreutzmann ]
+  * Add po-debconf German translation (Closes: #1139707)
+
+ -- Christian Kastner <ckk@debian.org>  Thu, 11 Jun 2026 22:15:26 +0200
+
+llama.cpp (9555+dfsg-1) unstable; urgency=medium
+
+  [ Carles Pina i Estany ]
+  * Added po-debconf Catalan translation
+
+  [ Luca Boccassi ]
+  * Install and use sysusers.d/tmpfiles.d config files
+
+  [ Christian Kastner ]
+  * New upstream version 9555+dfsg
+    - Refresh patches
+  * d/rules: Drop deprecated, renamed options
+  * Bump ggml dependency to 0.14.0
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 08 Jun 2026 17:46:27 +0200
+
+llama.cpp (9413+dfsg-1) unstable; urgency=medium
+
+  [ Christian Kastner ]
+  * New upstream version 9413+dfsg
+    - Update WebUI patch for improved upstream solution
+    - Add cmake-Install-impls-to-private-directories.patch
+    - Refresh patches
+    - Rename one patch
+    - Drop examples no longer shipped by upstream
+      + llama-save-load-state
+  * Disable 'llama' app build for now
+    - Until we've figured out how we want to ship it
+  * Change install source path of convert_hf_to_gguf.py
+  * Bump ggml dependency to 0.13.1
+  * debian/NEWS:
+    - Fix NEWS entry text for 9190+dfsg-1
+    - Fix NEWS entry version 9091 -> 9190
+    - Reformat NEWS as per the DevRef
+  * d/control: Fix spelling of metapackage
+  * autopkgtest:
+    - Drop stray output line
+    - Skip new tests needing models
+    - Reactivate some skipped tests
+    - Temporarily skip failing test-quant-type-selection. (Closes: #1138196)
+
+  [ Petter Reinholdtsen ]
+  * Fix stream handling in SimpleChat web UI (Closes: #1138159)
+
+  [ Américo Monteiro ]
+  * Add debconf translations for PT (Closes: #1138492)
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 31 May 2026 13:33:18 +0200
+
+llama.cpp (9190+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 9190+dfsg
+    - Refresh patches
+    - Update UI management patches to support downloaded UI
+  * Deactivate build-time build/download of the WebUI
+  * Convert UI management from alternatives to debconf
+  * Reduce legacy theme support to just SimpleChat
+  * Add d/NEWS for UI management switch
+  * Fix comments in lintian-overrides, calling ggml not-yet-stable
+  * Drop README.Source, no longer needed
+  * d/copyright: Drop obsolete paths from Files-Excluded
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 26 May 2026 16:35:09 +0200
+
+llama.cpp (9071+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 9071+dfsg
+    - Refresh patches
+  * Bump ggml dependency to 0.11.0
+
+ -- Christian Kastner <ckk@debian.org>  Fri, 08 May 2026 12:29:16 +0200
+
+llama.cpp (9009+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 9009+dfsg
+    - Refresh patches
+  * Properly disable Salsa CI on non-official branches
+
+ -- Christian Kastner <ckk@debian.org>  Sat, 02 May 2026 22:51:43 +0200
+
+llama.cpp (8941+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 8941+dfsg
+    - Refresh patches
+  * libllama-dev needs libggml >= 0.10.0
+  * d/copyright: Correct pattern for d/legacy-themes
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 26 Apr 2026 23:45:18 +0200
+
+llama.cpp (8870+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 8870+dfsg
+    - Refresh patches
+  * Bump ggml dependency to 0.10.0
+  * Update private library patch for new libllama-common
+  * Re-introduce server themes dropped by upstream
+    We need at least one DFSG-free version
+  * Don't hardcode URL in server "simplechat" web UI
+    Thanks to Petter Reinholdtsen for the fix. (Closes: #1128381)
+
+ -- Christian Kastner <ckk@debian.org>  Wed, 22 Apr 2026 21:39:06 +0200
+
 llama.cpp (8681+dfsg-1) unstable; urgency=medium
 
   * New upstream version 8681+dfsg

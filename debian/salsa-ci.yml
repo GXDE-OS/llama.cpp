@@ -16,3 +16,4 @@ include:
 # i386 build never works (in fact, all 32-bit builds don't work)
 variables:
   SALSA_CI_DISABLE_BUILD_PACKAGE_I386: 1
+  SALSA_CI_IGNORED_BRANCHES: /^llama\.cpp-dev\//

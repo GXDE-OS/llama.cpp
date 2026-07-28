@@ -12,12 +12,12 @@ man/man1/llama-idle.1
 man/man1/llama-lookahead.1
 man/man1/llama-lookup.1
 man/man1/llama-lookup-create.1
-man/man1/llama-lookup-merge.1
+# --help is written to stderr
+#man/man1/llama-lookup-merge.1
 man/man1/llama-lookup-stats.1
 man/man1/llama-parallel.1
 man/man1/llama-passkey.1
 man/man1/llama-retrieval.1
-man/man1/llama-save-load-state.1
 man/man1/llama-simple.1
 man/man1/llama-simple-chat.1
 man/man1/llama-speculative.1

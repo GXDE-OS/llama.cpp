@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+export DEBIAN_FRONTEND=noninteractive
+
+if [ "$(id -u)" -ne 0 ]; then
+    "This test must be run as root." >&2
+    exit 1
+fi
+
+echo "llama.cpp-tools llama.cpp-tools/default-ui select download" | debconf-set-selections
+dpkg-reconfigure llama.cpp-tools
